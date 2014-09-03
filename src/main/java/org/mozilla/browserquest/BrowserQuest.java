@@ -55,7 +55,7 @@ public class BrowserQuest extends Verticle {
             if (exists.result()) {
                 request.response().sendFile(path);
             } else {
-                request.response().setStatusCode(404).end();
+                onNotFoundRequest(request);
             }
         });
     }
