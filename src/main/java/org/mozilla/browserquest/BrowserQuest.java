@@ -75,7 +75,7 @@ public class BrowserQuest extends Verticle {
         if (worldServer == null) {
             webSocket.close();
         } else {
-            worldServer.addPlayer(new Player(webSocket, worldServer));
+            new Player(getVertx(), webSocket, worldServer);
         }
     }
 
