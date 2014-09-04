@@ -1,5 +1,6 @@
 package org.mozilla.browserquest;
 
+import com.google.inject.Inject;
 import org.vertx.java.core.Vertx;
 import org.vertx.java.core.http.ServerWebSocket;
 import org.vertx.java.core.http.WebSocketFrame;
@@ -11,8 +12,9 @@ import java.util.Optional;
 public class Player {
 
     private static final long DISCONNECT_TIMEOUT = 1000 * 60 * 15;
-
+    @Inject
     private Vertx vertx;
+
     private ServerWebSocket connection;
     private WorldServer worldServer;
 

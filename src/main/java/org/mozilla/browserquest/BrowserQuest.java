@@ -1,5 +1,7 @@
 package org.mozilla.browserquest;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import org.vertx.java.core.file.FileSystem;
 import org.vertx.java.core.http.HttpServerRequest;
 import org.vertx.java.core.http.ServerWebSocket;
@@ -13,12 +15,16 @@ import java.util.Set;
 
 public class BrowserQuest extends Verticle {
 
-    private NetServer netServer;
+    private Injector injector;
+
+    private NetworkServer networkServer;
     private Set<WorldServer> worlds = new HashSet<>();
 
     @Override
     public void start() {
         getContainer().logger().info("Starting BrowserQuest server");
+        injector = Guice.createInjector(new TestModule(getVertx(), getContainer()));
+
         JsonObject config = getContainer().config();
         int port = Optional.ofNullable(config.getInteger("serverPort")).orElse(8000);
         int worldCount = Optional.ofNullable(config.getInteger("worldCount")).orElse(10);
@@ -26,19 +32,19 @@ public class BrowserQuest extends Verticle {
 
         populateWorlds(worldCount, maxPlayers);
 
-        netServer = new NetServer(getVertx()).noMatch(this::onNotFoundRequest).getWithRegEx("^/client/.+", this::onContentRequest).get("/status", this::onStatusRequest)
+        networkServer = new HttpNetworkServer(getVertx()).noMatch(this::onNotFoundRequest).getWithRegEx("^/client/.+", this::onContentRequest).get("/status", this::onStatusRequest)
                 .onWebSocketConnection(this::onWebSocketConnection).listen(port);
         getContainer().logger().info("BrowserQuest started at port " + port);
     }
 
     @Override
     public void stop() {
-        netServer.close();
+        networkServer.close();
     }
 
     private void populateWorlds(int worldCount, int maxPlayers) {
         for (int i = 0; i < worldCount; i++) {
-            WorldServer worldServer = new WorldServer("world-" + (i + 1), maxPlayers, netServer);
+            WorldServer worldServer = new WorldServer("world-" + (i + 1), maxPlayers, networkServer);
             worldServer.run(new Map());
             worlds.add(worldServer);
         }
@@ -75,6 +81,7 @@ public class BrowserQuest extends Verticle {
         if (worldServer == null) {
             webSocket.close();
         } else {
+
             new Player(getVertx(), webSocket, worldServer);
         }
     }

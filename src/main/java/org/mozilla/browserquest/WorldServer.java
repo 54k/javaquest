@@ -9,11 +9,11 @@ public class WorldServer {
     private int maxPlayers;
     private int playersCount;
 
-    private NetServer server;
+    private NetworkServer server;
 
     private Set<Player> players = new HashSet<>();
 
-    public WorldServer(String name, int maxPlayers, NetServer server) {
+    public WorldServer(String name, int maxPlayers, NetworkServer server) {
         this.name = name;
         this.maxPlayers = maxPlayers;
         this.server = server;
