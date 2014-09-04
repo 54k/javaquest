@@ -17,7 +17,7 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-public class BrowserQuestVerticle extends Verticle {
+public class BrowserQuest extends Verticle {
 
     @Inject
     private Logger logger;
