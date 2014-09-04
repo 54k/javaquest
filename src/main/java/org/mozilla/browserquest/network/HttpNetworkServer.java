@@ -1,5 +1,6 @@
-package org.mozilla.browserquest;
+package org.mozilla.browserquest.network;
 
+import com.google.inject.Inject;
 import org.vertx.java.core.AsyncResult;
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.Vertx;
@@ -13,6 +14,7 @@ public class HttpNetworkServer implements NetworkServer {
     private HttpServer server;
     private RouteMatcher routeMatcher;
 
+    @Inject
     public HttpNetworkServer(Vertx vertx) {
         server = vertx.createHttpServer();
         routeMatcher = new RouteMatcher();

@@ -1,29 +1,37 @@
 package org.mozilla.browserquest;
 
 import com.google.inject.Guice;
+import com.google.inject.Inject;
 import com.google.inject.Injector;
+import org.mozilla.browserquest.network.HttpNetworkServer;
+import org.mozilla.browserquest.network.NetworkServer;
 import org.vertx.java.core.file.FileSystem;
 import org.vertx.java.core.http.HttpServerRequest;
 import org.vertx.java.core.http.ServerWebSocket;
 import org.vertx.java.core.json.JsonArray;
 import org.vertx.java.core.json.JsonObject;
+import org.vertx.java.core.logging.Logger;
 import org.vertx.java.platform.Verticle;
 
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-public class BrowserQuest extends Verticle {
+public class BrowserQuestVerticle extends Verticle {
 
-    private Injector injector;
-
+    @Inject
+    private Logger logger;
+    @Inject
     private NetworkServer networkServer;
+
     private Set<WorldServer> worlds = new HashSet<>();
 
     @Override
     public void start() {
-        getContainer().logger().info("Starting BrowserQuest server");
-        injector = Guice.createInjector(new TestModule(getVertx(), getContainer()));
+        Injector injector = Guice.createInjector(new BrowserQuestModule(getVertx(), getContainer()));
+        injector.injectMembers(this);
+
+        logger.info("Starting BrowserQuest server");
 
         JsonObject config = getContainer().config();
         int port = Optional.ofNullable(config.getInteger("serverPort")).orElse(8000);
@@ -32,9 +40,10 @@ public class BrowserQuest extends Verticle {
 
         populateWorlds(worldCount, maxPlayers);
 
-        networkServer = new HttpNetworkServer(getVertx()).noMatch(this::onNotFoundRequest).getWithRegEx("^/client/.+", this::onContentRequest).get("/status", this::onStatusRequest)
+        networkServer.noMatch(this::onNotFoundRequest).getWithRegEx("^/client/.+", this::onContentRequest).get("/status", this::onStatusRequest)
                 .onWebSocketConnection(this::onWebSocketConnection).listen(port);
-        getContainer().logger().info("BrowserQuest started at port " + port);
+
+        logger.info("BrowserQuest started at port " + port);
     }
 
     @Override

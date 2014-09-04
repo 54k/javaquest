@@ -1,4 +1,4 @@
-package org.mozilla.browserquest;
+package org.mozilla.browserquest.network;
 
 import org.vertx.java.core.AsyncResult;
 import org.vertx.java.core.Handler;

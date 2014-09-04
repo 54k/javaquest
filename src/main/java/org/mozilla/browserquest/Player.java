@@ -1,6 +1,7 @@
 package org.mozilla.browserquest;
 
 import com.google.inject.Inject;
+import org.mozilla.browserquest.network.Command;
 import org.vertx.java.core.Vertx;
 import org.vertx.java.core.http.ServerWebSocket;
 import org.vertx.java.core.http.WebSocketFrame;

@@ -1,5 +1,7 @@
 package org.mozilla.browserquest;
 
+import org.mozilla.browserquest.network.NetworkServer;
+
 import java.util.HashSet;
 import java.util.Set;
 

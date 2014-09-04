@@ -1,6 +1,6 @@
-package org.mozilla.browserquest;
+package org.mozilla.browserquest.network;
 
-public class Command {
+public class Packet implements Runnable {
 
     public static final int HELLO = 0;
     public static final int WELCOME = 1;
@@ -29,4 +29,9 @@ public class Command {
     public static final int BLINK = 24;
     public static final int OPEN = 25;
     public static final int CHECK = 26;
+
+    @Override
+    public void run() {
+
+    }
 }
