@@ -24,8 +24,6 @@ public interface NetworkServer {
 
     NetworkServer get(String pattern, Handler<HttpServerRequest> handler);
 
-    NetworkServer handle(HttpServerRequest request);
-
     NetworkServer head(String pattern, Handler<HttpServerRequest> handler);
 
     NetworkServer put(String pattern, Handler<HttpServerRequest> handler);

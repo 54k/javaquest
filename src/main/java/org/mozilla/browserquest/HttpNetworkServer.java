@@ -74,12 +74,6 @@ public class HttpNetworkServer implements NetworkServer {
     }
 
     @Override
-    public NetworkServer handle(HttpServerRequest request) {
-        routeMatcher.handle(request);
-        return this;
-    }
-
-    @Override
     public NetworkServer head(String pattern, Handler<HttpServerRequest> handler) {
         routeMatcher.head(pattern, handler);
         return this;
