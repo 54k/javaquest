@@ -1,6 +1,6 @@
 package org.mozilla.browserquest.network;
 
-public class Packet implements Runnable {
+public abstract class Packet implements Runnable {
 
     public static final int HELLO = 0;
     public static final int WELCOME = 1;
@@ -30,8 +30,22 @@ public class Packet implements Runnable {
     public static final int OPEN = 25;
     public static final int CHECK = 26;
 
-    @Override
-    public void run() {
+    private Object[] data;
+    private NetworkConnection connection;
 
+    public void setConnection(NetworkConnection connection) {
+        this.connection = connection;
+    }
+
+    public void setData(Object[] data) {
+        this.data = data;
+    }
+
+    public Object[] getData() {
+        return data;
+    }
+
+    public NetworkConnection getConnection() {
+        return connection;
     }
 }

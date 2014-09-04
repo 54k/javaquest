@@ -1,6 +1,5 @@
 package org.mozilla.browserquest.network;
 
-import com.google.inject.Inject;
 import org.mozilla.browserquest.Player;
 import org.vertx.java.core.Vertx;
 import org.vertx.java.core.http.ServerWebSocket;
@@ -11,33 +10,54 @@ public class WebSocketNetworkConnection implements NetworkConnection {
 
     private static final long DISCONNECT_TIMEOUT = 1000 * 60 * 15;
 
-    @Inject
     private Vertx vertx;
-    @Inject
-    private PacketProcessor packetProcessor;
-    private ServerWebSocket delegate;
+    private PacketHandler packetHandler;
+    private ServerWebSocket channel;
 
     private Player player;
 
-    private long disconnectTimeoutId;
+    private long disconnectTaskId;
 
-    public WebSocketNetworkConnection(ServerWebSocket delegate) {
-        this.delegate = delegate;
-        this.delegate.frameHandler(this::onFrame);
-        this.delegate.closeHandler(v -> vertx.cancelTimer(disconnectTimeoutId));
+    public WebSocketNetworkConnection(Vertx vertx, ServerWebSocket channel) {
+        this.vertx = vertx;
+        packetHandler = new PacketHandler();
+        this.channel = channel;
+        this.channel.frameHandler(this::onFrame);
+        this.channel.closeHandler(v -> vertx.cancelTimer(disconnectTaskId));
+        this.channel.writeTextFrame("go");
+    }
+
+    @Override
+    public Player getPlayer() {
+        return player;
+    }
+
+    @Override
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 
     private void onFrame(WebSocketFrame frame) {
         if (frame.isText()) {
             String textData = frame.textData();
             Object[] packet = Json.decodeValue(textData, Object[].class);
-            packetProcessor.process(this, packet);
+            packetHandler.handle(this, packet);
             resetDisconnectTimeout();
         }
     }
 
     private void resetDisconnectTimeout() {
-        vertx.cancelTimer(disconnectTimeoutId);
-        disconnectTimeoutId = vertx.setTimer(DISCONNECT_TIMEOUT, e -> delegate.close());
+        vertx.cancelTimer(disconnectTaskId);
+        disconnectTaskId = vertx.setTimer(DISCONNECT_TIMEOUT, e -> channel.close());
+    }
+
+    @Override
+    public void write(String text) {
+        channel.writeTextFrame(text);
+    }
+
+    @Override
+    public void close() {
+        channel.close();
     }
 }

@@ -3,8 +3,8 @@ package org.mozilla.browserquest;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import org.mozilla.browserquest.network.HttpNetworkServer;
 import org.mozilla.browserquest.network.NetworkServer;
+import org.mozilla.browserquest.network.WebSocketNetworkConnection;
 import org.vertx.java.core.file.FileSystem;
 import org.vertx.java.core.http.HttpServerRequest;
 import org.vertx.java.core.http.ServerWebSocket;
@@ -91,7 +91,7 @@ public class BrowserQuest extends Verticle {
         if (worldServer == null) {
             webSocket.close();
         } else {
-            new Player(getVertx(), webSocket, worldServer);
+            new WebSocketNetworkConnection(getVertx(), webSocket);
         }
     }
 
