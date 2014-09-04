@@ -22,6 +22,8 @@ public class BrowserQuest extends Verticle {
     @Inject
     private Logger logger;
     @Inject
+    private FileSystem fileSystem;
+    @Inject
     private NetworkServer networkServer;
 
     private Set<WorldServer> worlds = new HashSet<>();
@@ -64,7 +66,6 @@ public class BrowserQuest extends Verticle {
     }
 
     private void onContentRequest(HttpServerRequest request) {
-        FileSystem fileSystem = getVertx().fileSystem();
         String path = request.path().substring(1);
         fileSystem.exists(path, exists -> {
             if (exists.result()) {
