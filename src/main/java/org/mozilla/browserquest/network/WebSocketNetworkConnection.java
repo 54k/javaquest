@@ -32,6 +32,7 @@ public class WebSocketNetworkConnection implements NetworkConnection {
             String textData = frame.textData();
             Object[] packet = Json.decodeValue(textData, Object[].class);
             packetProcessor.process(this, packet);
+            resetDisconnectTimeout();
         }
     }
 
