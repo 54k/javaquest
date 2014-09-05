@@ -15,6 +15,7 @@ public class ChatPacket extends Packet {
     @Override
     public void run() {
         JsonArray jsonArray = new JsonArray();
+        jsonArray.add(Packet.CHAT);
         jsonArray.add(getConnection().getPlayer().getId());
         jsonArray.add(message);
         getConnection().write(jsonArray.encode());

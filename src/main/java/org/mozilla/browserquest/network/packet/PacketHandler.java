@@ -1,8 +1,10 @@
 package org.mozilla.browserquest.network.packet;
 
 import org.mozilla.browserquest.network.WebSocketNetworkConnection;
+import org.mozilla.browserquest.network.packet.client.ChatPacket;
 import org.mozilla.browserquest.network.packet.client.HelloPacket;
 import org.mozilla.browserquest.network.packet.client.MovePacket;
+import org.mozilla.browserquest.network.packet.client.ZonePacket;
 
 import java.util.HashMap;
 
@@ -13,6 +15,8 @@ public class PacketHandler {
     public PacketHandler() {
         addPacketPrototype(Packet.HELLO, HelloPacket.class);
         addPacketPrototype(Packet.MOVE, MovePacket.class);
+        addPacketPrototype(Packet.ZONE, ZonePacket.class);
+        addPacketPrototype(Packet.CHAT, ChatPacket.class);
     }
 
     public void addPacketPrototype(int opcode, Class<? extends Packet> prototype) {
