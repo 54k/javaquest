@@ -1,15 +1,17 @@
 package org.mozilla.browserquest.network;
 
 import org.mozilla.browserquest.network.packet.HelloPacket;
+import org.mozilla.browserquest.network.packet.MovePacket;
 
 import java.util.HashMap;
 
 public class PacketHandler {
 
-    private HashMap<Integer, Class<? extends Packet>> prototypes;
+    private HashMap<Integer, Class<? extends Packet>> prototypes = new HashMap<>();
 
     public PacketHandler() {
         addPacketPrototype(Packet.HELLO, HelloPacket.class);
+        addPacketPrototype(Packet.MOVE, MovePacket.class);
     }
 
     public void addPacketPrototype(int opcode, Class<? extends Packet> prototype) {
