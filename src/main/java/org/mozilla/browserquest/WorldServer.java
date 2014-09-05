@@ -22,8 +22,17 @@ public class WorldServer {
     }
 
     public void addPlayer(Player player) {
-        players.add(player);
-        playersCount++;
+        if (players.add(player)) {
+            player.setWorldServer(this);
+            playersCount++;
+        }
+    }
+
+    public void removePlayer(Player player) {
+        if (players.remove(player)) {
+            player.setWorldServer(null);
+            playersCount--;
+        }
     }
 
     public String getName() {

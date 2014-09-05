@@ -1,6 +1,7 @@
 package org.mozilla.browserquest.network;
 
 import org.mozilla.browserquest.Player;
+import org.mozilla.browserquest.WorldServer;
 import org.mozilla.browserquest.network.packet.PacketHandler;
 import org.vertx.java.core.Vertx;
 import org.vertx.java.core.http.ServerWebSocket;
@@ -24,7 +25,7 @@ public class WebSocketNetworkConnection implements NetworkConnection {
         packetHandler = new PacketHandler();
         this.channel = channel;
         this.channel.frameHandler(this::onFrame);
-        this.channel.closeHandler(v -> vertx.cancelTimer(disconnectTaskId));
+        this.channel.closeHandler(this::onDisconnect);
         this.channel.writeTextFrame("go");
     }
 
@@ -44,6 +45,14 @@ public class WebSocketNetworkConnection implements NetworkConnection {
             Object[] packet = Json.decodeValue(textData, Object[].class);
             packetHandler.handle(this, packet);
             resetDisconnectTimeout();
+        }
+    }
+
+    private void onDisconnect(Void v) {
+        vertx.cancelTimer(disconnectTaskId);
+        WorldServer worldServer = player.getWorldServer();
+        if (worldServer != null) {
+            worldServer.removePlayer(player);
         }
     }
 
