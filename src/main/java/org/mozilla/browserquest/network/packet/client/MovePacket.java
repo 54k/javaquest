@@ -1,16 +1,23 @@
-package org.mozilla.browserquest.network.packet;
+package org.mozilla.browserquest.network.packet.client;
 
 import org.mozilla.browserquest.Player;
 import org.mozilla.browserquest.network.Command;
-import org.mozilla.browserquest.network.Packet;
+import org.mozilla.browserquest.network.packet.Packet;
 import org.vertx.java.core.json.JsonArray;
 
 public class MovePacket extends Packet {
 
+    private int x;
+    private int y;
+
+    @Override
+    public void setData(Object[] data) {
+        x = (int) data[0];
+        y = (int) data[1];
+    }
+
     @Override
     public void run() {
-        int x = (int) getData()[1];
-        int y = (int) getData()[2];
         Player player = getConnection().getPlayer();
         // TODO validate position
         player.setPosition(x, y);

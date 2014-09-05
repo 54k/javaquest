@@ -1,11 +1,22 @@
-package org.mozilla.browserquest.network.packet;
+package org.mozilla.browserquest.network.packet.client;
 
 import org.mozilla.browserquest.Player;
 import org.mozilla.browserquest.network.Command;
-import org.mozilla.browserquest.network.Packet;
+import org.mozilla.browserquest.network.packet.Packet;
 import org.vertx.java.core.json.JsonArray;
 
 public class HelloPacket extends Packet {
+
+    private String playerName;
+    private int x;
+    private int y;
+
+    @Override
+    public void setData(Object[] data) {
+        playerName = (String) data[0];
+        x = (int) data[1];
+        y = (int) data[2];
+    }
 
     @Override
     public void run() {
@@ -20,20 +31,18 @@ public class HelloPacket extends Packet {
             // HELLO packet should be sent only once
             getConnection().close();
         }
-        Object[] packet = getData();
-        String name = (String) packet[1];
 
         player.setId(1);
-        player.setPosition(22, 61);
-        player.setName(name);
+        player.setPosition(x, y);
+        player.setName(playerName);
         player.setHasEnteredInGame(true);
 
         JsonArray jsonArray = new JsonArray();
         jsonArray.addNumber(Command.WELCOME);
         jsonArray.addNumber(1);   //id
-        jsonArray.addString(name);   //name
-        jsonArray.addNumber(22);   //x
-        jsonArray.addNumber(61);      //y
+        jsonArray.addString(playerName);   //name
+        jsonArray.addNumber(x);   //x
+        jsonArray.addNumber(y);      //y
         jsonArray.addNumber(50);        //hp
 
         getConnection().write(jsonArray.toString());

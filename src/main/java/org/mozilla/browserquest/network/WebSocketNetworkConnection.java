@@ -1,6 +1,7 @@
 package org.mozilla.browserquest.network;
 
 import org.mozilla.browserquest.Player;
+import org.mozilla.browserquest.network.packet.PacketHandler;
 import org.vertx.java.core.Vertx;
 import org.vertx.java.core.http.ServerWebSocket;
 import org.vertx.java.core.http.WebSocketFrame;

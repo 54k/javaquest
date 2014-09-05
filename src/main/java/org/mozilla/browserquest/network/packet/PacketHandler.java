@@ -1,7 +1,8 @@
-package org.mozilla.browserquest.network;
+package org.mozilla.browserquest.network.packet;
 
-import org.mozilla.browserquest.network.packet.HelloPacket;
-import org.mozilla.browserquest.network.packet.MovePacket;
+import org.mozilla.browserquest.network.WebSocketNetworkConnection;
+import org.mozilla.browserquest.network.packet.client.HelloPacket;
+import org.mozilla.browserquest.network.packet.client.MovePacket;
 
 import java.util.HashMap;
 
@@ -31,7 +32,9 @@ public class PacketHandler {
         try {
             Packet p = prototype.newInstance();
             p.setConnection(connection);
-            p.setData(packetData);
+            Object[] data = new Object[packetData.length - 1];
+            System.arraycopy(packetData, 1, data, 0, data.length);
+            p.setData(data);
             p.run();
         } catch (Throwable t) {
             t.printStackTrace();
