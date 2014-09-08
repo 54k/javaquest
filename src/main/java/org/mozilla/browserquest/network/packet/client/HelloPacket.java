@@ -1,7 +1,6 @@
 package org.mozilla.browserquest.network.packet.client;
 
 import org.mozilla.browserquest.Player;
-import org.mozilla.browserquest.network.Command;
 import org.mozilla.browserquest.network.packet.Packet;
 import org.vertx.java.core.json.JsonArray;
 
@@ -38,7 +37,7 @@ public class HelloPacket extends Packet {
         player.setHasEnteredInGame(true);
 
         JsonArray jsonArray = new JsonArray();
-        jsonArray.addNumber(Command.WELCOME);
+        jsonArray.addNumber(Packet.WELCOME);
         jsonArray.addNumber(1);   //id
         jsonArray.addString(playerName);   //name
         jsonArray.addNumber(x);   //x
