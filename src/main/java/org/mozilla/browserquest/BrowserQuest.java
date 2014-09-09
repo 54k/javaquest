@@ -4,10 +4,8 @@ import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import org.mozilla.browserquest.network.NetworkServer;
-import org.mozilla.browserquest.network.WebSocketNetworkConnection;
 import org.vertx.java.core.file.FileSystem;
 import org.vertx.java.core.http.HttpServerRequest;
-import org.vertx.java.core.http.ServerWebSocket;
 import org.vertx.java.core.json.JsonArray;
 import org.vertx.java.core.json.JsonObject;
 import org.vertx.java.core.logging.Logger;
@@ -43,7 +41,7 @@ public class BrowserQuest extends Verticle {
         populateWorlds(worldCount, maxPlayers);
 
         networkServer.noMatch(this::onNotFoundRequest).getWithRegEx("^/client/.+", this::onContentRequest).get("/status", this::onStatusRequest)
-                .onWebSocketConnection(this::onWebSocketConnection).listen(port);
+                .listen(port);
 
         logger.info("BrowserQuest started at port " + port);
     }
@@ -84,15 +82,6 @@ public class BrowserQuest extends Verticle {
         JsonArray status = new JsonArray();
         worlds.stream().forEach(world -> status.add(world.getPlayersCount()));
         return status.encode();
-    }
-
-    private void onWebSocketConnection(ServerWebSocket webSocket) {
-        WorldServer worldServer = getAvailableWorldServer();
-        if (worldServer == null) {
-            webSocket.close();
-        } else {
-            new WebSocketNetworkConnection(getVertx(), webSocket);
-        }
     }
 
     private WorldServer getAvailableWorldServer() {

@@ -2,7 +2,7 @@ package org.mozilla.browserquest;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
-import org.mozilla.browserquest.network.HttpNetworkServer;
+import org.mozilla.browserquest.network.DefaultNetworkServer;
 import org.mozilla.browserquest.network.NetworkServer;
 import org.vertx.java.core.Vertx;
 import org.vertx.java.core.file.FileSystem;
@@ -21,7 +21,7 @@ public class BrowserQuestModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        bind(NetworkServer.class).to(HttpNetworkServer.class);
+        bind(NetworkServer.class).to(DefaultNetworkServer.class);
     }
 
     @Provides

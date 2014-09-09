@@ -7,17 +7,23 @@ import org.vertx.java.core.Vertx;
 import org.vertx.java.core.http.HttpServer;
 import org.vertx.java.core.http.HttpServerRequest;
 import org.vertx.java.core.http.RouteMatcher;
-import org.vertx.java.core.http.ServerWebSocket;
 
-public class HttpNetworkServer implements NetworkServer {
+import java.util.HashSet;
+import java.util.Set;
+
+public class DefaultNetworkServer implements NetworkServer {
 
     private HttpServer server;
     private RouteMatcher routeMatcher;
 
+    private Set<NetworkClient> connections = new HashSet<>();
+
     @Inject
-    public HttpNetworkServer(Vertx vertx) {
+    public DefaultNetworkServer(Vertx vertx) {
         server = vertx.createHttpServer();
         routeMatcher = new RouteMatcher();
+        server.websocketHandler(ws -> connections.add(new DefaultNetworkClient(vertx, ws)));
+
         setupServer();
     }
 
@@ -60,12 +66,6 @@ public class HttpNetworkServer implements NetworkServer {
     @Override
     public NetworkServer listen(int port, Handler<AsyncResult<HttpServer>> listenHandler) {
         server.listen(port, listenHandler);
-        return this;
-    }
-
-    @Override
-    public NetworkServer onWebSocketConnection(Handler<ServerWebSocket> connectHandler) {
-        server.websocketHandler(connectHandler);
         return this;
     }
 

@@ -1,6 +1,6 @@
 package org.mozilla.browserquest.network.packet;
 
-import org.mozilla.browserquest.network.WebSocketNetworkConnection;
+import org.mozilla.browserquest.network.DefaultNetworkClient;
 import org.mozilla.browserquest.network.packet.client.ChatPacket;
 import org.mozilla.browserquest.network.packet.client.HelloPacket;
 import org.mozilla.browserquest.network.packet.client.MovePacket;
@@ -23,7 +23,7 @@ public class PacketHandler {
         prototypes.put(opcode, prototype);
     }
 
-    public void handle(WebSocketNetworkConnection connection, Object[] packetData) {
+    public void handle(DefaultNetworkClient connection, Object[] packetData) {
         int opcode = (int) packetData[0];
         Class<? extends Packet> prototype = prototypes.get(opcode);
 

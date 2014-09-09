@@ -20,8 +20,6 @@ public interface NetworkServer {
 
     NetworkServer listen(int port, Handler<AsyncResult<HttpServer>> listenHandler);
 
-    NetworkServer onWebSocketConnection(Handler<ServerWebSocket> connectHandler);
-
     NetworkServer get(String pattern, Handler<HttpServerRequest> handler);
 
     NetworkServer head(String pattern, Handler<HttpServerRequest> handler);

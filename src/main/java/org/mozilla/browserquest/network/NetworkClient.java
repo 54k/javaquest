@@ -2,7 +2,7 @@ package org.mozilla.browserquest.network;
 
 import org.mozilla.browserquest.Player;
 
-public interface NetworkConnection {
+public interface NetworkClient {
 
     Player getPlayer();
 
