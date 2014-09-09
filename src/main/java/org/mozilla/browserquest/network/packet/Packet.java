@@ -1,6 +1,6 @@
 package org.mozilla.browserquest.network.packet;
 
-import org.mozilla.browserquest.network.NetworkClient;
+import org.mozilla.browserquest.network.NetworkConnection;
 
 public abstract class Packet implements Runnable {
 
@@ -32,15 +32,15 @@ public abstract class Packet implements Runnable {
     public static final int OPEN = 25;
     public static final int CHECK = 26;
 
-    private NetworkClient connection;
+    private NetworkConnection connection;
 
     public abstract void setData(Object[] data);
 
-    void setConnection(NetworkClient connection) {
+    void setConnection(NetworkConnection connection) {
         this.connection = connection;
     }
 
-    protected NetworkClient getConnection() {
+    protected NetworkConnection getConnection() {
         return connection;
     }
 }

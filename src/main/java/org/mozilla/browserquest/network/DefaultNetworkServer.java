@@ -16,13 +16,13 @@ public class DefaultNetworkServer implements NetworkServer {
     private HttpServer server;
     private RouteMatcher routeMatcher;
 
-    private Set<NetworkClient> connections = new HashSet<>();
+    private Set<NetworkConnection> connections = new HashSet<>();
 
     @Inject
     public DefaultNetworkServer(Vertx vertx) {
         server = vertx.createHttpServer();
         routeMatcher = new RouteMatcher();
-        server.websocketHandler(ws -> connections.add(new DefaultNetworkClient(vertx, ws)));
+        server.websocketHandler(ws -> connections.add(new DefaultNetworkConnection(vertx, ws)));
 
         setupServer();
     }
@@ -47,13 +47,13 @@ public class DefaultNetworkServer implements NetworkServer {
 
     @Override
     public NetworkServer close() {
-        server.close();
-        return this;
+        return close(null);
     }
 
     @Override
     public NetworkServer close(Handler<AsyncResult<Void>> doneHandler) {
         server.close(doneHandler);
+        connections.forEach(NetworkConnection::close);
         return this;
     }
 
