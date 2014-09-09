@@ -47,7 +47,11 @@ public class WorldServer {
         return playersCount;
     }
 
-    public void run(Map map) {
+    public void run(WorldMap map) {
+        initZoneGroups();
+    }
+
+    private void initZoneGroups() {
 
     }
 }

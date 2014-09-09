@@ -56,7 +56,7 @@ public class BrowserQuest extends Verticle {
     private void populateWorlds(int worldCount, int maxPlayers) {
         for (int i = 0; i < worldCount; i++) {
             WorldServer worldServer = new WorldServer("world-" + (i + 1), maxPlayers, networkServer);
-            worldServer.run(new Map(fileSystem, "world_map.json"));
+            worldServer.run(new WorldMap(fileSystem, "world_map.json"));
             worlds.add(worldServer);
         }
     }

@@ -1,5 +1,7 @@
 package org.mozilla.browserquest.map;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 import java.util.Map;
 
@@ -10,12 +12,13 @@ public class MapData {
 
     private List<Integer> collisions;
     private List<MapDoor> doors;
+    private List<MapCheckpoint> checkpoints;
     private List<MapChestArea> chestAreas;
     private List<MapRoamingArea> roamingAreas;
     private List<MapStaticChest> staticChests;
 
     private Map<String, String> staticEntities;
-
+    @JsonProperty("tilesize")
     private int tileSize;
 
     public int getWidth() {
@@ -48,6 +51,14 @@ public class MapData {
 
     public void setDoors(List<MapDoor> doors) {
         this.doors = doors;
+    }
+
+    public List<MapCheckpoint> getCheckpoints() {
+        return checkpoints;
+    }
+
+    public void setCheckpoints(List<MapCheckpoint> checkpoints) {
+        this.checkpoints = checkpoints;
     }
 
     public List<MapChestArea> getChestAreas() {
