@@ -37,7 +37,7 @@ public class BrowserQuest extends Verticle {
 
         JsonObject config = getContainer().config();
         int port = Optional.ofNullable(config.getInteger("serverPort")).orElse(8000);
-        int worldCount = Optional.ofNullable(config.getInteger("worldCount")).orElse(10);
+        int worldCount = Optional.ofNullable(config.getInteger("worldCount")).orElse(1);
         int maxPlayers = Optional.ofNullable(config.getInteger("maxPlayersPerWorld")).orElse(100);
 
         populateWorlds(worldCount, maxPlayers);

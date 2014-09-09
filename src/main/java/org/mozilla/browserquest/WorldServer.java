@@ -2,7 +2,9 @@ package org.mozilla.browserquest;
 
 import org.mozilla.browserquest.network.NetworkServer;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class WorldServer {
@@ -11,9 +13,13 @@ public class WorldServer {
     private int maxPlayers;
     private int playersCount;
 
+    private WorldMap worldMap;
+
     private NetworkServer server;
 
     private Set<Player> players = new HashSet<>();
+
+    private Map<String, GroupContainer> groups = new HashMap<>();
 
     public WorldServer(String name, int maxPlayers, NetworkServer server) {
         this.name = name;
@@ -48,10 +54,21 @@ public class WorldServer {
     }
 
     public void run(WorldMap map) {
+        worldMap = map;
         initZoneGroups();
     }
 
     private void initZoneGroups() {
+        worldMap.forEachGroup((id, positions) -> {
+            groups.put(id, new GroupContainer());
+        });
+    }
 
+    private static class GroupContainer {
+        private Set<Player> players = new HashSet<>();
+    }
+
+    public boolean isValidPosition(Position position) {
+        return true;
     }
 }

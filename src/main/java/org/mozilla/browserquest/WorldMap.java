@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.function.BiConsumer;
 
 public class WorldMap {
 
@@ -25,6 +26,8 @@ public class WorldMap {
     private Map<String, List<Position>> connectedGroups = new HashMap<>();
     private Map<Integer, Checkpoint> checkpoints = new HashMap<>();
     private List<Checkpoint> startingAreas = new ArrayList<>();
+
+    private int[][] collisionGrid;
 
     public WorldMap(FileSystem fs, String filePath) {
         fs.exists(filePath, booleanAsyncResult -> {
@@ -47,6 +50,7 @@ public class WorldMap {
 
             initConnectedGroups(mapData.getDoors());
             initCheckpoints(mapData.getCheckpoints());
+            generateCollisionGrid();
         } catch (Throwable t) {
             t.printStackTrace();
         }
@@ -81,6 +85,22 @@ public class WorldMap {
                 startingAreas.add(checkpoint);
             }
         });
+    }
+
+    public void forEachGroup(BiConsumer<? super String, ? super List<Position>> action) {
+        connectedGroups.forEach(action);
+    }
+
+    private void generateCollisionGrid() {
+        int tileIndex = 0;
+
+        collisionGrid = new int[mapData.getHeight()][mapData.getWidth()];
+        for (int i = 0; i < mapData.getHeight(); i++) {
+            for (int j = 0; j < mapData.getWidth(); j++) {
+                collisionGrid[i][j] = mapData.getCollisions().contains(tileIndex) ? 1 : 0;
+                tileIndex++;
+            }
+        }
     }
 
     public Position getRandomStartingPosition() {

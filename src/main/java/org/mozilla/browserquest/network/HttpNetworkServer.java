@@ -23,7 +23,7 @@ public class HttpNetworkServer implements NetworkServer {
 
     private void setupServer() {
         server.requestHandler(routeMatcher);
-//        server.setCompressionSupported(true);
+        server.setCompressionSupported(true);
         server.setUsePooledBuffers(true);
     }
 
