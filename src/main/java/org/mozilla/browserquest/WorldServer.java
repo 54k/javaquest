@@ -1,5 +1,6 @@
 package org.mozilla.browserquest;
 
+import org.mozilla.browserquest.model.Player;
 import org.mozilla.browserquest.network.NetworkServer;
 
 import java.util.HashMap;

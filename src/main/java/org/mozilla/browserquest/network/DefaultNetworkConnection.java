@@ -1,6 +1,6 @@
 package org.mozilla.browserquest.network;
 
-import org.mozilla.browserquest.Player;
+import org.mozilla.browserquest.model.Player;
 import org.mozilla.browserquest.WorldServer;
 import org.mozilla.browserquest.network.packet.PacketHandler;
 import org.vertx.java.core.Vertx;

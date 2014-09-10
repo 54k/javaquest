@@ -1,4 +1,7 @@
-package org.mozilla.browserquest;
+package org.mozilla.browserquest.model;
+
+import org.mozilla.browserquest.Area;
+import org.mozilla.browserquest.Position;
 
 import java.util.Random;
 
@@ -42,6 +45,15 @@ public class Entity {
 
     public void setKind(String kind) {
         this.kind = kind;
+    }
+
+    public Position getPosition() {
+        return new Position(x, y);
+    }
+
+    public void setPosition(Position position) {
+        x = position.getX();
+        y = position.getY();
     }
 
     public int getX() {

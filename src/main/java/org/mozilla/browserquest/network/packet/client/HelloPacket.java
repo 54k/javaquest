@@ -1,6 +1,7 @@
 package org.mozilla.browserquest.network.packet.client;
 
-import org.mozilla.browserquest.Player;
+import org.mozilla.browserquest.Position;
+import org.mozilla.browserquest.model.Player;
 import org.mozilla.browserquest.network.packet.Packet;
 import org.vertx.java.core.json.JsonArray;
 
@@ -32,7 +33,7 @@ public class HelloPacket extends Packet {
         }
 
         player.setId(1);
-        player.setPosition(x, y);
+        player.setPosition(new Position(x, y));
         player.setName(playerName);
         player.setHasEnteredInGame(true);
 

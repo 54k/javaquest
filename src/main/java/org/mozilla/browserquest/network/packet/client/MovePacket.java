@@ -1,6 +1,7 @@
 package org.mozilla.browserquest.network.packet.client;
 
-import org.mozilla.browserquest.Player;
+import org.mozilla.browserquest.Position;
+import org.mozilla.browserquest.model.Player;
 import org.mozilla.browserquest.network.packet.Packet;
 import org.vertx.java.core.json.JsonArray;
 
@@ -19,7 +20,7 @@ public class MovePacket extends Packet {
     public void run() {
         Player player = getConnection().getPlayer();
         // TODO validate position
-        player.setPosition(x, y);
+        player.setPosition(new Position(x, y));
 
         JsonArray jsonArray = new JsonArray();
         jsonArray.addNumber(Packet.MOVE);
