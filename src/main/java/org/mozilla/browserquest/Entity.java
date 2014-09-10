@@ -1,5 +1,7 @@
 package org.mozilla.browserquest;
 
+import java.util.Random;
+
 public class Entity {
 
     private int id;
@@ -64,5 +66,27 @@ public class Entity {
 
     public void setArea(Area area) {
         this.area = area;
+    }
+
+    public Position getPositionNextTo(Entity entity) {
+        // This is a quick & dirty way to give mobs a random position
+        // close to another entity.
+        Random random = new Random();
+        int r = random.nextInt(4);
+
+        Position position = new Position();
+        position.setX(entity.getX());
+        position.setY(entity.getY());
+        switch (r) {
+            case 0:
+                position.setY(position.getY() - 1);
+            case 1:
+                position.setY(position.getY() + 1);
+            case 2:
+                position.setX(position.getX() - 1);
+            case 3:
+                position.setX(position.getX() + 1);
+        }
+        return position;
     }
 }
