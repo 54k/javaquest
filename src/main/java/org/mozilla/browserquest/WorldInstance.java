@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class WorldServer {
+public class WorldInstance {
 
     private String name;
     private int maxPlayers;
@@ -16,28 +16,25 @@ public class WorldServer {
 
     private WorldMap worldMap;
 
-    private NetworkServer server;
-
     private Set<Player> players = new HashSet<>();
 
     private Map<String, GroupContainer> groups = new HashMap<>();
 
-    public WorldServer(String name, int maxPlayers, NetworkServer server) {
+    public WorldInstance(String name, int maxPlayers) {
         this.name = name;
         this.maxPlayers = maxPlayers;
-        this.server = server;
     }
 
     public void addPlayer(Player player) {
         if (players.add(player)) {
-            player.setWorldServer(this);
+            player.setWorldInstance(this);
             playersCount++;
         }
     }
 
     public void removePlayer(Player player) {
         if (players.remove(player)) {
-            player.setWorldServer(null);
+            player.setWorldInstance(null);
             playersCount--;
         }
     }

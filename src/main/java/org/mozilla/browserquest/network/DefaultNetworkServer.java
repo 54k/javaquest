@@ -1,6 +1,7 @@
 package org.mozilla.browserquest.network;
 
 import com.google.inject.Inject;
+import com.google.inject.Injector;
 import org.vertx.java.core.AsyncResult;
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.Vertx;
@@ -18,11 +19,10 @@ public class DefaultNetworkServer implements NetworkServer {
 
     private Set<NetworkConnection> connections = new HashSet<>();
 
-    @Inject
-    public DefaultNetworkServer(Vertx vertx) {
+    public DefaultNetworkServer(Vertx vertx, Injector injector) {
         server = vertx.createHttpServer();
         routeMatcher = new RouteMatcher();
-        server.websocketHandler(ws -> connections.add(new DefaultNetworkConnection(vertx, ws)));
+        server.websocketHandler(ws -> connections.add(new DefaultNetworkConnection(vertx, injector, ws)));
 
         setupServer();
     }

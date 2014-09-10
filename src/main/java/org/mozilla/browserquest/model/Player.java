@@ -1,10 +1,10 @@
 package org.mozilla.browserquest.model;
 
-import org.mozilla.browserquest.WorldServer;
+import org.mozilla.browserquest.WorldInstance;
 
 public class Player extends Character {
 
-    private WorldServer worldServer;
+    private WorldInstance worldInstance;
 
     private boolean hasEnteredInGame;
     private String name;
@@ -13,12 +13,12 @@ public class Player extends Character {
         super(-1, "player", "", 0, 0);
     }
 
-    public WorldServer getWorldServer() {
-        return worldServer;
+    public WorldInstance getWorldInstance() {
+        return worldInstance;
     }
 
-    public void setWorldServer(WorldServer worldServer) {
-        this.worldServer = worldServer;
+    public void setWorldInstance(WorldInstance worldInstance) {
+        this.worldInstance = worldInstance;
     }
 
     public boolean isHasEnteredInGame() {

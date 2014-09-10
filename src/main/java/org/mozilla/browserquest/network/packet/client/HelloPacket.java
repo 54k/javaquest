@@ -1,11 +1,17 @@
 package org.mozilla.browserquest.network.packet.client;
 
+import com.google.inject.Inject;
 import org.mozilla.browserquest.Position;
+import org.mozilla.browserquest.World;
+import org.mozilla.browserquest.WorldInstance;
 import org.mozilla.browserquest.model.Player;
 import org.mozilla.browserquest.network.packet.Packet;
 import org.vertx.java.core.json.JsonArray;
 
 public class HelloPacket extends Packet {
+
+    @Inject
+    private World world;
 
     private String playerName;
     private int x;
@@ -31,11 +37,19 @@ public class HelloPacket extends Packet {
             // HELLO packet should be sent only once
             getConnection().close();
         }
+        WorldInstance worldInstance = world.getAvailableWorldInstance();
+
+        if (worldInstance == null) {
+            getConnection().close();
+            return;
+        }
 
         player.setId(1);
         player.setPosition(new Position(x, y));
         player.setName(playerName);
         player.setHasEnteredInGame(true);
+
+        worldInstance.addPlayer(player);
 
         JsonArray jsonArray = new JsonArray();
         jsonArray.addNumber(Packet.WELCOME);

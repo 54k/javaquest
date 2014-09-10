@@ -1,7 +1,8 @@
 package org.mozilla.browserquest.network;
 
+import com.google.inject.Injector;
+import org.mozilla.browserquest.WorldInstance;
 import org.mozilla.browserquest.model.Player;
-import org.mozilla.browserquest.WorldServer;
 import org.mozilla.browserquest.network.packet.PacketHandler;
 import org.vertx.java.core.Vertx;
 import org.vertx.java.core.http.ServerWebSocket;
@@ -20,9 +21,9 @@ public class DefaultNetworkConnection implements NetworkConnection {
 
     private long disconnectTaskId;
 
-    public DefaultNetworkConnection(Vertx vertx, ServerWebSocket channel) {
+    public DefaultNetworkConnection(Vertx vertx, Injector injector, ServerWebSocket channel) {
         this.vertx = vertx;
-        packetHandler = new PacketHandler();
+        packetHandler = new PacketHandler(injector);
         this.channel = channel;
         this.channel.frameHandler(this::onFrame);
         this.channel.closeHandler(this::onDisconnect);
@@ -50,9 +51,9 @@ public class DefaultNetworkConnection implements NetworkConnection {
 
     private void onDisconnect(Void v) {
         vertx.cancelTimer(disconnectTaskId);
-        WorldServer worldServer = player.getWorldServer();
-        if (worldServer != null) {
-            worldServer.removePlayer(player);
+        WorldInstance worldInstance = player.getWorldInstance();
+        if (worldInstance != null) {
+            worldInstance.removePlayer(player);
         }
     }
 

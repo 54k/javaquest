@@ -3,6 +3,7 @@ package org.mozilla.browserquest;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import org.mozilla.browserquest.network.DefaultNetworkServer;
 import org.mozilla.browserquest.network.NetworkServer;
 import org.vertx.java.core.file.FileSystem;
 import org.vertx.java.core.http.HttpServerRequest;
@@ -11,9 +12,7 @@ import org.vertx.java.core.json.JsonObject;
 import org.vertx.java.core.logging.Logger;
 import org.vertx.java.platform.Verticle;
 
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 
 public class BrowserQuest extends Verticle {
 
@@ -22,9 +21,9 @@ public class BrowserQuest extends Verticle {
     @Inject
     private FileSystem fileSystem;
     @Inject
-    private NetworkServer networkServer;
+    private World world;
 
-    private Set<WorldServer> worlds = new HashSet<>();
+    private NetworkServer networkServer;
 
     @Override
     public void start() {
@@ -38,10 +37,10 @@ public class BrowserQuest extends Verticle {
         int worldCount = Optional.ofNullable(config.getInteger("worldCount")).orElse(1);
         int maxPlayers = Optional.ofNullable(config.getInteger("maxPlayersPerWorld")).orElse(100);
 
-        populateWorlds(worldCount, maxPlayers);
+        world.populateWorlds(worldCount, maxPlayers);
 
-        networkServer.noMatch(this::onNotFoundRequest).getWithRegEx("^/client/.+", this::onContentRequest).get("/status", this::onStatusRequest)
-                .listen(port);
+        networkServer = new DefaultNetworkServer(vertx, injector);
+        networkServer.noMatch(this::onNotFoundRequest).getWithRegEx("^/client/.+", this::onContentRequest).get("/status", this::onStatusRequest).listen(port);
 
         logger.info("BrowserQuest started at port " + port);
     }
@@ -49,14 +48,6 @@ public class BrowserQuest extends Verticle {
     @Override
     public void stop() {
         networkServer.close();
-    }
-
-    private void populateWorlds(int worldCount, int maxPlayers) {
-        for (int i = 0; i < worldCount; i++) {
-            WorldServer worldServer = new WorldServer("world-" + (i + 1), maxPlayers, networkServer);
-            worldServer.run(new WorldMap(fileSystem, "world_map.json"));
-            worlds.add(worldServer);
-        }
     }
 
     private void onNotFoundRequest(HttpServerRequest request) {
@@ -80,11 +71,7 @@ public class BrowserQuest extends Verticle {
 
     private String getWorldDistribution() {
         JsonArray status = new JsonArray();
-        worlds.stream().forEach(world -> status.add(world.getPlayersCount()));
+        world.getWorldInstances().stream().forEach(world -> status.add(world.getPlayersCount()));
         return status.encode();
-    }
-
-    private WorldServer getAvailableWorldServer() {
-        return worlds.stream().filter(world -> world.getPlayersCount() < world.getMaxPlayers()).findFirst().get();
     }
 }

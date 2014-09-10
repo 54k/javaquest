@@ -13,16 +13,16 @@ public class Area {
     private int y;
     private int width;
     private int height;
-    private WorldServer worldServer;
+    private WorldInstance worldInstance;
     private Set<Entity> entities = new HashSet<>();
 
-    public Area(int id, int x, int y, int width, int height, WorldServer worldServer) {
+    public Area(int id, int x, int y, int width, int height, WorldInstance worldInstance) {
         this.id = id;
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
-        this.worldServer = worldServer;
+        this.worldInstance = worldInstance;
     }
 
     public int getId() {
@@ -65,12 +65,12 @@ public class Area {
         this.height = height;
     }
 
-    public WorldServer getWorldServer() {
-        return worldServer;
+    public WorldInstance getWorldInstance() {
+        return worldInstance;
     }
 
-    public void setWorldServer(WorldServer worldServer) {
-        this.worldServer = worldServer;
+    public void setWorldInstance(WorldInstance worldInstance) {
+        this.worldInstance = worldInstance;
     }
 
     public void addToArea(Entity entity) {
@@ -85,7 +85,7 @@ public class Area {
         do {
             position = new Position(x + random.nextInt(width + 1), y + random.nextInt(height + 1));
 
-        } while (!worldServer.isValidPosition(position));
+        } while (!worldInstance.isValidPosition(position));
         return position;
     }
 }

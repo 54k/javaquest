@@ -5,8 +5,8 @@ public class MobArea extends Area {
     private int nb;
     private String kind;
 
-    public MobArea(int id, int x, int y, int width, int height, WorldServer worldServer, int nb, String kind) {
-        super(id, x, y, width, height, worldServer);
+    public MobArea(int id, int x, int y, int width, int height, WorldInstance worldInstance, int nb, String kind) {
+        super(id, x, y, width, height, worldInstance);
         this.nb = nb;
         this.kind = kind;
     }
