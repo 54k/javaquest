@@ -1,7 +1,6 @@
 package org.mozilla.browserquest;
 
 import org.mozilla.browserquest.model.Player;
-import org.mozilla.browserquest.network.NetworkServer;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -23,6 +22,18 @@ public class WorldInstance {
     public WorldInstance(String name, int maxPlayers) {
         this.name = name;
         this.maxPlayers = maxPlayers;
+    }
+
+    public boolean isValidPosition(Position position) {
+        return isValidPosition(position.getX(), position.getY());
+    }
+
+    public boolean isValidPosition(int x, int y) {
+        return !worldMap.isOutOfBounds(x, y) && !worldMap.isColliding(x, y);
+    }
+
+    public Position getRandomStartingPosition() {
+        return worldMap.getRandomStartingPosition();
     }
 
     public void addPlayer(Player player) {
@@ -64,9 +75,5 @@ public class WorldInstance {
 
     private static class GroupContainer {
         private Set<Player> players = new HashSet<>();
-    }
-
-    public boolean isValidPosition(Position position) {
-        return true;
     }
 }

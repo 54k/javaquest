@@ -103,6 +103,17 @@ public class WorldMap {
         }
     }
 
+    public boolean isOutOfBounds(int x, int y) {
+        return x <= 0 || x >= mapData.getWidth() || y <= 0 || y >= mapData.getHeight();
+    }
+
+    public boolean isColliding(int x, int y) {
+        if (isOutOfBounds(x, y)) {
+            return false;
+        }
+        return collisionGrid[y][x] == 1;
+    }
+
     public Position getRandomStartingPosition() {
         Random rand = new Random();
         int pos = rand.nextInt(startingAreas.size());

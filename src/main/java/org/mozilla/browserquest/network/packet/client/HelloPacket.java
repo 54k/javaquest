@@ -29,35 +29,41 @@ public class HelloPacket extends Packet {
         if (getConnection().getPlayer() == null) {
             getConnection().setPlayer(new Player());
         }
-        Player player = getConnection().getPlayer();
 
+        Player player = getConnection().getPlayer();
         boolean hasEnteredInGame = player.isHasEnteredInGame();
 
         if (hasEnteredInGame) {
             // HELLO packet should be sent only once
             getConnection().close();
         }
-        WorldInstance worldInstance = world.getAvailableWorldInstance();
 
+        WorldInstance worldInstance = world.getAvailableWorldInstance();
         if (worldInstance == null) {
             getConnection().close();
             return;
         }
 
+        Position position;
+        if (worldInstance.isValidPosition(x, y)) {
+            position = new Position(x, y);
+        } else {
+            position = worldInstance.getRandomStartingPosition();
+        }
+        worldInstance.addPlayer(player);
+
         player.setId(1);
-        player.setPosition(new Position(x, y));
+        player.setPosition(position);
         player.setName(playerName);
         player.setHasEnteredInGame(true);
 
-        worldInstance.addPlayer(player);
-
         JsonArray jsonArray = new JsonArray();
         jsonArray.addNumber(Packet.WELCOME);
-        jsonArray.addNumber(1);   //id
-        jsonArray.addString(playerName);   //name
-        jsonArray.addNumber(x);   //x
-        jsonArray.addNumber(y);      //y
-        jsonArray.addNumber(50);        //hp
+        jsonArray.addNumber(player.getId());   //id
+        jsonArray.addString(player.getName());   //name
+        jsonArray.addNumber(player.getX());   //x
+        jsonArray.addNumber(player.getY());      //y
+        jsonArray.addNumber(player.getHitPoints());        //hp
 
         getConnection().write(jsonArray.toString());
     }

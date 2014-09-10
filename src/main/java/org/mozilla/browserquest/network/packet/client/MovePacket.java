@@ -19,7 +19,11 @@ public class MovePacket extends Packet {
     @Override
     public void run() {
         Player player = getConnection().getPlayer();
-        // TODO validate position
+
+        if (!player.getWorldInstance().isValidPosition(x, y)) {
+            getConnection().close();
+        }
+
         player.setPosition(new Position(x, y));
 
         JsonArray jsonArray = new JsonArray();
