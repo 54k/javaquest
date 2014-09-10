@@ -1,5 +1,7 @@
 package org.mozilla.browserquest;
 
+import org.mozilla.browserquest.world.WorldInstance;
+
 public class MobArea extends Area {
 
     private int nb;

@@ -2,9 +2,7 @@ package org.mozilla.browserquest;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
-import com.google.inject.Scopes;
-import org.mozilla.browserquest.network.DefaultNetworkServer;
-import org.mozilla.browserquest.network.NetworkServer;
+import org.mozilla.browserquest.world.World;
 import org.vertx.java.core.Vertx;
 import org.vertx.java.core.file.FileSystem;
 import org.vertx.java.core.logging.Logger;

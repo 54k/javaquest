@@ -1,9 +1,12 @@
-package org.mozilla.browserquest;
+package org.mozilla.browserquest.world;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.mozilla.browserquest.Checkpoint;
+import org.mozilla.browserquest.Position;
 import org.mozilla.browserquest.map.MapCheckpoint;
 import org.mozilla.browserquest.map.MapData;
 import org.mozilla.browserquest.map.MapDoor;
+import org.vertx.java.core.buffer.Buffer;
 import org.vertx.java.core.file.FileSystem;
 
 import java.util.ArrayList;
@@ -30,14 +33,11 @@ public class WorldMap {
     private int[][] collisionGrid;
 
     public WorldMap(FileSystem fs, String filePath) {
-        fs.exists(filePath, booleanAsyncResult -> {
-            if (booleanAsyncResult.result()) {
-                fs.readFile(filePath, bufferAsyncResult -> {
-                    byte[] bytes = bufferAsyncResult.result().getBytes();
-                    initMap(bytes);
-                });
-            }
-        });
+        if (fs.existsSync(filePath)) {
+            Buffer buffer = fs.readFileSync(filePath);
+            byte[] bytes = buffer.getBytes();
+            initMap(bytes);
+        }
     }
 
     private void initMap(byte[] bytes) {
@@ -73,8 +73,8 @@ public class WorldMap {
         return new Position(Integer.parseInt(pos[0]), Integer.parseInt(pos[1]));
     }
 
-    private String getGroupIdFromPosition(int x, int y) {
-        return (int) Math.floor((x - 1) / ZONE_WIDTH) + "-" + (int) Math.floor((y - 1) / ZONE_HEIGHT);
+    public String getGroupIdFromPosition(int x, int y) {
+        return (int) Math.floor((x - 1) / groupWidth) + "-" + (int) Math.floor((y - 1) / groupHeight);
     }
 
     private void initCheckpoints(Iterable<MapCheckpoint> checkpoints) {

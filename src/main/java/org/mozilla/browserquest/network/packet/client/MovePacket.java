@@ -3,6 +3,7 @@ package org.mozilla.browserquest.network.packet.client;
 import org.mozilla.browserquest.Position;
 import org.mozilla.browserquest.model.Player;
 import org.mozilla.browserquest.network.packet.Packet;
+import org.mozilla.browserquest.util.PacketSendUtils;
 import org.vertx.java.core.json.JsonArray;
 
 public class MovePacket extends Packet {
@@ -25,6 +26,7 @@ public class MovePacket extends Packet {
         }
 
         player.setPosition(new Position(x, y));
+        player.getWorldInstance().updatePlayerPosition(player);
 
         JsonArray jsonArray = new JsonArray();
         jsonArray.addNumber(Packet.MOVE);
@@ -32,6 +34,6 @@ public class MovePacket extends Packet {
         jsonArray.addNumber(player.getX());   //x
         jsonArray.addNumber(player.getY());      //y
 
-        getConnection().write(jsonArray.toString());
+        PacketSendUtils.broadcast(player, jsonArray.toString());
     }
 }

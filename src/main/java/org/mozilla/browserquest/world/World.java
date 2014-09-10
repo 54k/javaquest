@@ -1,4 +1,4 @@
-package org.mozilla.browserquest;
+package org.mozilla.browserquest.world;
 
 import com.google.inject.Inject;
 import org.vertx.java.core.file.FileSystem;

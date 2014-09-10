@@ -33,7 +33,7 @@ public class PacketHandler {
 
         if (prototype == null) {
             // unknown packet
-            connection.close();
+//            connection.close();
             return;
         }
 

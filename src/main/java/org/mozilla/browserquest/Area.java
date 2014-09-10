@@ -1,6 +1,7 @@
 package org.mozilla.browserquest;
 
 import org.mozilla.browserquest.model.Entity;
+import org.mozilla.browserquest.world.WorldInstance;
 
 import java.util.HashSet;
 import java.util.Random;

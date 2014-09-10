@@ -1,7 +1,7 @@
 package org.mozilla.browserquest.network;
 
 import com.google.inject.Injector;
-import org.mozilla.browserquest.WorldInstance;
+import org.mozilla.browserquest.world.WorldInstance;
 import org.mozilla.browserquest.model.Player;
 import org.mozilla.browserquest.network.packet.PacketHandler;
 import org.vertx.java.core.Vertx;
