@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class KnownList {
 
-    private final int visibilityDistance = 50;
+    private final int visibilityDistance = 25;
 
     private Character owner;
     private Map<Integer, Entity> knownObjects = new HashMap<>();
@@ -33,6 +33,18 @@ public class KnownList {
             if (entity instanceof Character) {
                 Character ch = (Character) entity;
                 owner.notSee(ch);
+                ch.getKnownList().remove(owner);
+            }
+        }
+    }
+
+    public void clear() {
+        Iterator<Entity> iterator = knownObjects.values().iterator();
+        while (iterator.hasNext()) {
+            Entity entity = iterator.next();
+            iterator.remove();
+            if (entity instanceof Character) {
+                Character ch = (Character) entity;
                 ch.getKnownList().remove(owner);
             }
         }

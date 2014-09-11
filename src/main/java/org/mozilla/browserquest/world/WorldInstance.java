@@ -10,7 +10,7 @@ import java.util.Set;
 
 public class WorldInstance {
 
-    private World parent;
+    private World world;
 
     private String name;
     private int maxPlayers;
@@ -22,10 +22,14 @@ public class WorldInstance {
 
     private Map<String, WorldRegion> worldRegions = new HashMap<>();
 
-    public WorldInstance(World parent, String name, int maxPlayers) {
-        this.parent = parent;
+    public WorldInstance(World world, String name, int maxPlayers) {
+        this.world = world;
         this.name = name;
         this.maxPlayers = maxPlayers;
+    }
+
+    public World getWorld() {
+        return world;
     }
 
     public boolean isValidPosition(Position position) {
@@ -42,7 +46,7 @@ public class WorldInstance {
 
     public boolean addPlayer(Player player) {
         if (players.add(player)) {
-            parent.addPlayer(player);
+            world.addPlayer(player);
             player.setWorldInstance(this);
             playersCount++;
             return true;
@@ -52,9 +56,14 @@ public class WorldInstance {
 
     public boolean removePlayer(Player player) {
         if (players.remove(player)) {
-            parent.removePlayer(player);
+            world.removePlayer(player);
             player.setWorldInstance(null);
-            player.setWorldRegion(null);
+
+            WorldRegion worldRegion = player.getWorldRegion();
+            if (worldRegion != null) {
+                worldRegion.removeEntity(player);
+                player.setWorldRegion(null);
+            }
             playersCount--;
             return true;
         }

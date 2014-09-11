@@ -1,9 +1,9 @@
 package org.mozilla.browserquest.network;
 
 import com.google.inject.Injector;
-import org.mozilla.browserquest.world.WorldInstance;
 import org.mozilla.browserquest.model.Player;
 import org.mozilla.browserquest.network.packet.PacketHandler;
+import org.mozilla.browserquest.world.WorldInstance;
 import org.vertx.java.core.Vertx;
 import org.vertx.java.core.http.ServerWebSocket;
 import org.vertx.java.core.http.WebSocketFrame;
@@ -53,7 +53,9 @@ public class DefaultNetworkConnection implements NetworkConnection {
         vertx.cancelTimer(disconnectTaskId);
         WorldInstance worldInstance = player.getWorldInstance();
         if (worldInstance != null) {
+            player.getKnownList().clear();
             worldInstance.removePlayer(player);
+            worldInstance.getWorld().broadcastWorldPopulation();
         }
     }
 
