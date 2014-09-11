@@ -1,6 +1,7 @@
 package org.mozilla.browserquest.world;
 
 import org.mozilla.browserquest.Position;
+import org.mozilla.browserquest.model.Character;
 import org.mozilla.browserquest.model.Player;
 
 import java.util.HashMap;
@@ -101,18 +102,18 @@ public class WorldInstance {
         return worldRegion;
     }
 
-    public void updatePlayerRegionAndKnownList(Player player) {
-        WorldRegion oldWorldRegion = player.getWorldRegion();
-        WorldRegion newWorldRegion = getRegion(player.getX(), player.getY());
+    public void updateCharacterRegionAndKnownList(Character character) {
+        WorldRegion oldWorldRegion = character.getWorldRegion();
+        WorldRegion newWorldRegion = getRegion(character.getX(), character.getY());
         if (oldWorldRegion != newWorldRegion) {
             if (oldWorldRegion != null) {
-                oldWorldRegion.removeEntity(player);
+                oldWorldRegion.removeEntity(character);
             }
-            newWorldRegion.addEntity(player);
+            newWorldRegion.addEntity(character);
 
-            player.setWorldRegion(newWorldRegion);
+            character.setWorldRegion(newWorldRegion);
         }
 
-        player.getKnownList().update();
+        character.getKnownList().update();
     }
 }

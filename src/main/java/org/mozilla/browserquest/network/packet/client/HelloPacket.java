@@ -69,7 +69,7 @@ public class HelloPacket extends Packet {
 
             getConnection().write(welcomePacket.encode());
 
-            worldInstance.updatePlayerRegionAndKnownList(player);
+            worldInstance.updateCharacterRegionAndKnownList(player);
 
             world.broadcastWorldPopulation();
         }

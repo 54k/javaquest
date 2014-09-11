@@ -26,7 +26,7 @@ public class MovePacket extends Packet {
         }
 
         player.setPosition(new Position(x, y));
-        player.getWorldInstance().updatePlayerRegionAndKnownList(player);
+        player.getWorldInstance().updateCharacterRegionAndKnownList(player);
 
         JsonArray jsonArray = new JsonArray();
         jsonArray.addNumber(Packet.MOVE);
