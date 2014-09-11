@@ -7,12 +7,12 @@ public final class PacketSendUtils {
     private PacketSendUtils() {
     }
 
-    public static void broadcast(Player player, String message) {
+    public static void broadcastToKnownList(Player player, String message) {
         player.getConnection().write(message);
-        broadcastToOthers(player, message);
+        broadcastToKnownListOthers(player, message);
     }
 
-    public static void broadcastToOthers(Player player, String message) {
+    public static void broadcastToKnownListOthers(Player player, String message) {
         player.getKnownList().getKnownEntities().forEach(e -> {
             if (e instanceof Player) {
                 ((Player) e).getConnection().write(message);

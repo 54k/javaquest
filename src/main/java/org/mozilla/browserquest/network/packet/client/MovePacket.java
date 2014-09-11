@@ -26,7 +26,7 @@ public class MovePacket extends Packet {
         }
 
         player.setPosition(new Position(x, y));
-        player.getWorldInstance().updatePlayerPosition(player);
+        player.getWorldInstance().updatePlayerRegionAndKnownList(player);
 
         JsonArray jsonArray = new JsonArray();
         jsonArray.addNumber(Packet.MOVE);
@@ -34,6 +34,6 @@ public class MovePacket extends Packet {
         jsonArray.addNumber(player.getX());   //x
         jsonArray.addNumber(player.getY());      //y
 
-        PacketSendUtils.broadcast(player, jsonArray.toString());
+        PacketSendUtils.broadcastToKnownList(player, jsonArray.toString());
     }
 }

@@ -74,7 +74,7 @@ public class WorldMap {
     }
 
     public String getGroupIdFromPosition(int x, int y) {
-        return (int) Math.floor((x - 1) / groupWidth) + "-" + (int) Math.floor((y - 1) / groupHeight);
+        return (int) Math.floor((x - 1) / ZONE_WIDTH) + "-" + (int) Math.floor((y - 1) / ZONE_HEIGHT);
     }
 
     private void initCheckpoints(Iterable<MapCheckpoint> checkpoints) {
@@ -117,6 +117,7 @@ public class WorldMap {
     public Position getRandomStartingPosition() {
         Random rand = new Random();
         int pos = rand.nextInt(startingAreas.size());
-        return startingAreas.get(pos).getRandomPosition();
+        //        return startingAreas.get(pos).getRandomPosition();
+        return startingAreas.get(0).getRandomPosition();
     }
 }

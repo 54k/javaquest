@@ -2,9 +2,6 @@ package org.mozilla.browserquest.world;
 
 import org.mozilla.browserquest.Position;
 import org.mozilla.browserquest.model.Player;
-import org.mozilla.browserquest.network.packet.Packet;
-import org.mozilla.browserquest.util.PacketSendUtils;
-import org.vertx.java.core.json.JsonArray;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -12,6 +9,8 @@ import java.util.Map;
 import java.util.Set;
 
 public class WorldInstance {
+
+    private World parent;
 
     private String name;
     private int maxPlayers;
@@ -23,7 +22,8 @@ public class WorldInstance {
 
     private Map<String, WorldRegion> worldRegions = new HashMap<>();
 
-    public WorldInstance(String name, int maxPlayers) {
+    public WorldInstance(World parent, String name, int maxPlayers) {
+        this.parent = parent;
         this.name = name;
         this.maxPlayers = maxPlayers;
     }
@@ -40,22 +40,25 @@ public class WorldInstance {
         return worldMap.getRandomStartingPosition();
     }
 
-    public void addPlayer(Player player) {
+    public boolean addPlayer(Player player) {
         if (players.add(player)) {
+            parent.addPlayer(player);
             player.setWorldInstance(this);
-            WorldRegion worldRegion = getRegion(player.getX(), player.getY());
-            worldRegion.addEntity(player);
-            player.setWorldRegion(worldRegion);
             playersCount++;
+            return true;
         }
+        return false;
     }
 
-    public void removePlayer(Player player) {
+    public boolean removePlayer(Player player) {
         if (players.remove(player)) {
+            parent.removePlayer(player);
             player.setWorldInstance(null);
             player.setWorldRegion(null);
             playersCount--;
+            return true;
         }
+        return false;
     }
 
     public String getName() {
@@ -76,9 +79,7 @@ public class WorldInstance {
     }
 
     private void initRegions() {
-        worldMap.forEachGroup((id, positions) -> {
-            worldRegions.put(id, new WorldRegion(id, this));
-        });
+        worldMap.forEachGroup((id, positions) -> worldRegions.put(id, new WorldRegion(id, this)));
     }
 
     private WorldRegion getRegion(int x, int y) {
@@ -91,16 +92,18 @@ public class WorldInstance {
         return worldRegion;
     }
 
-    public void updatePlayerPosition(Player player) {
+    public void updatePlayerRegionAndKnownList(Player player) {
         WorldRegion oldWorldRegion = player.getWorldRegion();
         WorldRegion newWorldRegion = getRegion(player.getX(), player.getY());
         if (oldWorldRegion != newWorldRegion) {
+            if (oldWorldRegion != null) {
+                oldWorldRegion.removeEntity(player);
+            }
             newWorldRegion.addEntity(player);
+
             player.setWorldRegion(newWorldRegion);
         }
 
         player.getKnownList().update();
-
-
     }
 }

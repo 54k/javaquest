@@ -2,11 +2,10 @@ package org.mozilla.browserquest.network.packet.client;
 
 import com.google.inject.Inject;
 import org.mozilla.browserquest.Position;
-import org.mozilla.browserquest.world.World;
-import org.mozilla.browserquest.world.WorldInstance;
 import org.mozilla.browserquest.model.Player;
 import org.mozilla.browserquest.network.packet.Packet;
-import org.mozilla.browserquest.util.PacketSendUtils;
+import org.mozilla.browserquest.world.World;
+import org.mozilla.browserquest.world.WorldInstance;
 import org.vertx.java.core.json.JsonArray;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -56,31 +55,23 @@ public class HelloPacket extends Packet {
         player.setId(seq.incrementAndGet());
         player.setPosition(position);
         player.setName(playerName);
-        player.setHasEnteredInGame(true);
 
-        worldInstance.addPlayer(player);
+        if (worldInstance.addPlayer(player)) {
+            player.setHasEnteredInGame(true);
 
-        JsonArray welcomePacket = new JsonArray();
-        welcomePacket.addNumber(Packet.WELCOME);
-        welcomePacket.addNumber(player.getId());   //id
-        welcomePacket.addString(player.getName());   //name
-        welcomePacket.addNumber(player.getX());   //x
-        welcomePacket.addNumber(player.getY());      //y
-        welcomePacket.addNumber(player.getHitPoints());        //hp
+            JsonArray welcomePacket = new JsonArray();
+            welcomePacket.addNumber(Packet.WELCOME);
+            welcomePacket.addNumber(player.getId());   //id
+            welcomePacket.addString(player.getName());   //name
+            welcomePacket.addNumber(player.getX());   //x
+            welcomePacket.addNumber(player.getY());      //y
+            welcomePacket.addNumber(player.getHitPoints());        //hp
 
-        getConnection().write(welcomePacket.encode());
+            getConnection().write(welcomePacket.encode());
 
-        JsonArray spawnPacket = new JsonArray();
-        spawnPacket.addNumber(Packet.SPAWN);
-        spawnPacket.addNumber(player.getId());   //id
-        spawnPacket.addNumber(1);   //type
-        spawnPacket.addNumber(player.getX());   //x
-        spawnPacket.addNumber(player.getY());      //y
-        spawnPacket.addString(player.getName());
-        spawnPacket.addNumber(1); // orientation
-        spawnPacket.addNumber(21); // armor
-        spawnPacket.addNumber(60); // weapon
+            worldInstance.updatePlayerRegionAndKnownList(player);
 
-        PacketSendUtils.broadcastToRegion(player, spawnPacket.encode());
+            world.broadcastWorldPopulation();
+        }
     }
 }

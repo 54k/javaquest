@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class KnownList {
 
-    private final int visibilityDistance = 150;
+    private final int visibilityDistance = 50;
 
     private Character owner;
     private Map<Integer, Entity> knownObjects = new HashMap<>();
@@ -19,39 +19,44 @@ public class KnownList {
     }
 
     public void add(Entity entity) {
-        knownObjects.put(entity.getId(), entity);
-        if (entity instanceof Character) {
-            Character ch = (Character) entity;
-            owner.see(ch);
-            ch.see(owner);
+        if (knownObjects.put(entity.getId(), entity) == null) {
+            if (entity instanceof Character) {
+                Character ch = (Character) entity;
+                owner.see(ch);
+                ch.getKnownList().add(owner);
+            }
         }
     }
 
     public void remove(Entity entity) {
-        knownObjects.remove(entity.getId(), entity);
-        if (entity instanceof Character) {
-            Character ch = (Character) entity;
-            owner.notSee(ch);
-            ch.notSee(owner);
+        if (knownObjects.remove(entity.getId()) != null) {
+            if (entity instanceof Character) {
+                Character ch = (Character) entity;
+                owner.notSee(ch);
+                ch.getKnownList().remove(owner);
+            }
         }
     }
 
     public void update() {
-        forgetAll();
+        forgetInvisibleObjects();
         findVisibleObjects();
     }
 
-    private void forgetAll() {
-        Iterator<Entity> iterator = knownObjects.values().stream().filter(entity -> entity != owner && Math.abs(entity.getX() - owner.getX()) >= visibilityDistance && Math.abs(entity.getY() - owner.getY()) >= visibilityDistance).iterator();
+    private void forgetInvisibleObjects() {
+        Iterator<Entity> iterator = knownObjects.values().stream().filter(e -> !checkObjectInRange(e)).iterator();
+
         while (iterator.hasNext()) {
             remove(iterator.next());
         }
     }
 
     private void findVisibleObjects() {
-        owner.getWorldRegion().getEntities().values().stream()
-                .filter(entity -> entity != owner && Math.abs(entity.getX() - owner.getX()) <= visibilityDistance && Math.abs(entity.getY() - owner.getY()) <= visibilityDistance)
-                .forEach(this::add);
+        owner.getWorldRegion().getEntities().values().stream().filter(entity -> entity != owner && checkObjectInRange(entity)).forEach(this::add);
+    }
+
+    private boolean checkObjectInRange(Entity entity) {
+        return Math.abs(entity.getX() - owner.getX()) <= visibilityDistance && Math.abs(entity.getY() - owner.getY()) <= visibilityDistance;
     }
 
     public Iterable<Entity> getKnownEntities() {

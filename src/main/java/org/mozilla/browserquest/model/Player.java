@@ -50,7 +50,7 @@ public class Player extends Character {
             spawnPacket.addNumber(1);   //type
             spawnPacket.addNumber(player.getX());   //x
             spawnPacket.addNumber(player.getY());      //y
-            spawnPacket.addString(player.getName());
+            spawnPacket.addString(player.getName()); // name
             spawnPacket.addNumber(1); // orientation
             spawnPacket.addNumber(21); // armor
             spawnPacket.addNumber(60); // weapon
