@@ -56,10 +56,19 @@ public class KnownList {
     }
 
     private void forgetInvisibleObjects() {
-        Iterator<Entity> iterator = knownObjects.values().stream().filter(e -> !checkObjectInRange(e)).iterator();
-
+        Iterator<Entity> iterator = knownObjects.values().iterator();
         while (iterator.hasNext()) {
-            remove(iterator.next());
+            Entity entity = iterator.next();
+            if (checkObjectInRange(entity)) {
+                continue;
+            }
+
+            iterator.remove();
+            if (entity instanceof Character) {
+                Character ch = (Character) entity;
+                owner.notSee(ch);
+                ch.getKnownList().remove(owner);
+            }
         }
     }
 

@@ -56,19 +56,24 @@ public class Player extends Character {
             spawnPacket.addNumber(60); // weapon
 
             getConnection().write(spawnPacket.encode());
+        } else {
+            JsonArray spawnPacket = new JsonArray();
+            spawnPacket.addNumber(Packet.SPAWN);
+            spawnPacket.addNumber(character.getId());   //id
+            spawnPacket.addNumber(5);   //type - OGRE
+            spawnPacket.addNumber(character.getX());   //x
+            spawnPacket.addNumber(character.getY());      //y
+
+            getConnection().write(spawnPacket.encode());
         }
     }
 
     @Override
     public void notSee(Character character) {
-        if (character instanceof Player) {
-            Player player = (Player) character;
+        JsonArray despawnPacket = new JsonArray();
+        despawnPacket.addNumber(Packet.DESPAWN);
+        despawnPacket.addNumber(character.getId());   //id
 
-            JsonArray despawnPacket = new JsonArray();
-            despawnPacket.addNumber(Packet.DESPAWN);
-            despawnPacket.addNumber(player.getId());   //id
-
-            getConnection().write(despawnPacket.encode());
-        }
+        getConnection().write(despawnPacket.encode());
     }
 }

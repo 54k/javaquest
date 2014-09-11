@@ -6,6 +6,7 @@ import org.mozilla.browserquest.Position;
 import org.mozilla.browserquest.map.MapCheckpoint;
 import org.mozilla.browserquest.map.MapData;
 import org.mozilla.browserquest.map.MapDoor;
+import org.mozilla.browserquest.map.MapRoamingArea;
 import org.vertx.java.core.buffer.Buffer;
 import org.vertx.java.core.file.FileSystem;
 
@@ -54,6 +55,10 @@ public class WorldMap {
         } catch (Throwable t) {
             t.printStackTrace();
         }
+    }
+
+    public List<MapRoamingArea> getRoamingAreas() {
+        return mapData.getRoamingAreas();
     }
 
     private void initConnectedGroups(Iterable<MapDoor> doors) {
@@ -117,7 +122,6 @@ public class WorldMap {
     public Position getRandomStartingPosition() {
         Random rand = new Random();
         int pos = rand.nextInt(startingAreas.size());
-        //        return startingAreas.get(pos).getRandomPosition();
-        return startingAreas.get(0).getRandomPosition();
+        return startingAreas.get(pos).getRandomPosition();
     }
 }
