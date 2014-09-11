@@ -1,5 +1,6 @@
 package org.mozilla.browserquest.model;
 
+import org.mozilla.browserquest.MobTypes;
 import org.mozilla.browserquest.network.NetworkConnection;
 import org.mozilla.browserquest.network.packet.Packet;
 import org.vertx.java.core.json.JsonArray;
@@ -56,11 +57,11 @@ public class Player extends Character {
             spawnPacket.addNumber(60); // weapon
 
             getConnection().write(spawnPacket.encode());
-        } else {
+        } else if (character.getType().equals("mob")) {
             JsonArray spawnPacket = new JsonArray();
             spawnPacket.addNumber(Packet.SPAWN);
             spawnPacket.addNumber(character.getId());   //id
-            spawnPacket.addNumber(5);   //type - OGRE
+            spawnPacket.addNumber(MobTypes.getKindFromString(character.getKind()));   //kind
             spawnPacket.addNumber(character.getX());   //x
             spawnPacket.addNumber(character.getY());      //y
 

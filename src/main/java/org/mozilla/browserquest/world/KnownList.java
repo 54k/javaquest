@@ -3,6 +3,7 @@ package org.mozilla.browserquest.world;
 import org.mozilla.browserquest.model.Character;
 import org.mozilla.browserquest.model.Entity;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -73,7 +74,13 @@ public class KnownList {
     }
 
     private void findVisibleObjects() {
-        owner.getWorldRegion().getEntities().values().stream().filter(entity -> entity != owner && checkObjectInRange(entity)).forEach(this::add);
+        Collection<Entity> entities = owner.getWorldRegion().getEntities().values();
+        for (Entity entity : entities) {
+            if (entity == owner || !checkObjectInRange(entity)) {
+                continue;
+            }
+            add(entity);
+        }
     }
 
     private boolean checkObjectInRange(Entity entity) {
