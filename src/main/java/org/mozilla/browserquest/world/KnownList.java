@@ -4,6 +4,7 @@ import org.mozilla.browserquest.model.Character;
 import org.mozilla.browserquest.model.Entity;
 
 import java.util.Collection;
+import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -75,11 +76,15 @@ public class KnownList {
 
     private void findVisibleObjects() {
         Collection<Entity> entities = owner.getWorldRegion().getEntities().values();
-        for (Entity entity : entities) {
-            if (entity == owner || !checkObjectInRange(entity)) {
-                continue;
+        // TODO fix this
+        try {
+            for (Entity entity : entities) {
+                if (entity == owner || !checkObjectInRange(entity)) {
+                    continue;
+                }
+                add(entity);
             }
-            add(entity);
+        } catch (ConcurrentModificationException ignore) {
         }
     }
 
