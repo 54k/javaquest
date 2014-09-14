@@ -1,6 +1,5 @@
 package org.mozilla.browserquest.model;
 
-import org.mozilla.browserquest.Position;
 import org.mozilla.browserquest.network.packet.Packet;
 import org.vertx.java.core.json.JsonArray;
 
@@ -18,10 +17,6 @@ public class Mob extends Character {
     @Override
     public void see(Character character) {
         if (character instanceof Player) {
-            Position positionNextTo = getPositionNextTo(character);
-            setPosition(positionNextTo);
-            getWorldInstance().updateCharacterRegionAndKnownList(this);
-
             JsonArray chatPacket = new JsonArray();
             chatPacket.addNumber(Packet.CHAT);
             chatPacket.addNumber(getId());

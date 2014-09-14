@@ -3,6 +3,7 @@ package org.mozilla.browserquest;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import org.mozilla.browserquest.mmo4j.ScriptManager;
 import org.mozilla.browserquest.network.DefaultNetworkServer;
 import org.mozilla.browserquest.network.NetworkServer;
 import org.mozilla.browserquest.world.World;
@@ -28,6 +29,8 @@ public class BrowserQuest extends Verticle {
 
     @Override
     public void start() {
+        new ScriptManager().run();
+
         Injector injector = Guice.createInjector(new BrowserQuestModule(getVertx(), getContainer()));
         injector.injectMembers(this);
 
