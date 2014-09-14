@@ -24,9 +24,6 @@ public class WorldMap {
 
     private MapData mapData;
 
-    private double groupWidth;
-    private double groupHeight;
-
     private Map<String, List<Position>> connectedGroups = new HashMap<>();
     private Map<Integer, Checkpoint> checkpoints = new HashMap<>();
     private List<Checkpoint> startingAreas = new ArrayList<>();
@@ -45,10 +42,6 @@ public class WorldMap {
         try {
             ObjectMapper mapper = new ObjectMapper();
             mapData = mapper.readValue(bytes, MapData.class);
-
-            groupWidth = Math.floor(mapData.getWidth() / ZONE_WIDTH);
-            groupHeight = Math.floor(mapData.getHeight() / ZONE_HEIGHT);
-
             initConnectedGroups(mapData.getDoors());
             initCheckpoints(mapData.getCheckpoints());
             generateCollisionGrid();
