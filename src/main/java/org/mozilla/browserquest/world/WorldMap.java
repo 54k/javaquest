@@ -124,4 +124,11 @@ public class WorldMap {
         int pos = rand.nextInt(startingAreas.size());
         return startingAreas.get(pos).getRandomPosition();
     }
+
+    public Position getPositionFromTileIndex(int tileIndex) {
+        int width = mapData.getWidth();
+        int x = (tileIndex % width == 0) ? width - 1 : (tileIndex % width) - 1;
+        int y = (int) Math.floor(tileIndex / width);
+        return new Position(x, y);
+    }
 }
