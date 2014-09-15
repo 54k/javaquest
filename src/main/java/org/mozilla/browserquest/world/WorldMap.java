@@ -124,4 +124,8 @@ public class WorldMap {
         int y = (int) Math.floor(tileIndex / width);
         return new Position(x, y);
     }
+
+    public Map<Integer, String> getStaticEntities() {
+        return mapData.getStaticEntities();
+    }
 }

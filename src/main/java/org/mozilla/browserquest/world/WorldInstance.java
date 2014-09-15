@@ -116,6 +116,11 @@ public class WorldInstance {
         initRegions();
         initMobAreas(map.getRoamingAreas());
         spawnMobs();
+        spawnStaticEntities();
+    }
+
+    private void spawnStaticEntities() {
+        // TODO implement
     }
 
     private void initMobAreas(List<MapRoamingArea> roamingAreas) {

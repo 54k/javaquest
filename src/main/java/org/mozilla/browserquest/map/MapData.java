@@ -17,7 +17,7 @@ public class MapData {
     private List<MapRoamingArea> roamingAreas;
     private List<MapStaticChest> staticChests;
 
-    private Map<String, String> staticEntities;
+    private Map<Integer, String> staticEntities;
     @JsonProperty("tilesize")
     private int tileSize;
 
@@ -85,11 +85,11 @@ public class MapData {
         this.staticChests = staticChests;
     }
 
-    public Map<String, String> getStaticEntities() {
+    public Map<Integer, String> getStaticEntities() {
         return staticEntities;
     }
 
-    public void setStaticEntities(Map<String, String> staticEntities) {
+    public void setStaticEntities(Map<Integer, String> staticEntities) {
         this.staticEntities = staticEntities;
     }
 
