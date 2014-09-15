@@ -1,6 +1,6 @@
 package org.mozilla.browserquest.model;
 
-import org.mozilla.browserquest.Area;
+import org.mozilla.browserquest.SpawnArea;
 import org.mozilla.browserquest.Position;
 
 import java.util.Random;
@@ -13,7 +13,7 @@ public class Entity {
     private int x;
     private int y;
 
-    private Area area;
+    private SpawnArea spawnArea;
 
     public Entity(int id, String type, String kind, int x, int y) {
         this.id = id;
@@ -72,12 +72,12 @@ public class Entity {
         this.y = y;
     }
 
-    public Area getArea() {
-        return area;
+    public SpawnArea getSpawnArea() {
+        return spawnArea;
     }
 
-    public void setArea(Area area) {
-        this.area = area;
+    public void setSpawnArea(SpawnArea spawnArea) {
+        this.spawnArea = spawnArea;
     }
 
     public Position getPositionNextTo(Entity entity) {

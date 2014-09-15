@@ -5,14 +5,14 @@ import org.mozilla.browserquest.world.WorldInstance;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class MobArea extends Area {
+public class MobSpawnArea extends SpawnArea {
 
     private static final AtomicInteger sequence = new AtomicInteger();
 
     private int nb;
     private String kind;
 
-    public MobArea(int id, int x, int y, int width, int height, WorldInstance worldInstance, int nb, String kind) {
+    public MobSpawnArea(int id, int x, int y, int width, int height, WorldInstance worldInstance, int nb, String kind) {
         super(id, x, y, width, height, worldInstance);
         this.nb = nb;
         this.kind = kind;

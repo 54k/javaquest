@@ -2,7 +2,7 @@ package org.mozilla.browserquest;
 
 import java.util.Random;
 
-public class Checkpoint {
+public class Location {
 
     private int id;
     private int x;
@@ -10,7 +10,7 @@ public class Checkpoint {
     private int w;
     private int h;
 
-    public Checkpoint(int id, int x, int y, int w, int h) {
+    public Location(int id, int x, int y, int w, int h) {
         this.id = id;
         this.x = x;
         this.y = y;

@@ -1,6 +1,6 @@
 package org.mozilla.browserquest.world;
 
-import org.mozilla.browserquest.MobArea;
+import org.mozilla.browserquest.MobSpawnArea;
 import org.mozilla.browserquest.Position;
 import org.mozilla.browserquest.map.MapRoamingArea;
 import org.mozilla.browserquest.model.Character;
@@ -25,7 +25,7 @@ public class WorldInstance {
 
     private WorldMap worldMap;
 
-    private List<MobArea> mobAreas = new ArrayList<>();
+    private List<MobSpawnArea> mobAreas = new ArrayList<>();
 
     private Map<Integer, Entity> entities = new HashMap<>();
     private Set<Player> players = new HashSet<>();
@@ -120,12 +120,12 @@ public class WorldInstance {
 
     private void initMobAreas(List<MapRoamingArea> roamingAreas) {
         roamingAreas.forEach(a -> {
-            mobAreas.add(new MobArea(a.getId(), a.getX(), a.getY(), a.getWidth(), a.getHeight(), this, a.getNb(), a.getType()));
+            mobAreas.add(new MobSpawnArea(a.getId(), a.getX(), a.getY(), a.getWidth(), a.getHeight(), this, a.getNb(), a.getType()));
         });
     }
 
     private void spawnMobs() {
-        mobAreas.forEach(MobArea::spawnMobs);
+        mobAreas.forEach(MobSpawnArea::spawnMobs);
     }
 
     private void initRegions() {

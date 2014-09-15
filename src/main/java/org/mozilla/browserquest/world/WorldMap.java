@@ -1,7 +1,7 @@
 package org.mozilla.browserquest.world;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.mozilla.browserquest.Checkpoint;
+import org.mozilla.browserquest.Location;
 import org.mozilla.browserquest.Position;
 import org.mozilla.browserquest.map.MapCheckpoint;
 import org.mozilla.browserquest.map.MapData;
@@ -25,8 +25,8 @@ public class WorldMap {
     private MapData mapData;
 
     private Map<String, List<Position>> connectedGroups = new HashMap<>();
-    private Map<Integer, Checkpoint> checkpoints = new HashMap<>();
-    private List<Checkpoint> startingAreas = new ArrayList<>();
+    private Map<Integer, Location> checkpoints = new HashMap<>();
+    private List<Location> startingAreas = new ArrayList<>();
 
     private int[][] collisionGrid;
 
@@ -77,10 +77,10 @@ public class WorldMap {
 
     private void initCheckpoints(Iterable<MapCheckpoint> checkpoints) {
         checkpoints.forEach(ch -> {
-            Checkpoint checkpoint = new Checkpoint(ch.getId(), ch.getX(), ch.getY(), ch.getW(), ch.getH());
-            this.checkpoints.put(checkpoint.getId(), checkpoint);
+            Location location = new Location(ch.getId(), ch.getX(), ch.getY(), ch.getW(), ch.getH());
+            this.checkpoints.put(location.getId(), location);
             if (ch.getS() == 1) {
-                startingAreas.add(checkpoint);
+                startingAreas.add(location);
             }
         });
     }

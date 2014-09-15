@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-public class Area {
+public class SpawnArea {
 
     private int id;
     private int x;
@@ -17,7 +17,7 @@ public class Area {
     private WorldInstance worldInstance;
     private Set<Entity> entities = new HashSet<>();
 
-    public Area(int id, int x, int y, int width, int height, WorldInstance worldInstance) {
+    public SpawnArea(int id, int x, int y, int width, int height, WorldInstance worldInstance) {
         this.id = id;
         this.x = x;
         this.y = y;
@@ -76,7 +76,7 @@ public class Area {
 
     public void addToArea(Entity entity) {
         if (entities.add(entity)) {
-            entity.setArea(this);
+            entity.setSpawnArea(this);
         }
     }
 

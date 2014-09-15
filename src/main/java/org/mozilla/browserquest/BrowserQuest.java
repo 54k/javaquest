@@ -29,10 +29,10 @@ public class BrowserQuest extends Verticle {
 
     @Override
     public void start() {
-        new ScriptManager().run();
-
         Injector injector = Guice.createInjector(new BrowserQuestModule(getVertx(), getContainer()));
         injector.injectMembers(this);
+
+        new ScriptManager(injector).run();
 
         logger.info("Starting BrowserQuest server");
 
