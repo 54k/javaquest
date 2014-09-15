@@ -1,6 +1,7 @@
 package org.mozilla.browserquest.world;
 
 import org.mozilla.browserquest.MobSpawnArea;
+import org.mozilla.browserquest.MobTypes;
 import org.mozilla.browserquest.Position;
 import org.mozilla.browserquest.map.MapRoamingArea;
 import org.mozilla.browserquest.model.Character;
@@ -13,6 +14,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 public class WorldInstance {
@@ -120,7 +122,11 @@ public class WorldInstance {
     }
 
     private void spawnStaticEntities() {
-        // TODO implement
+        int i = 0;
+        for (Entry<Integer, String> entry : worldMap.getStaticEntities().entrySet()) {
+            Position position = worldMap.getPositionFromTileIndex(entry.getKey());
+            spawnEntity(new Mob(9000 + i++, MobTypes.DEATHKNIGHT.name().toLowerCase(), position.getX(), position.getY()));
+        }
     }
 
     private void initMobAreas(List<MapRoamingArea> roamingAreas) {
