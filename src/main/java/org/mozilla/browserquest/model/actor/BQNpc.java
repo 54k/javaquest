@@ -1,4 +1,6 @@
-package org.mozilla.browserquest.model;
+package org.mozilla.browserquest.model.actor;
+
+import org.mozilla.browserquest.model.BQObject;
 
 public class BQNpc extends BQObject {
 

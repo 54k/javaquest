@@ -1,7 +1,8 @@
-package org.mozilla.browserquest.model;
+package org.mozilla.browserquest.model.actor;
 
-import org.mozilla.browserquest.knownlist.CharacterKnownList;
-import org.mozilla.browserquest.knownlist.KnownList;
+import org.mozilla.browserquest.model.BQObject;
+import org.mozilla.browserquest.model.knownlist.CharacterKnownList;
+import org.mozilla.browserquest.model.knownlist.KnownList;
 
 import java.util.HashMap;
 import java.util.Map;

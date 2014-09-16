@@ -1,7 +1,7 @@
-package org.mozilla.browserquest.knownlist;
+package org.mozilla.browserquest.model.knownlist;
 
 import org.mozilla.browserquest.model.BQObject;
-import org.mozilla.browserquest.model.BQPlayer;
+import org.mozilla.browserquest.model.actor.BQPlayer;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -10,16 +10,6 @@ public class ObjectKnownList extends AbstractKnownList {
 
     public ObjectKnownList(BQObject activeObject) {
         super(activeObject);
-    }
-
-    @Override
-    protected Map<Integer, BQObject> newKnownObjectsMap() {
-        return new ConcurrentHashMap<>();
-    }
-
-    @Override
-    protected Map<Integer, BQPlayer> newKnownPlayersMap() {
-        return new ConcurrentHashMap<>();
     }
 
     @Override

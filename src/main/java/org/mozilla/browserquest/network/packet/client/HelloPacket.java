@@ -2,7 +2,7 @@ package org.mozilla.browserquest.network.packet.client;
 
 import com.google.inject.Inject;
 import org.mozilla.browserquest.Position;
-import org.mozilla.browserquest.model.BQPlayer;
+import org.mozilla.browserquest.model.actor.BQPlayer;
 import org.mozilla.browserquest.network.packet.Packet;
 import org.mozilla.browserquest.world.World;
 import org.mozilla.browserquest.world.WorldInstance;

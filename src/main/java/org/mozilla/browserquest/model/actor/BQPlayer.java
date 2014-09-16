@@ -1,6 +1,7 @@
-package org.mozilla.browserquest.model;
+package org.mozilla.browserquest.model.actor;
 
 import org.mozilla.browserquest.MobTypes;
+import org.mozilla.browserquest.model.BQObject;
 import org.mozilla.browserquest.network.NetworkConnection;
 import org.mozilla.browserquest.network.packet.Packet;
 import org.vertx.java.core.json.JsonArray;

@@ -1,7 +1,7 @@
 package org.mozilla.browserquest.network.packet.client;
 
 import org.mozilla.browserquest.Position;
-import org.mozilla.browserquest.model.BQPlayer;
+import org.mozilla.browserquest.model.actor.BQPlayer;
 import org.mozilla.browserquest.network.packet.Packet;
 import org.mozilla.browserquest.util.Broadcast;
 import org.vertx.java.core.json.JsonArray;

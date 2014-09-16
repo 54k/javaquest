@@ -4,10 +4,10 @@ import org.mozilla.browserquest.MobSpawnArea;
 import org.mozilla.browserquest.MobTypes;
 import org.mozilla.browserquest.Position;
 import org.mozilla.browserquest.map.MapRoamingArea;
-import org.mozilla.browserquest.model.BQCharacter;
-import org.mozilla.browserquest.model.BQMob;
+import org.mozilla.browserquest.model.actor.BQCharacter;
+import org.mozilla.browserquest.model.actor.BQMob;
 import org.mozilla.browserquest.model.BQObject;
-import org.mozilla.browserquest.model.BQPlayer;
+import org.mozilla.browserquest.model.actor.BQPlayer;
 
 import java.util.ArrayList;
 import java.util.HashMap;

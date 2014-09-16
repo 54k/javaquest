@@ -1,6 +1,6 @@
 package org.mozilla.browserquest.network;
 
-import org.mozilla.browserquest.model.BQPlayer;
+import org.mozilla.browserquest.model.actor.BQPlayer;
 
 public interface NetworkConnection {
 

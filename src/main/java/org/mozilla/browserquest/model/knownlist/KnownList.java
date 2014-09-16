@@ -1,7 +1,7 @@
-package org.mozilla.browserquest.knownlist;
+package org.mozilla.browserquest.model.knownlist;
 
 import org.mozilla.browserquest.model.BQObject;
-import org.mozilla.browserquest.model.BQPlayer;
+import org.mozilla.browserquest.model.actor.BQPlayer;
 
 import java.util.Map;
 

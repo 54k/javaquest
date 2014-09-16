@@ -1,11 +1,12 @@
-package org.mozilla.browserquest.knownlist;
+package org.mozilla.browserquest.model.knownlist;
 
 import org.mozilla.browserquest.model.BQObject;
-import org.mozilla.browserquest.model.BQPlayer;
+import org.mozilla.browserquest.model.actor.BQPlayer;
 
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class AbstractKnownList implements KnownList {
 
@@ -15,14 +16,9 @@ public abstract class AbstractKnownList implements KnownList {
 
     protected AbstractKnownList(BQObject activeObject) {
         this.activeObject = activeObject;
-
-        knownObjects = newKnownObjectsMap();
-        knownPlayers = newKnownPlayersMap();
+        knownObjects = new ConcurrentHashMap<>();
+        knownPlayers = new ConcurrentHashMap<>();
     }
-
-    protected abstract Map<Integer, BQObject> newKnownObjectsMap();
-
-    protected abstract Map<Integer, BQPlayer> newKnownPlayersMap();
 
     @Override
     public BQObject getActiveObject() {
@@ -88,7 +84,7 @@ public abstract class AbstractKnownList implements KnownList {
     @Override
     public void updateKnownObjects() {
         clearInvisibleObjects();
-        addVisibleObjects();
+        findVisibleObjects();
     }
 
     private void clearInvisibleObjects() {
@@ -105,7 +101,7 @@ public abstract class AbstractKnownList implements KnownList {
 
     protected abstract int getDistanceToForgetObject(BQObject object);
 
-    private void addVisibleObjects() {
+    private void findVisibleObjects() {
         Collection<BQObject> objects = activeObject.getWorldRegion().getEntities().values();
         objects.stream().filter(object -> object != activeObject && isObjectInRange(object, getDistanceToFindObject(object))).forEach(this::addKnownObject);
     }

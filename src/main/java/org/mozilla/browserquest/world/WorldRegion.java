@@ -1,7 +1,7 @@
 package org.mozilla.browserquest.world;
 
 import org.mozilla.browserquest.model.BQObject;
-import org.mozilla.browserquest.model.BQPlayer;
+import org.mozilla.browserquest.model.actor.BQPlayer;
 
 import java.util.Collections;
 import java.util.HashMap;

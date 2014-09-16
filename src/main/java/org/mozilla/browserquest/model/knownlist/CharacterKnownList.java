@@ -1,4 +1,4 @@
-package org.mozilla.browserquest.knownlist;
+package org.mozilla.browserquest.model.knownlist;
 
 import org.mozilla.browserquest.model.BQObject;
 
