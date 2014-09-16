@@ -157,6 +157,7 @@ public class DefaultScriptService implements ScriptService {
         context.setAttribute("sourcepath", SCRIPT_FOLDER.getAbsolutePath(), ScriptContext.ENGINE_SCOPE);
 
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(script)))) {
+            // TODO script cache, compiler
             if (scriptEngine instanceof Compilable) {
                 Compilable compilable = (Compilable) scriptEngine;
                 CompiledScript compiledScript = compilable.compile(reader);
