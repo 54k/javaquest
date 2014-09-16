@@ -2,6 +2,8 @@ package org.mozilla.browserquest;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
+import org.mozilla.browserquest.script.DefaultScriptService;
+import org.mozilla.browserquest.script.ScriptService;
 import org.mozilla.browserquest.world.World;
 import org.vertx.java.core.Vertx;
 import org.vertx.java.core.file.FileSystem;
@@ -21,6 +23,7 @@ public class BrowserQuestModule extends AbstractModule {
     @Override
     protected void configure() {
         bind(World.class).asEagerSingleton();
+        bind(ScriptService.class).to(DefaultScriptService.class).asEagerSingleton();
     }
 
     @Provides

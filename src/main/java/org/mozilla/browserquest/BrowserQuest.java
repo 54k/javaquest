@@ -3,9 +3,10 @@ package org.mozilla.browserquest;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import org.mozilla.browserquest.mmo4j.ScriptManager;
 import org.mozilla.browserquest.network.DefaultNetworkServer;
 import org.mozilla.browserquest.network.NetworkServer;
+import org.mozilla.browserquest.script.DefaultScriptService;
+import org.mozilla.browserquest.script.ScriptService;
 import org.mozilla.browserquest.world.World;
 import org.vertx.java.core.file.FileSystem;
 import org.vertx.java.core.http.HttpServerRequest;
@@ -14,6 +15,9 @@ import org.vertx.java.core.json.JsonObject;
 import org.vertx.java.core.logging.Logger;
 import org.vertx.java.platform.Verticle;
 
+import javax.script.ScriptContext;
+import javax.script.SimpleScriptContext;
+import java.io.File;
 import java.util.Optional;
 
 public class BrowserQuest extends Verticle {
@@ -24,6 +28,8 @@ public class BrowserQuest extends Verticle {
     private FileSystem fileSystem;
     @Inject
     private World world;
+    @Inject
+    private ScriptService scriptService;
 
     private NetworkServer networkServer;
 
@@ -31,8 +37,9 @@ public class BrowserQuest extends Verticle {
     public void start() {
         Injector injector = Guice.createInjector(new BrowserQuestModule(getVertx(), getContainer()));
         injector.injectMembers(this);
-
-        new ScriptManager(injector).run();
+        SimpleScriptContext ctx = new SimpleScriptContext();
+        ctx.setAttribute("World", world, ScriptContext.ENGINE_SCOPE);
+        scriptService.newProxy(Runnable.class, new File(DefaultScriptService.SCRIPT_FOLDER, "test.js"), ctx).run();
 
         logger.info("Starting BrowserQuest server");
 
