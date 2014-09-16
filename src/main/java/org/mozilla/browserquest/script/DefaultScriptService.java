@@ -3,7 +3,6 @@ package org.mozilla.browserquest.script;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.io.Files;
-import com.google.common.reflect.Reflection;
 
 import javax.script.Compilable;
 import javax.script.CompiledScript;
@@ -19,13 +18,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
-// TODO cache for compiled scripts
 public class DefaultScriptService implements ScriptService {
 
     public static final File SCRIPT_FOLDER = new File("scripts");
@@ -154,7 +150,7 @@ public class DefaultScriptService implements ScriptService {
             throw new RuntimeException("Script file (" + script.getName() + ") doesn't export any object for proxy creation.");
         }
         @SuppressWarnings("ConstantConditions") Invocable invocable = (Invocable) scriptEngine;
-        return Reflection.newProxy(interfaceClass, new ScriptInvocationHandler(invocable, scriptObject));
+        return invocable.getInterface(scriptObject, interfaceClass);
     }
 
     private Object executeScript(ScriptEngine scriptEngine, File script, ScriptContext context) {
@@ -163,21 +159,18 @@ public class DefaultScriptService implements ScriptService {
         context.setAttribute("sourcepath", SCRIPT_FOLDER.getAbsolutePath(), ScriptContext.ENGINE_SCOPE);
 
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(script)))) {
-            return executeScript(scriptEngine, reader, context);
+            if (scriptEngine instanceof Compilable) {
+                Compilable compilable = (Compilable) scriptEngine;
+                CompiledScript compiledScript = compilable.compile(reader);
+                return compiledScript.eval(context);
+            }
+
+            return scriptEngine.eval(reader, context);
         } catch (Throwable t) {
             throw new RuntimeException(t);
         } finally {
             scriptEngine.getContext().removeAttribute(ScriptEngine.FILENAME, ScriptContext.ENGINE_SCOPE);
         }
-    }
-
-    private Object executeScript(ScriptEngine scriptEngine, Reader reader, ScriptContext context) throws ScriptException {
-        if (scriptEngine instanceof Compilable) {
-            Compilable compilable = (Compilable) scriptEngine;
-            CompiledScript compiledScript = compilable.compile(reader);
-            return compiledScript.eval(context);
-        }
-        return scriptEngine.eval(reader, context);
     }
 
     private static void checkIsFile(File script) {
@@ -218,21 +211,5 @@ public class DefaultScriptService implements ScriptService {
         ScriptEngineFactory scriptEngineFactory = scriptEngine.getFactory();
         scriptEngineFactory.getExtensions().forEach(scriptEngineByExtension::remove);
         return true;
-    }
-
-    private static class ScriptInvocationHandler implements InvocationHandler {
-
-        private final Invocable invoker;
-        private final Object scriptObject;
-
-        private ScriptInvocationHandler(Invocable invoker, Object scriptObject) {
-            this.invoker = invoker;
-            this.scriptObject = scriptObject;
-        }
-
-        @Override
-        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            return invoker.invokeMethod(scriptObject, method.getName(), args);
-        }
     }
 }
