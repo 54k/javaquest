@@ -4,10 +4,10 @@ import org.mozilla.browserquest.MobSpawnArea;
 import org.mozilla.browserquest.MobTypes;
 import org.mozilla.browserquest.Position;
 import org.mozilla.browserquest.map.MapRoamingArea;
-import org.mozilla.browserquest.model.Character;
-import org.mozilla.browserquest.model.Entity;
-import org.mozilla.browserquest.model.Mob;
-import org.mozilla.browserquest.model.Player;
+import org.mozilla.browserquest.model.BQCharacter;
+import org.mozilla.browserquest.model.BQMob;
+import org.mozilla.browserquest.model.BQObject;
+import org.mozilla.browserquest.model.BQPlayer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,8 +29,8 @@ public class WorldInstance {
 
     private List<MobSpawnArea> mobAreas = new ArrayList<>();
 
-    private Map<Integer, Entity> entities = new HashMap<>();
-    private Set<Player> players = new HashSet<>();
+    private Map<Integer, BQObject> entities = new HashMap<>();
+    private Set<BQPlayer> BQPlayers = new HashSet<>();
 
     private Map<String, WorldRegion> worldRegions = new HashMap<>();
 
@@ -56,44 +56,44 @@ public class WorldInstance {
         return worldMap.getRandomStartingPosition();
     }
 
-    public void spawnEntity(Entity entity) {
-        entities.put(entity.getId(), entity);
-        if (entity instanceof Mob) {
-            Mob mob = (Mob) entity;
-            mob.setWorldInstance(this);
-            updateCharacterRegionAndKnownList(mob);
+    public void spawnEntity(BQObject BQEntity) {
+        entities.put(BQEntity.getId(), BQEntity);
+        if (BQEntity instanceof BQMob) {
+            BQMob BQMob = (BQMob) BQEntity;
+            BQMob.setWorldInstance(this);
+            updateCharacterRegionAndKnownList(BQMob);
         }
     }
 
-    public void despawnEntity(Entity entity) {
-        entities.remove(entity.getId());
-        if (entity instanceof Mob) {
-            Mob mob = (Mob) entity;
-            mob.setWorldInstance(null);
-            mob.getKnownList().clear();
-            mob.setWorldRegion(null);
+    public void despawnEntity(BQObject BQEntity) {
+        entities.remove(BQEntity.getId());
+        if (BQEntity instanceof BQMob) {
+            BQMob BQMob = (BQMob) BQEntity;
+            BQMob.setWorldInstance(null);
+            BQMob.getKnownList().clearKnownObjects();
+            BQMob.setWorldRegion(null);
         }
     }
 
-    public boolean addPlayer(Player player) {
-        if (players.add(player)) {
-            world.addPlayer(player);
-            player.setWorldInstance(this);
+    public boolean addPlayer(BQPlayer BQPlayer) {
+        if (BQPlayers.add(BQPlayer)) {
+            world.addPlayer(BQPlayer);
+            BQPlayer.setWorldInstance(this);
             playersCount++;
             return true;
         }
         return false;
     }
 
-    public boolean removePlayer(Player player) {
-        if (players.remove(player)) {
-            world.removePlayer(player);
-            player.setWorldInstance(null);
+    public boolean removePlayer(BQPlayer BQPlayer) {
+        if (BQPlayers.remove(BQPlayer)) {
+            world.removePlayer(BQPlayer);
+            BQPlayer.setWorldInstance(null);
 
-            WorldRegion worldRegion = player.getWorldRegion();
+            WorldRegion worldRegion = BQPlayer.getWorldRegion();
             if (worldRegion != null) {
-                worldRegion.removeEntity(player);
-                player.setWorldRegion(null);
+                worldRegion.removeEntity(BQPlayer);
+                BQPlayer.setWorldRegion(null);
             }
             playersCount--;
             return true;
@@ -125,7 +125,7 @@ public class WorldInstance {
         int i = 0;
         for (Entry<Integer, String> entry : worldMap.getStaticEntities().entrySet()) {
             Position position = worldMap.getPositionFromTileIndex(entry.getKey());
-            spawnEntity(new Mob(9000 + i++, MobTypes.DEATHKNIGHT.name().toLowerCase(), position.getX(), position.getY()));
+            spawnEntity(new BQMob(9000 + i++, MobTypes.DEATHKNIGHT.name().toLowerCase(), position.getX(), position.getY()));
         }
     }
 
@@ -153,18 +153,18 @@ public class WorldInstance {
         return worldRegion;
     }
 
-    public void updateCharacterRegionAndKnownList(Character character) {
-        WorldRegion oldWorldRegion = character.getWorldRegion();
-        WorldRegion newWorldRegion = getRegion(character.getX(), character.getY());
+    public void updateCharacterRegionAndKnownList(BQCharacter BQCharacter) {
+        WorldRegion oldWorldRegion = BQCharacter.getWorldRegion();
+        WorldRegion newWorldRegion = getRegion(BQCharacter.getX(), BQCharacter.getY());
         if (oldWorldRegion != newWorldRegion) {
             if (oldWorldRegion != null) {
-                oldWorldRegion.removeEntity(character);
+                oldWorldRegion.removeEntity(BQCharacter);
             }
-            newWorldRegion.addEntity(character);
+            newWorldRegion.addEntity(BQCharacter);
 
-            character.setWorldRegion(newWorldRegion);
+            BQCharacter.setWorldRegion(newWorldRegion);
         }
 
-        character.getKnownList().update();
+        BQCharacter.getKnownList().updateKnownObjects();
     }
 }

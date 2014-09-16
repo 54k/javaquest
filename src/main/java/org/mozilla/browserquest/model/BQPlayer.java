@@ -5,14 +5,14 @@ import org.mozilla.browserquest.network.NetworkConnection;
 import org.mozilla.browserquest.network.packet.Packet;
 import org.vertx.java.core.json.JsonArray;
 
-public class Player extends Character {
+public class BQPlayer extends BQCharacter {
 
     private boolean hasEnteredInGame;
     private String name;
 
     private NetworkConnection connection;
 
-    public Player() {
+    public BQPlayer() {
         super(-1, "player", "", 0, 0);
     }
 
@@ -41,39 +41,39 @@ public class Player extends Character {
     }
 
     @Override
-    public void see(Character character) {
-        if (character instanceof Player) {
-            Player player = (Player) character;
+    public void onObjectAddedToKnownList(BQObject BQCharacter) {
+        if (BQCharacter instanceof BQPlayer) {
+            BQPlayer BQPlayer = (BQPlayer) BQCharacter;
 
             JsonArray spawnPacket = new JsonArray();
             spawnPacket.addNumber(Packet.SPAWN);
-            spawnPacket.addNumber(player.getId());   //id
+            spawnPacket.addNumber(BQPlayer.getId());   //id
             spawnPacket.addNumber(1);   //type
-            spawnPacket.addNumber(player.getX());   //x
-            spawnPacket.addNumber(player.getY());      //y
-            spawnPacket.addString(player.getName()); // name
+            spawnPacket.addNumber(BQPlayer.getX());   //x
+            spawnPacket.addNumber(BQPlayer.getY());      //y
+            spawnPacket.addString(BQPlayer.getName()); // name
             spawnPacket.addNumber(1); // orientation
             spawnPacket.addNumber(21); // armor
             spawnPacket.addNumber(60); // weapon
 
             getConnection().write(spawnPacket.encode());
-        } else if (character.getType().equals("mob")) {
+        } else if (BQCharacter.getType().equals("mob")) {
             JsonArray spawnPacket = new JsonArray();
             spawnPacket.addNumber(Packet.SPAWN);
-            spawnPacket.addNumber(character.getId());   //id
-            spawnPacket.addNumber(MobTypes.getKindFromString(character.getKind()));   //kind
-            spawnPacket.addNumber(character.getX());   //x
-            spawnPacket.addNumber(character.getY());      //y
+            spawnPacket.addNumber(BQCharacter.getId());   //id
+            spawnPacket.addNumber(MobTypes.getKindFromString(BQCharacter.getKind()));   //kind
+            spawnPacket.addNumber(BQCharacter.getX());   //x
+            spawnPacket.addNumber(BQCharacter.getY());      //y
 
             getConnection().write(spawnPacket.encode());
         }
     }
 
     @Override
-    public void notSee(Character character) {
+    public void onObjectRemovedFromKnownList(BQObject BQCharacter) {
         JsonArray despawnPacket = new JsonArray();
         despawnPacket.addNumber(Packet.DESPAWN);
-        despawnPacket.addNumber(character.getId());   //id
+        despawnPacket.addNumber(BQCharacter.getId());   //id
 
         getConnection().write(despawnPacket.encode());
     }

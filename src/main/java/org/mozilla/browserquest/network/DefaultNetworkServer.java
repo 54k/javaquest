@@ -1,6 +1,5 @@
 package org.mozilla.browserquest.network;
 
-import com.google.inject.Inject;
 import com.google.inject.Injector;
 import org.vertx.java.core.AsyncResult;
 import org.vertx.java.core.Handler;

@@ -1,6 +1,6 @@
 package org.mozilla.browserquest;
 
-import org.mozilla.browserquest.model.Mob;
+import org.mozilla.browserquest.model.BQMob;
 import org.mozilla.browserquest.world.WorldInstance;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -37,7 +37,7 @@ public class MobSpawnArea extends SpawnArea {
     public void spawnMobs() {
         for (int i = 0; i < nb; i++) {
             Position position = getRandomPositionInsideArea();
-            getWorldInstance().spawnEntity(new Mob(sequence.decrementAndGet(), getKind(), position.getX(), position.getY()));
+            getWorldInstance().spawnEntity(new BQMob(sequence.decrementAndGet(), getKind(), position.getX(), position.getY()));
         }
     }
 }

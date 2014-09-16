@@ -1,9 +1,9 @@
 package org.mozilla.browserquest.network.packet.client;
 
 import org.mozilla.browserquest.Position;
-import org.mozilla.browserquest.model.Player;
+import org.mozilla.browserquest.model.BQPlayer;
 import org.mozilla.browserquest.network.packet.Packet;
-import org.mozilla.browserquest.util.PacketSendUtils;
+import org.mozilla.browserquest.util.Broadcast;
 import org.vertx.java.core.json.JsonArray;
 
 public class MovePacket extends Packet {
@@ -19,21 +19,21 @@ public class MovePacket extends Packet {
 
     @Override
     public void run() {
-        Player player = getConnection().getPlayer();
+        BQPlayer BQPlayer = getConnection().getBQPlayer();
 
-        if (!player.getWorldInstance().isValidPosition(x, y)) {
+        if (!BQPlayer.getWorldInstance().isValidPosition(x, y)) {
             getConnection().close();
         }
 
-        player.setPosition(new Position(x, y));
-        player.getWorldInstance().updateCharacterRegionAndKnownList(player);
+        BQPlayer.setPosition(new Position(x, y));
+        BQPlayer.getWorldInstance().updateCharacterRegionAndKnownList(BQPlayer);
 
         JsonArray jsonArray = new JsonArray();
         jsonArray.addNumber(Packet.MOVE);
-        jsonArray.addNumber(player.getId());   //id
-        jsonArray.addNumber(player.getX());   //x
-        jsonArray.addNumber(player.getY());      //y
+        jsonArray.addNumber(BQPlayer.getId());   //id
+        jsonArray.addNumber(BQPlayer.getX());   //x
+        jsonArray.addNumber(BQPlayer.getY());      //y
 
-        PacketSendUtils.broadcastToKnownList(player, jsonArray.toString());
+        Broadcast.toSelfAndKnownPlayers(BQPlayer, jsonArray.toString());
     }
 }

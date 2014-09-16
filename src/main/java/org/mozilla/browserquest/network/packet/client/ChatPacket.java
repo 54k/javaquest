@@ -1,7 +1,7 @@
 package org.mozilla.browserquest.network.packet.client;
 
 import org.mozilla.browserquest.network.packet.Packet;
-import org.mozilla.browserquest.util.PacketSendUtils;
+import org.mozilla.browserquest.util.Broadcast;
 import org.vertx.java.core.json.JsonArray;
 
 public class ChatPacket extends Packet {
@@ -17,9 +17,9 @@ public class ChatPacket extends Packet {
     public void run() {
         JsonArray jsonArray = new JsonArray();
         jsonArray.add(Packet.CHAT);
-        jsonArray.add(getConnection().getPlayer().getId());
+        jsonArray.add(getConnection().getBQPlayer().getId());
         jsonArray.add(message);
 
-        PacketSendUtils.broadcastToRegion(getConnection().getPlayer(), jsonArray.encode());
+        Broadcast.toSelfAndPlayersInRegion(getConnection().getBQPlayer(), jsonArray.encode());
     }
 }

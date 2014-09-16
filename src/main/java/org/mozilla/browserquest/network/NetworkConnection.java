@@ -1,12 +1,12 @@
 package org.mozilla.browserquest.network;
 
-import org.mozilla.browserquest.model.Player;
+import org.mozilla.browserquest.model.BQPlayer;
 
 public interface NetworkConnection {
 
-    Player getPlayer();
+    BQPlayer getBQPlayer();
 
-    void setPlayer(Player player);
+    void setBQPlayer(BQPlayer BQPlayer);
 
     void close();
 

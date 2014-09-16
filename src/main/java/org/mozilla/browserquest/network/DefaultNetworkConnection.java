@@ -1,7 +1,7 @@
 package org.mozilla.browserquest.network;
 
 import com.google.inject.Injector;
-import org.mozilla.browserquest.model.Player;
+import org.mozilla.browserquest.model.BQPlayer;
 import org.mozilla.browserquest.network.packet.PacketHandler;
 import org.mozilla.browserquest.world.WorldInstance;
 import org.vertx.java.core.Vertx;
@@ -17,7 +17,7 @@ public class DefaultNetworkConnection implements NetworkConnection {
     private PacketHandler packetHandler;
     private ServerWebSocket channel;
 
-    private Player player;
+    private BQPlayer BQPlayer;
 
     private long disconnectTaskId;
 
@@ -31,13 +31,13 @@ public class DefaultNetworkConnection implements NetworkConnection {
     }
 
     @Override
-    public Player getPlayer() {
-        return player;
+    public BQPlayer getBQPlayer() {
+        return BQPlayer;
     }
 
     @Override
-    public void setPlayer(Player player) {
-        this.player = player;
+    public void setBQPlayer(BQPlayer BQPlayer) {
+        this.BQPlayer = BQPlayer;
     }
 
     private void onFrame(WebSocketFrame frame) {
@@ -51,10 +51,10 @@ public class DefaultNetworkConnection implements NetworkConnection {
 
     private void onDisconnect(Void v) {
         vertx.cancelTimer(disconnectTaskId);
-        WorldInstance worldInstance = player.getWorldInstance();
+        WorldInstance worldInstance = BQPlayer.getWorldInstance();
         if (worldInstance != null) {
-            player.getKnownList().clear();
-            worldInstance.removePlayer(player);
+            BQPlayer.getKnownList().clearKnownObjects();
+            worldInstance.removePlayer(BQPlayer);
             worldInstance.getWorld().broadcastWorldPopulation();
         }
     }

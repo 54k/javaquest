@@ -6,28 +6,28 @@ import org.vertx.java.core.json.JsonArray;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Mob extends Character {
+public class BQMob extends BQCharacter {
 
-    private Set<Entity> hateSet = new HashSet<>();
+    private Set<BQObject> hateSet = new HashSet<>();
 
-    public Mob(int id, String kind, int x, int y) {
+    public BQMob(int id, String kind, int x, int y) {
         super(id, "mob", kind, x, y);
     }
 
     @Override
-    public void see(Character character) {
-        if (character instanceof Player) {
+    public void onObjectAddedToKnownList(BQObject BQCharacter) {
+        if (BQCharacter instanceof BQPlayer) {
             JsonArray chatPacket = new JsonArray();
             chatPacket.addNumber(Packet.CHAT);
             chatPacket.addNumber(getId());
             chatPacket.addString("Arghhh!");
 
-            ((Player) character).getConnection().write(chatPacket.encode());
+            ((BQPlayer) BQCharacter).getConnection().write(chatPacket.encode());
         }
     }
 
     @Override
-    public void notSee(Character character) {
-        super.notSee(character);
+    public void onObjectRemovedFromKnownList(BQObject BQCharacter) {
+        super.onObjectRemovedFromKnownList(BQCharacter);
     }
 }

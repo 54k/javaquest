@@ -1,6 +1,6 @@
 package org.mozilla.browserquest;
 
-import org.mozilla.browserquest.model.Entity;
+import org.mozilla.browserquest.model.BQObject;
 import org.mozilla.browserquest.world.WorldInstance;
 
 import java.util.HashSet;
@@ -15,7 +15,7 @@ public class SpawnArea {
     private int width;
     private int height;
     private WorldInstance worldInstance;
-    private Set<Entity> entities = new HashSet<>();
+    private Set<BQObject> entities = new HashSet<>();
 
     public SpawnArea(int id, int x, int y, int width, int height, WorldInstance worldInstance) {
         this.id = id;
@@ -74,9 +74,9 @@ public class SpawnArea {
         this.worldInstance = worldInstance;
     }
 
-    public void addToArea(Entity entity) {
-        if (entities.add(entity)) {
-            entity.setSpawnArea(this);
+    public void addToArea(BQObject BQEntity) {
+        if (entities.add(BQEntity)) {
+            BQEntity.setSpawnArea(this);
         }
     }
 

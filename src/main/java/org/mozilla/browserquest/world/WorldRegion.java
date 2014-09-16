@@ -1,7 +1,7 @@
 package org.mozilla.browserquest.world;
 
-import org.mozilla.browserquest.model.Entity;
-import org.mozilla.browserquest.model.Player;
+import org.mozilla.browserquest.model.BQObject;
+import org.mozilla.browserquest.model.BQPlayer;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -14,8 +14,8 @@ public class WorldRegion {
     private String id;
     private WorldInstance parent;
 
-    private Map<Integer, Entity> entities = new HashMap<>();
-    private Set<Player> players = new HashSet<>();
+    private Map<Integer, BQObject> entities = new HashMap<>();
+    private Set<BQPlayer> BQPlayers = new HashSet<>();
 
     public WorldRegion(String id, WorldInstance parent) {
         this.id = id;
@@ -30,25 +30,25 @@ public class WorldRegion {
         return parent;
     }
 
-    public void addEntity(Entity entity) {
-        entities.put(entity.getId(), entity);
-        if (entity instanceof Player) {
-            players.add((Player) entity);
+    public void addEntity(BQObject BQEntity) {
+        entities.put(BQEntity.getId(), BQEntity);
+        if (BQEntity instanceof BQPlayer) {
+            BQPlayers.add((BQPlayer) BQEntity);
         }
     }
 
-    public void removeEntity(Entity entity) {
-        entities.remove(entity.getId());
-        if (entity instanceof Player) {
-            players.remove(entity);
+    public void removeEntity(BQObject BQEntity) {
+        entities.remove(BQEntity.getId());
+        if (BQEntity instanceof BQPlayer) {
+            BQPlayers.remove(BQEntity);
         }
     }
 
-    public Set<Player> getPlayers() {
-        return Collections.unmodifiableSet(players);
+    public Set<BQPlayer> getPlayers() {
+        return Collections.unmodifiableSet(BQPlayers);
     }
 
-    public Map<Integer, Entity> getEntities() {
+    public Map<Integer, BQObject> getEntities() {
         return Collections.unmodifiableMap(entities);
     }
 }
