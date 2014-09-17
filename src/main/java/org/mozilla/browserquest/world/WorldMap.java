@@ -3,9 +3,9 @@ package org.mozilla.browserquest.world;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.mozilla.browserquest.Location;
 import org.mozilla.browserquest.Position;
+import org.mozilla.browserquest.template.BQWorldTemplate;
 import org.mozilla.browserquest.template.CheckpointTemplate;
 import org.mozilla.browserquest.template.DoorTemplate;
-import org.mozilla.browserquest.template.MapTemplate;
 import org.mozilla.browserquest.template.RoamingAreaTemplate;
 import org.vertx.java.core.buffer.Buffer;
 import org.vertx.java.core.file.FileSystem;
@@ -22,7 +22,7 @@ public class WorldMap {
     private static final int ZONE_WIDTH = 28;
     private static final int ZONE_HEIGHT = 12;
 
-    private MapTemplate mapData;
+    private BQWorldTemplate mapData;
 
     private Map<String, List<Position>> connectedGroups = new HashMap<>();
     private Map<Integer, Location> checkpoints = new HashMap<>();
@@ -41,7 +41,7 @@ public class WorldMap {
     private void initMap(byte[] bytes) {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            mapData = mapper.readValue(bytes, MapTemplate.class);
+            mapData = mapper.readValue(bytes, BQWorldTemplate.class);
             initConnectedGroups(mapData.getDoors());
             initCheckpoints(mapData.getCheckpoints());
             generateCollisionGrid();

@@ -51,7 +51,7 @@ public class DefaultNetworkConnection implements NetworkConnection {
 
     private void onDisconnect(Void v) {
         vertx.cancelTimer(disconnectTaskId);
-        WorldInstance worldInstance = BQPlayer.getWorldInstance();
+        WorldInstance worldInstance = BQPlayer.getWorld();
         if (worldInstance != null) {
             BQPlayer.getKnownList().clearKnownObjects();
             worldInstance.removePlayer(BQPlayer);

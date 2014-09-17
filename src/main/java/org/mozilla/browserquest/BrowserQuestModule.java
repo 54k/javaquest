@@ -3,11 +3,14 @@ package org.mozilla.browserquest;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Scopes;
+import org.mozilla.browserquest.data.DefaultStaticDataService;
+import org.mozilla.browserquest.data.StaticDataService;
 import org.mozilla.browserquest.idfactory.DefaultIdFactoryService;
 import org.mozilla.browserquest.idfactory.IdFactoryService;
 import org.mozilla.browserquest.model.BQWorld;
 import org.mozilla.browserquest.script.DefaultScriptService;
 import org.mozilla.browserquest.script.ScriptService;
+import org.mozilla.browserquest.template.BQWorldTemplate;
 import org.vertx.java.core.Vertx;
 import org.vertx.java.core.file.FileSystem;
 import org.vertx.java.core.logging.Logger;
@@ -25,9 +28,16 @@ public class BrowserQuestModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        bind(BQWorld.class).asEagerSingleton();
         bind(ScriptService.class).to(DefaultScriptService.class).asEagerSingleton();
+        bind(StaticDataService.class).to(DefaultStaticDataService.class).asEagerSingleton();
         bind(IdFactoryService.class).to(DefaultIdFactoryService.class).in(Scopes.SINGLETON);
+
+        bind(BQWorld.class).asEagerSingleton();
+    }
+
+    @Provides
+    private BQWorldTemplate worldMapTemplate(StaticDataService staticDataService) {
+        return staticDataService.getWorldTemplate();
     }
 
     @Provides

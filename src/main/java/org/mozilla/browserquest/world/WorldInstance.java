@@ -60,7 +60,7 @@ public class WorldInstance {
         entities.put(BQEntity.getId(), BQEntity);
         if (BQEntity instanceof BQMob) {
             BQMob BQMob = (BQMob) BQEntity;
-            BQMob.setWorldInstance(this);
+            BQMob.setWorld(this);
             updateCharacterRegionAndKnownList(BQMob);
         }
     }
@@ -69,16 +69,16 @@ public class WorldInstance {
         entities.remove(BQEntity.getId());
         if (BQEntity instanceof BQMob) {
             BQMob BQMob = (BQMob) BQEntity;
-            BQMob.setWorldInstance(null);
+            BQMob.setWorld(null);
             BQMob.getKnownList().clearKnownObjects();
-            BQMob.setWorldRegion(null);
+            BQMob.setRegion(null);
         }
     }
 
     public boolean addPlayer(BQPlayer BQPlayer) {
         if (BQPlayers.add(BQPlayer)) {
             world.addPlayer(BQPlayer);
-            BQPlayer.setWorldInstance(this);
+            BQPlayer.setWorld(this);
             playersCount++;
             return true;
         }
@@ -88,12 +88,12 @@ public class WorldInstance {
     public boolean removePlayer(BQPlayer BQPlayer) {
         if (BQPlayers.remove(BQPlayer)) {
             world.removePlayer(BQPlayer);
-            BQPlayer.setWorldInstance(null);
+            BQPlayer.setWorld(null);
 
-            WorldRegion worldRegion = BQPlayer.getWorldRegion();
+            WorldRegion worldRegion = BQPlayer.getRegion();
             if (worldRegion != null) {
                 worldRegion.removeEntity(BQPlayer);
-                BQPlayer.setWorldRegion(null);
+                BQPlayer.setRegion(null);
             }
             playersCount--;
             return true;
@@ -154,7 +154,7 @@ public class WorldInstance {
     }
 
     public void updateCharacterRegionAndKnownList(BQCharacter BQCharacter) {
-        WorldRegion oldWorldRegion = BQCharacter.getWorldRegion();
+        WorldRegion oldWorldRegion = BQCharacter.getRegion();
         WorldRegion newWorldRegion = getRegion(BQCharacter.getX(), BQCharacter.getY());
         if (oldWorldRegion != newWorldRegion) {
             if (oldWorldRegion != null) {
@@ -162,7 +162,7 @@ public class WorldInstance {
             }
             newWorldRegion.addEntity(BQCharacter);
 
-            BQCharacter.setWorldRegion(newWorldRegion);
+            BQCharacter.setRegion(newWorldRegion);
         }
 
         BQCharacter.getKnownList().updateKnownObjects();

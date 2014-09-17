@@ -21,12 +21,12 @@ public class MovePacket extends Packet {
     public void run() {
         BQPlayer BQPlayer = getConnection().getBQPlayer();
 
-        if (!BQPlayer.getWorldInstance().isValidPosition(x, y)) {
+        if (!BQPlayer.getWorld().isValidPosition(x, y)) {
             getConnection().close();
         }
 
         BQPlayer.setPosition(new Position(x, y));
-        BQPlayer.getWorldInstance().updateCharacterRegionAndKnownList(BQPlayer);
+        BQPlayer.getWorld().updateCharacterRegionAndKnownList(BQPlayer);
 
         JsonArray jsonArray = new JsonArray();
         jsonArray.addNumber(Packet.MOVE);

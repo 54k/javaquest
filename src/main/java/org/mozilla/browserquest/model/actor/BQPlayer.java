@@ -48,7 +48,7 @@ public class BQPlayer extends BQCharacter {
 
             JsonArray spawnPacket = new JsonArray();
             spawnPacket.addNumber(Packet.SPAWN);
-            spawnPacket.addNumber(BQPlayer.getId());   //id
+            spawnPacket.addNumber(BQPlayer.getObjectId());   //id
             spawnPacket.addNumber(1);   //type
             spawnPacket.addNumber(BQPlayer.getX());   //x
             spawnPacket.addNumber(BQPlayer.getY());      //y
@@ -61,7 +61,7 @@ public class BQPlayer extends BQCharacter {
         } else if (BQCharacter.getType().equals("mob")) {
             JsonArray spawnPacket = new JsonArray();
             spawnPacket.addNumber(Packet.SPAWN);
-            spawnPacket.addNumber(BQCharacter.getId());   //id
+            spawnPacket.addNumber(BQCharacter.getObjectId());   //id
             spawnPacket.addNumber(MobTypes.getKindFromString(BQCharacter.getKind()));   //kind
             spawnPacket.addNumber(BQCharacter.getX());   //x
             spawnPacket.addNumber(BQCharacter.getY());      //y

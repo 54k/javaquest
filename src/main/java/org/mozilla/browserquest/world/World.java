@@ -52,7 +52,7 @@ public class World {
         BQPlayers.forEach(p -> {
             JsonArray populationPacket = new JsonArray();
             populationPacket.addNumber(Packet.POPULATION);
-            populationPacket.addNumber(p.getWorldInstance().getPlayersCount());
+            populationPacket.addNumber(p.getWorld().getPlayersCount());
             populationPacket.addNumber(BQPlayers.size());
             p.getConnection().write(populationPacket.encode());
         });

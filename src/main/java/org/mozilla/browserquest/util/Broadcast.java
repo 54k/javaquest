@@ -22,7 +22,7 @@ public final class Broadcast {
     }
 
     public static void toPlayersInRegion(BQObject object, String packet) {
-        object.getWorldRegion().getPlayers().stream().filter(p -> p != object).forEach(p -> p.getConnection().write(packet));
+        object.getRegion().stream().filter(p -> p != object).forEach(p -> p.getConnection().write(packet));
     }
 
     public static void toSelfAndPlayersInRegion(BQPlayer object, String packet) {

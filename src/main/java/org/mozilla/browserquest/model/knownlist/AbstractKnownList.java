@@ -102,7 +102,7 @@ public abstract class AbstractKnownList implements KnownList {
     protected abstract int getDistanceToForgetObject(BQObject object);
 
     private void findVisibleObjects() {
-        Collection<BQObject> objects = activeObject.getWorldRegion().getEntities().values();
+        Collection<BQObject> objects = activeObject.getRegion().getEntities().values();
         objects.stream().filter(object -> object != activeObject && isObjectInRange(object, getDistanceToFindObject(object))).forEach(this::addKnownObject);
     }
 
