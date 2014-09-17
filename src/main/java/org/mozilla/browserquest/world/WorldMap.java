@@ -3,10 +3,10 @@ package org.mozilla.browserquest.world;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.mozilla.browserquest.Location;
 import org.mozilla.browserquest.Position;
-import org.mozilla.browserquest.map.MapCheckpoint;
-import org.mozilla.browserquest.map.MapData;
-import org.mozilla.browserquest.map.MapDoor;
-import org.mozilla.browserquest.map.MapRoamingArea;
+import org.mozilla.browserquest.template.CheckpointTemplate;
+import org.mozilla.browserquest.template.DoorTemplate;
+import org.mozilla.browserquest.template.MapTemplate;
+import org.mozilla.browserquest.template.RoamingAreaTemplate;
 import org.vertx.java.core.buffer.Buffer;
 import org.vertx.java.core.file.FileSystem;
 
@@ -22,7 +22,7 @@ public class WorldMap {
     private static final int ZONE_WIDTH = 28;
     private static final int ZONE_HEIGHT = 12;
 
-    private MapData mapData;
+    private MapTemplate mapData;
 
     private Map<String, List<Position>> connectedGroups = new HashMap<>();
     private Map<Integer, Location> checkpoints = new HashMap<>();
@@ -41,7 +41,7 @@ public class WorldMap {
     private void initMap(byte[] bytes) {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            mapData = mapper.readValue(bytes, MapData.class);
+            mapData = mapper.readValue(bytes, MapTemplate.class);
             initConnectedGroups(mapData.getDoors());
             initCheckpoints(mapData.getCheckpoints());
             generateCollisionGrid();
@@ -50,11 +50,11 @@ public class WorldMap {
         }
     }
 
-    public List<MapRoamingArea> getRoamingAreas() {
+    public List<RoamingAreaTemplate> getRoamingAreas() {
         return mapData.getRoamingAreas();
     }
 
-    private void initConnectedGroups(Iterable<MapDoor> doors) {
+    private void initConnectedGroups(Iterable<DoorTemplate> doors) {
         doors.forEach(door -> {
             String groupId = getGroupIdFromPosition(door.getX(), door.getY());
             String connectedGroupId = getGroupIdFromPosition(door.getTx(), door.getTy());
@@ -75,7 +75,7 @@ public class WorldMap {
         return (int) Math.floor((x - 1) / ZONE_WIDTH) + "-" + (int) Math.floor((y - 1) / ZONE_HEIGHT);
     }
 
-    private void initCheckpoints(Iterable<MapCheckpoint> checkpoints) {
+    private void initCheckpoints(Iterable<CheckpointTemplate> checkpoints) {
         checkpoints.forEach(ch -> {
             Location location = new Location(ch.getId(), ch.getX(), ch.getY(), ch.getW(), ch.getH());
             this.checkpoints.put(location.getId(), location);

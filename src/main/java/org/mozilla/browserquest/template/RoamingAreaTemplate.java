@@ -1,6 +1,6 @@
-package org.mozilla.browserquest.map;
+package org.mozilla.browserquest.template;
 
-public class MapRoamingArea {
+public class RoamingAreaTemplate {
     private int id;
     private int x;
     private int y;

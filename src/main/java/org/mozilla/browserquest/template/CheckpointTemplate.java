@@ -1,6 +1,6 @@
-package org.mozilla.browserquest.map;
-
-public class MapCheckpoint {
+package org.mozilla.browserquest.template;
+// Zone?
+public class CheckpointTemplate {
     private int id;
     private int x;
     private int y;

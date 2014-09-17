@@ -1,8 +1,8 @@
-package org.mozilla.browserquest.map;
+package org.mozilla.browserquest.template;
 
 import java.util.List;
 
-public class MapChestArea {
+public class ChestAreaTemplate {
     private int x;
     private int y;
     private int w;

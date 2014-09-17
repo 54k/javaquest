@@ -1,8 +1,8 @@
-package org.mozilla.browserquest.map;
+package org.mozilla.browserquest.template;
 
 import java.util.List;
 
-public class MapStaticChest {
+public class StaticChestTemplate {
     private int x;
     private int y;
     private List<Integer> i;

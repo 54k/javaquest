@@ -3,7 +3,7 @@ package org.mozilla.browserquest.world;
 import org.mozilla.browserquest.MobSpawnArea;
 import org.mozilla.browserquest.MobTypes;
 import org.mozilla.browserquest.Position;
-import org.mozilla.browserquest.map.MapRoamingArea;
+import org.mozilla.browserquest.template.RoamingAreaTemplate;
 import org.mozilla.browserquest.model.actor.BQCharacter;
 import org.mozilla.browserquest.model.actor.BQMob;
 import org.mozilla.browserquest.model.BQObject;
@@ -129,7 +129,7 @@ public class WorldInstance {
         }
     }
 
-    private void initMobAreas(List<MapRoamingArea> roamingAreas) {
+    private void initMobAreas(List<RoamingAreaTemplate> roamingAreas) {
         roamingAreas.forEach(a -> {
             mobAreas.add(new MobSpawnArea(a.getId(), a.getX(), a.getY(), a.getWidth(), a.getHeight(), this, a.getNb(), a.getType()));
         });

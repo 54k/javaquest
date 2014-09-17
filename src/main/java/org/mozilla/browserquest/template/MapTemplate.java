@@ -1,19 +1,19 @@
-package org.mozilla.browserquest.map;
+package org.mozilla.browserquest.template;
 
 import java.util.List;
 import java.util.Map;
 
-public class MapData {
+public class MapTemplate {
 
     private int width;
     private int height;
 
     private List<Integer> collisions;
-    private List<MapDoor> doors;
-    private List<MapCheckpoint> checkpoints;
-    private List<MapChestArea> chestAreas;
-    private List<MapRoamingArea> roamingAreas;
-    private List<MapStaticChest> staticChests;
+    private List<DoorTemplate> doors;
+    private List<CheckpointTemplate> checkpoints;
+    private List<ChestAreaTemplate> chestAreas;
+    private List<RoamingAreaTemplate> roamingAreas;
+    private List<StaticChestTemplate> staticChests;
 
     private Map<Integer, String> staticEntities;
     private int tileSize;
@@ -30,23 +30,23 @@ public class MapData {
         return collisions;
     }
 
-    public List<MapDoor> getDoors() {
+    public List<DoorTemplate> getDoors() {
         return doors;
     }
 
-    public List<MapCheckpoint> getCheckpoints() {
+    public List<CheckpointTemplate> getCheckpoints() {
         return checkpoints;
     }
 
-    public List<MapChestArea> getChestAreas() {
+    public List<ChestAreaTemplate> getChestAreas() {
         return chestAreas;
     }
 
-    public List<MapRoamingArea> getRoamingAreas() {
+    public List<RoamingAreaTemplate> getRoamingAreas() {
         return roamingAreas;
     }
 
-    public List<MapStaticChest> getStaticChests() {
+    public List<StaticChestTemplate> getStaticChests() {
         return staticChests;
     }
 

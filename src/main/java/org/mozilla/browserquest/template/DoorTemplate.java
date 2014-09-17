@@ -1,6 +1,6 @@
-package org.mozilla.browserquest.map;
+package org.mozilla.browserquest.template;
 
-public class MapDoor {
+public class DoorTemplate {
 
     private int x;
     private int y;
