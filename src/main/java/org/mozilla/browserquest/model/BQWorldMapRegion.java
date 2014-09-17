@@ -1,18 +1,28 @@
 package org.mozilla.browserquest.model;
 
-import org.mozilla.browserquest.model.actor.BQPlayer;
+import org.mozilla.browserquest.model.collection.BQObjectContainer;
+import org.mozilla.browserquest.model.collection.BQPlayerContainer;
+import org.mozilla.browserquest.model.collection.DefaultBQObjectContainer;
+import org.mozilla.browserquest.model.collection.DefaultBQPlayerContainer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class BQWorldMapRegion {
 
-    private Map<Integer, BQPlayer> playersById = new ConcurrentHashMap<>();
-    private Map<Integer, BQObject> objectsById = new ConcurrentHashMap<>();
+    private BQWorldMapInstance parent;
+
+    private BQPlayerContainer players = new DefaultBQPlayerContainer();
+    private BQObjectContainer<BQObject> objects = new DefaultBQObjectContainer<>();
 
     private List<BQWorldMapRegion> surroundingRegions = new ArrayList<>();
     private List<BQWorldMapZoneType> zones = new ArrayList<>();
 
+    public BQWorldMapRegion(BQWorldMapInstance parent) {
+        this.parent = parent;
+    }
+
+    public BQWorldMapInstance getParent() {
+        return parent;
+    }
 }

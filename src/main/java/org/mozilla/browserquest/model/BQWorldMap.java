@@ -1,9 +1,18 @@
 package org.mozilla.browserquest.model;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BQWorldMap {
 
-    private Map<Integer, BQWorldMapInstance> worldMapInstancesById = new ConcurrentHashMap<>();
+    private int id;
+    private List<BQWorldMapInstance> worldMapInstances = new ArrayList<>();
+
+    public int getId() {
+        return id;
+    }
+
+    public BQWorldMapInstance getAvailableWorldMapInstance() {
+        return worldMapInstances.get(0);
+    }
 }
