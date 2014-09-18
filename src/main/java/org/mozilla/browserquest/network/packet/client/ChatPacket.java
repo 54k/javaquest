@@ -17,9 +17,9 @@ public class ChatPacket extends Packet {
     public void run() {
         JsonArray jsonArray = new JsonArray();
         jsonArray.add(Packet.CHAT);
-        jsonArray.add(getConnection().getBQPlayer().getId());
+        jsonArray.add(getConnection().getPlayer().getObjectId());
         jsonArray.add(message);
 
-        Broadcast.toSelfAndPlayersInRegion(getConnection().getBQPlayer(), jsonArray.encode());
+        Broadcast.toSelfAndPlayersInRegion(getConnection().getPlayer(), jsonArray.encode());
     }
 }

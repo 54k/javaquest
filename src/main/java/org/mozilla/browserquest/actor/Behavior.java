@@ -5,7 +5,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-public abstract class Behavior<T extends Actor> extends BaseObject {
+public abstract class Behavior<T extends Actor> {
 
     private volatile T actor;
 

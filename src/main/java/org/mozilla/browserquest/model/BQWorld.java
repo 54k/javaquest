@@ -1,7 +1,7 @@
 package org.mozilla.browserquest.model;
 
 import com.google.inject.Inject;
-import org.mozilla.browserquest.template.BQWorldTemplate;
+import org.mozilla.browserquest.staticdata.template.BQWorldTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

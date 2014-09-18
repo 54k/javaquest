@@ -22,8 +22,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class DefaultScriptService implements ScriptService {
 
-    public static final File SCRIPT_FOLDER = new File("scripts");
-
     private Map<String, ScriptEngine> scriptEngineByName = new ConcurrentHashMap<>();
     private Map<String, ScriptEngine> scriptEngineByExtension = new ConcurrentHashMap<>();
 

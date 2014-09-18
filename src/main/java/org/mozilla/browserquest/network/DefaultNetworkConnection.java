@@ -3,11 +3,12 @@ package org.mozilla.browserquest.network;
 import com.google.inject.Injector;
 import org.mozilla.browserquest.model.actor.BQPlayer;
 import org.mozilla.browserquest.network.packet.PacketHandler;
-import org.mozilla.browserquest.world.WorldInstance;
 import org.vertx.java.core.Vertx;
 import org.vertx.java.core.http.ServerWebSocket;
 import org.vertx.java.core.http.WebSocketFrame;
 import org.vertx.java.core.json.impl.Json;
+
+//import org.mozilla.browserquest.world.WorldInstance;
 
 public class DefaultNetworkConnection implements NetworkConnection {
 
@@ -17,7 +18,7 @@ public class DefaultNetworkConnection implements NetworkConnection {
     private PacketHandler packetHandler;
     private ServerWebSocket channel;
 
-    private BQPlayer BQPlayer;
+    private BQPlayer player;
 
     private long disconnectTaskId;
 
@@ -31,13 +32,13 @@ public class DefaultNetworkConnection implements NetworkConnection {
     }
 
     @Override
-    public BQPlayer getBQPlayer() {
-        return BQPlayer;
+    public BQPlayer getPlayer() {
+        return player;
     }
 
     @Override
-    public void setBQPlayer(BQPlayer BQPlayer) {
-        this.BQPlayer = BQPlayer;
+    public void setPlayer(BQPlayer player) {
+        this.player = player;
     }
 
     private void onFrame(WebSocketFrame frame) {
@@ -51,12 +52,12 @@ public class DefaultNetworkConnection implements NetworkConnection {
 
     private void onDisconnect(Void v) {
         vertx.cancelTimer(disconnectTaskId);
-        WorldInstance worldInstance = BQPlayer.getWorld();
-        if (worldInstance != null) {
-            BQPlayer.getKnownList().clearKnownObjects();
-            worldInstance.removePlayer(BQPlayer);
-            worldInstance.getWorld().broadcastWorldPopulation();
-        }
+        //        WorldInstance worldInstance = BQPlayer.getWorld();
+        //        if (worldInstance != null) {
+        //            BQPlayer.getKnownList().clearKnownObjects();
+        //            worldInstance.removePlayer(BQPlayer);
+        //            worldInstance.getWorld().broadcastWorldPopulation();
+        //        }
     }
 
     private void resetDisconnectTimeout() {

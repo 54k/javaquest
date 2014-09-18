@@ -1,4 +1,4 @@
-package org.mozilla.browserquest.template;
+package org.mozilla.browserquest.staticdata.template;
 
 public class RoamingAreaTemplate {
     private int id;

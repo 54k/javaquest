@@ -1,7 +1,8 @@
 package org.mozilla.browserquest.network.packet.client;
 
-import org.mozilla.browserquest.Position;
 import org.mozilla.browserquest.model.actor.BQPlayer;
+import org.mozilla.browserquest.model.behavior.Position;
+import org.mozilla.browserquest.model.behavior.Positionable;
 import org.mozilla.browserquest.network.packet.Packet;
 import org.mozilla.browserquest.util.Broadcast;
 import org.vertx.java.core.json.JsonArray;
@@ -19,20 +20,21 @@ public class MovePacket extends Packet {
 
     @Override
     public void run() {
-        BQPlayer BQPlayer = getConnection().getBQPlayer();
-
-        if (!BQPlayer.getWorld().isValidPosition(x, y)) {
-            getConnection().close();
-        }
-
-        BQPlayer.setPosition(new Position(x, y));
-        BQPlayer.getWorld().updateCharacterRegionAndKnownList(BQPlayer);
+        BQPlayer BQPlayer = getConnection().getPlayer();
+        //
+        //        if (!BQPlayer.getWorld().isValidPosition(x, y)) {
+        //            getConnection().close();
+        //        }
+        //
+        //        BQPlayer.setPosition(new Position(x, y));
+        //        BQPlayer.getWorld().updateCharacterRegionAndKnownList(BQPlayer);
 
         JsonArray jsonArray = new JsonArray();
         jsonArray.addNumber(Packet.MOVE);
-        jsonArray.addNumber(BQPlayer.getId());   //id
-        jsonArray.addNumber(BQPlayer.getX());   //x
-        jsonArray.addNumber(BQPlayer.getY());      //y
+        jsonArray.addNumber(BQPlayer.getObjectId());   //id
+        Position position = BQPlayer.asBehavior(Positionable.class).getPosition();
+        jsonArray.addNumber(position.getX());   //x
+        jsonArray.addNumber(position.getY());      //y
 
         Broadcast.toSelfAndKnownPlayers(BQPlayer, jsonArray.toString());
     }

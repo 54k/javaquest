@@ -1,28 +1,23 @@
 package org.mozilla.browserquest.actor;
 
-import java.util.Collection;
-import java.util.Objects;
+import com.google.common.base.Preconditions;
 
-public final class BehaviorDefinition {
+public class BehaviorDefinition {
 
     private Class<?> interfaceType;
     private Class<? extends Behavior> behavior;
-    private Collection<Class<?>> subscriptions;
 
-    BehaviorDefinition(Class<?> interfaceType, Class<? extends Behavior> behavior, Collection<Class<?>> subscriptions) {
-        Objects.requireNonNull(interfaceType);
-        Objects.requireNonNull(behavior);
-        Objects.requireNonNull(subscriptions);
+    public BehaviorDefinition(Class<?> interfaceType, Class<? extends Behavior> behavior) {
+        Preconditions.checkNotNull(interfaceType);
+        Preconditions.checkNotNull(behavior);
         validate(interfaceType, behavior);
         this.interfaceType = interfaceType;
         this.behavior = behavior;
-        this.subscriptions = subscriptions;
     }
 
     static void validate(Class<?> behaviorType, Class<? extends Behavior> behavior) {
-        if (!behaviorType.isAssignableFrom(behavior)) {
-            throw new IllegalArgumentException(behavior.getName() + " is not assignable from " + behaviorType.getName());
-        }
+        Preconditions.checkArgument(behaviorType.isInterface());
+        Preconditions.checkArgument(behaviorType.isAssignableFrom(behavior));
     }
 
     public Class<?> getInterfaceType() {
@@ -31,9 +26,5 @@ public final class BehaviorDefinition {
 
     public Class<? extends Behavior> getBehavior() {
         return behavior;
-    }
-
-    public Collection<Class<?>> getSubscriptions() {
-        return subscriptions;
     }
 }

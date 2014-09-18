@@ -3,11 +3,10 @@ package org.mozilla.browserquest;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import org.mozilla.browserquest.model.BQWorld;
 import org.mozilla.browserquest.network.DefaultNetworkServer;
 import org.mozilla.browserquest.network.NetworkServer;
-import org.mozilla.browserquest.script.DefaultScriptService;
 import org.mozilla.browserquest.script.ScriptService;
-import org.mozilla.browserquest.world.World;
 import org.vertx.java.core.file.FileSystem;
 import org.vertx.java.core.http.HttpServerRequest;
 import org.vertx.java.core.json.JsonArray;
@@ -15,7 +14,6 @@ import org.vertx.java.core.json.JsonObject;
 import org.vertx.java.core.logging.Logger;
 import org.vertx.java.platform.Verticle;
 
-import javax.script.ScriptContext;
 import javax.script.SimpleScriptContext;
 import java.io.File;
 import java.util.Optional;
@@ -27,7 +25,7 @@ public class BrowserQuest extends Verticle {
     @Inject
     private FileSystem fileSystem;
     @Inject
-    private World world;
+    private BQWorld world;
     @Inject
     private ScriptService scriptService;
 
@@ -38,17 +36,12 @@ public class BrowserQuest extends Verticle {
         Injector injector = Guice.createInjector(new BrowserQuestModule(getVertx(), getContainer()));
         injector.injectMembers(this);
         SimpleScriptContext ctx = new SimpleScriptContext();
-        ctx.setAttribute("World", world, ScriptContext.ENGINE_SCOPE);
-        scriptService.newProxy(Runnable.class, new File(DefaultScriptService.SCRIPT_FOLDER, "test.js"), ctx).run();
+        scriptService.newProxy(Runnable.class, new File(ScriptService.SCRIPT_FOLDER, "test.js"), ctx).run();
 
         logger.info("Starting BrowserQuest server");
 
         JsonObject config = getContainer().config();
         int port = Optional.ofNullable(config.getInteger("serverPort")).orElse(8000);
-        int worldCount = Optional.ofNullable(config.getInteger("worldCount")).orElse(1);
-        int maxPlayers = Optional.ofNullable(config.getInteger("maxPlayersPerWorld")).orElse(100);
-
-        world.populateWorlds(worldCount, maxPlayers);
 
         networkServer = new DefaultNetworkServer(vertx, injector);
         networkServer.noMatch(this::onNotFoundRequest).getWithRegEx("^/client/.+", this::onContentRequest).get("/status", this::onStatusRequest).listen(port);
@@ -82,7 +75,7 @@ public class BrowserQuest extends Verticle {
 
     private String getWorldDistribution() {
         JsonArray status = new JsonArray();
-        world.getWorldInstances().stream().forEach(world -> status.add(world.getPlayersCount()));
+        //        world.getWorldInstances().stream().forEach(world -> status.add(world.getPlayersCount()));
         return status.encode();
     }
 }

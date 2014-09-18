@@ -1,17 +1,17 @@
-package org.mozilla.browserquest.data;
+package org.mozilla.browserquest.staticdata;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.mozilla.browserquest.template.BQWorldTemplate;
+import org.mozilla.browserquest.staticdata.template.BQWorldTemplate;
 
 import java.io.File;
 
-public class DefaultStaticDataService implements StaticDataService {
+public class DefaultDataService implements DataService {
 
     public static final File DATA_FOLDER = new File("data/static");
 
     private BQWorldTemplate worldTemplate;
 
-    public DefaultStaticDataService() {
+    public DefaultDataService() {
         load();
     }
 

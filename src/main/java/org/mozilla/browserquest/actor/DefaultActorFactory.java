@@ -1,5 +1,6 @@
 package org.mozilla.browserquest.actor;
 
+import com.google.common.base.Preconditions;
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtMethod;
@@ -10,25 +11,24 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-final class DefaultActorFactory {
+public class DefaultActorFactory implements ActorFactory {
 
     private static Map<Class<? extends Actor>, ActorDefinition> cache = new ConcurrentHashMap<>();
 
     private ClassPool classPool = ClassPool.getDefault();
 
     @SuppressWarnings("unchecked")
+    @Override
     public <T extends Actor> T newActor(Class<T> actorPrototype) {
         try {
-            Objects.requireNonNull(actorPrototype);
+            Preconditions.checkNotNull(actorPrototype);
 
             ActorDefinition actorDefinition;
             if (!cache.containsKey(actorPrototype)) {
                 actorDefinition = getActorDefinition(actorPrototype);
-                CtClass ctClass = classPool.makeClass(actorDefinition.getType().getCanonicalName() + "$" + UUID.randomUUID());
+                CtClass ctClass = classPool.makeClass(actorDefinition.getType().getCanonicalName() + "Instance");
                 ctClass.setSuperclass(asCtClass(actorPrototype));
                 for (ProjectionDefinition projectionDefinition : actorDefinition.getProjectionDefinitions()) {
                     ctClass.addMethod(makeProjectionMethod(projectionDefinition, ctClass));
@@ -41,40 +41,34 @@ final class DefaultActorFactory {
 
             return newActor(actorDefinition);
         } catch (Throwable t) {
-            throw new InstantiationException(t);
+            throw new ActorInstantiationException(t);
         }
     }
 
     private <T extends Actor> T newActor(ActorDefinition definition) {
         try {
-            @SuppressWarnings("unchecked")
-            T prototype = (T) definition.getImplementation().newInstance();
-            prototype.setMetadata(BaseObjectMetadata.DEFINITION, definition);
+            @SuppressWarnings("unchecked") T prototype = (T) definition.getImplementation().newInstance();
 
             for (BehaviorDefinition behaviorDefinition : definition.getBehaviorDefinitions()) {
                 Behavior behavior = behaviorDefinition.getBehavior().newInstance();
                 prototype.addBehavior(behaviorDefinition.getInterfaceType(), behavior);
-                for (Class subscription : behaviorDefinition.getSubscriptions()) {
-                    prototype.addListener(subscription, behavior);
-                }
+                prototype.register(behavior);
             }
             return prototype;
         } catch (Throwable t) {
-            throw new InstantiationException(t);
+            throw new ActorInstantiationException(t);
         }
     }
 
     private CtMethod makeProjectionMethod(ProjectionDefinition projectionDefinition, CtClass prototype) throws Exception {
-        return CtNewMethod.make(asCtClass(projectionDefinition.getProjection()),
-                projectionDefinition.getMethod().getName(),
-                new CtClass[0], new CtClass[0],
+        return CtNewMethod.make(asCtClass(projectionDefinition.getProjection()), projectionDefinition.getMethod().getName(), new CtClass[0], new CtClass[0],
                 "return asBehavior(" + projectionDefinition.getProjection().getCanonicalName() + ".class);", prototype);
     }
 
     private static ActorDefinition getActorDefinition(Class<? extends Actor> actorPrototype) throws Exception {
         Collection<BehaviorDefinition> behaviorDefinitions = getBehaviorDefinitions(actorPrototype);
-        Collection<ProjectionDefinition> projectionDefinitions = getProjectionDefinitions(actorPrototype);
-        return new ActorDefinition(actorPrototype, behaviorDefinitions, projectionDefinitions);
+        //        Collection<ProjectionDefinition> projectionDefinitions = getProjectionDefinitions(actorPrototype);
+        return new ActorDefinition(actorPrototype, behaviorDefinitions, Collections.emptyList());
     }
 
     private static Collection<BehaviorDefinition> getBehaviorDefinitions(Class<?> actorPrototype) throws Exception {
@@ -84,10 +78,9 @@ final class DefaultActorFactory {
 
         Collection<BehaviorDefinition> behaviorDefinitions = new HashSet<>();
 
-        for (Class<? extends Behavior> b :
-                actorPrototype.getAnnotation(Actor.Prototype.class).value()) {
-            Class<?> btype = getBehaviorType(b);
-            behaviorDefinitions.add(new BehaviorDefinition(btype, b, getSubscriptions(b)));
+        for (Class<? extends Behavior> impl : actorPrototype.getAnnotation(Actor.Prototype.class).value()) {
+            Class<?> type = getBehaviorType(impl);
+            behaviorDefinitions.add(new BehaviorDefinition(type, impl));
         }
         behaviorDefinitions.addAll(getBehaviorDefinitions(actorPrototype.getSuperclass()));
         return behaviorDefinitions;
@@ -95,16 +88,6 @@ final class DefaultActorFactory {
 
     private static Class<?> getBehaviorType(Class<? extends Behavior> behavior) {
         return behavior.getAnnotation(Behavior.Prototype.class).value();
-    }
-
-    private static Collection<Class<?>> getSubscriptions(Class<? extends Behavior> behavior) {
-        Collection<Class<?>> subscriptions = new HashSet<>();
-        for (Class<?> aClass : behavior.getInterfaces()) {
-            if (aClass.isAnnotationPresent(Actor.Listener.class)) {
-                subscriptions.add(aClass);
-            }
-        }
-        return subscriptions;
     }
 
     private static Collection<ProjectionDefinition> getProjectionDefinitions(Class<?> actorPrototype) throws Exception {

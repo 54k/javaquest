@@ -4,9 +4,9 @@ import org.mozilla.browserquest.model.actor.BQPlayer;
 
 public interface NetworkConnection {
 
-    BQPlayer getBQPlayer();
+    BQPlayer getPlayer();
 
-    void setBQPlayer(BQPlayer BQPlayer);
+    void setPlayer(BQPlayer player);
 
     void close();
 

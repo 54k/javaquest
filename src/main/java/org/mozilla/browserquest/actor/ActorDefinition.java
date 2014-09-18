@@ -1,23 +1,29 @@
 package org.mozilla.browserquest.actor;
 
+import com.google.common.base.Preconditions;
+
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Objects;
 
-public final class ActorDefinition extends BaseObjectDefinition<Actor> {
+public class ActorDefinition {
 
+    private Class<? extends Actor> type;
     private Class<? extends Actor> implementation;
 
     private Collection<BehaviorDefinition> behaviorDefinitions;
     private Collection<ProjectionDefinition> projectionDefinitions;
 
-    ActorDefinition(Class<? extends Actor> type, Collection<BehaviorDefinition> behaviorDefinitions, Collection<ProjectionDefinition> projectionDefinitions) {
-        super(type);
-        Objects.requireNonNull(type);
-        Objects.requireNonNull(behaviorDefinitions);
-        Objects.requireNonNull(projectionDefinitions);
+    public ActorDefinition(Class<? extends Actor> type, Collection<BehaviorDefinition> behaviorDefinitions, Collection<ProjectionDefinition> projectionDefinitions) {
+        Preconditions.checkNotNull(type);
+        Preconditions.checkNotNull(behaviorDefinitions);
+        Preconditions.checkNotNull(projectionDefinitions);
+        this.type = type;
         this.behaviorDefinitions = behaviorDefinitions;
         this.projectionDefinitions = projectionDefinitions;
+    }
+
+    public Class<? extends Actor> getType() {
+        return type;
     }
 
     public Class<? extends Actor> getImplementation() {
@@ -25,7 +31,7 @@ public final class ActorDefinition extends BaseObjectDefinition<Actor> {
     }
 
     public void setImplementation(Class<? extends Actor> implementation) {
-        Objects.requireNonNull(implementation);
+        Preconditions.checkNotNull(implementation);
         this.implementation = implementation;
     }
 

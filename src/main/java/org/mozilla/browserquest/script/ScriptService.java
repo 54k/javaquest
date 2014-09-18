@@ -6,6 +6,8 @@ import java.io.File;
 
 public interface ScriptService {
 
+    public static final File SCRIPT_FOLDER = new File("scripts");
+
     void executeScript(File script);
 
     void executeScript(File script, ScriptContext scriptContext);
