@@ -68,8 +68,8 @@ public class DefaultActorFactory implements ActorFactory {
 
     private static ActorDefinition getActorDefinition(Class<? extends Actor> actorPrototype) throws Exception {
         Collection<BehaviorDefinition> behaviorDefinitions = getBehaviorDefinitions(actorPrototype);
-        //        Collection<ProjectionDefinition> projectionDefinitions = getProjectionDefinitions(actorPrototype);
-        return new ActorDefinition(actorPrototype, behaviorDefinitions, Collections.emptyList());
+        Collection<ProjectionDefinition> projectionDefinitions = getProjectionDefinitions(actorPrototype);
+        return new ActorDefinition(actorPrototype, behaviorDefinitions, projectionDefinitions);
     }
 
     private static Collection<BehaviorDefinition> getBehaviorDefinitions(Class<?> actorPrototype) throws Exception {
@@ -97,17 +97,19 @@ public class DefaultActorFactory implements ActorFactory {
         }
 
         Collection<ProjectionDefinition> projectionDefinitions = new HashSet<>();
-        for (Method method : actorPrototype.getDeclaredMethods()) {
-            if (method.isAnnotationPresent(Actor.Projection.class)) {
-                projectionDefinitions.add(new ProjectionDefinition(method, method.getReturnType()));
-            }
-        }
+
         for (Class<?> aClass : actorPrototype.getInterfaces()) {
             projectionDefinitions.addAll(getProjectionDefinitions(aClass));
         }
+
         if (!actorPrototype.isInterface()) {
             projectionDefinitions.addAll(getProjectionDefinitions(actorPrototype.getSuperclass()));
+        } else if (actorPrototype.getAnnotation(Actor.Projection.class) != null) {
+            for (Method method : actorPrototype.getDeclaredMethods()) {
+                projectionDefinitions.add(new ProjectionDefinition(method, method.getReturnType()));
+            }
         }
+
         return projectionDefinitions;
     }
 

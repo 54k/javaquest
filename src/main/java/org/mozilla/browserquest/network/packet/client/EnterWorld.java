@@ -13,7 +13,7 @@ import org.vertx.java.core.json.JsonArray;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class HelloPacket extends Packet {
+public class EnterWorld extends Packet {
 
     private static final AtomicInteger seq = new AtomicInteger(0);
 
@@ -58,6 +58,7 @@ public class HelloPacket extends Packet {
             }
         }
 
+        player.setWorld(world);
         player.setPosition(startPosition);
 
         JsonArray welcomePacket = new JsonArray();
@@ -72,43 +73,5 @@ public class HelloPacket extends Packet {
 
         world.addObject(player);
         world.spawnObject(player);
-        //        boolean hasEnteredInGame = BQPlayer.isHasEnteredInGame();
-        //
-        //        if (hasEnteredInGame) {
-        //            // HELLO packet should be sent only once
-        //            getConnection().close();
-        //        }
-        //
-        //        WorldInstance world = this.world.getAvailableWorldInstance();
-        //        if (world == null) {
-        //            getConnection().close();
-        //            return;
-        //        }
-        //
-        //        BQPlayer.setConnection(getConnection());
-        //
-        //        Position position = world.getRandomStartingPosition();
-        //
-        //        BQPlayer.setId(seq.incrementAndGet());
-        //        BQPlayer.setPosition(position);
-        //        BQPlayer.setName(playerName);
-        //
-        //        if (world.addPlayer(BQPlayer)) {
-        //            BQPlayer.setHasEnteredInGame(true);
-        //
-        //            JsonArray welcomePacket = new JsonArray();
-        //            welcomePacket.addNumber(Packet.WELCOME);
-        //            welcomePacket.addNumber(BQPlayer.getId());   //id
-        //            welcomePacket.addString(BQPlayer.getName());   //name
-        //            welcomePacket.addNumber(BQPlayer.getX());   //x
-        //            welcomePacket.addNumber(BQPlayer.getY());      //y
-        //            welcomePacket.addNumber(BQPlayer.getHitPoints());        //hp
-        //
-        //            getConnection().write(welcomePacket.encode());
-        //
-        //            world.updateCharacterRegionAndKnownList(BQPlayer);
-        //
-        //            this.world.broadcastWorldPopulation();
-        //        }
     }
 }

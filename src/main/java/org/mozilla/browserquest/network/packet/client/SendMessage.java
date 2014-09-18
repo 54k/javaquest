@@ -4,7 +4,7 @@ import org.mozilla.browserquest.network.packet.Packet;
 import org.mozilla.browserquest.util.Broadcast;
 import org.vertx.java.core.json.JsonArray;
 
-public class ChatPacket extends Packet {
+public class SendMessage extends Packet {
 
     private String message;
 

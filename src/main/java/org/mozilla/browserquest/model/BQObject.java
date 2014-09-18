@@ -15,6 +15,8 @@ public abstract class BQObject extends Actor implements Identifiable, Positionab
     private String name;
 
     private KnownList knownList;
+
+    private BQWorld world;
     private BQWorldRegion region;
 
     private int x;
@@ -47,6 +49,15 @@ public abstract class BQObject extends Actor implements Identifiable, Positionab
 
     public KnownList getKnownList() {
         return knownList;
+    }
+
+    @Override
+    public BQWorld getWorld() {
+        return world;
+    }
+
+    public void setWorld(BQWorld world) {
+        this.world = world;
     }
 
     @Override
@@ -126,6 +137,6 @@ public abstract class BQObject extends Actor implements Identifiable, Positionab
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "[id=" + id + ", name=" + name + ']';
+        return getClass().getSimpleName() + "(id=" + id + ", name=" + name + ')';
     }
 }

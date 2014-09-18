@@ -1,9 +1,14 @@
 package org.mozilla.browserquest.model.interfaces;
 
+import org.mozilla.browserquest.model.BQWorld;
 import org.mozilla.browserquest.model.BQWorldRegion;
 import org.mozilla.browserquest.model.Position;
 
 public interface Positionable {
+
+    BQWorld getWorld();
+
+    void setWorld(BQWorld world);
 
     BQWorldRegion getRegion();
 

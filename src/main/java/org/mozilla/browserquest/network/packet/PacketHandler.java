@@ -2,10 +2,10 @@ package org.mozilla.browserquest.network.packet;
 
 import com.google.inject.Injector;
 import org.mozilla.browserquest.network.DefaultNetworkConnection;
-import org.mozilla.browserquest.network.packet.client.ChatPacket;
-import org.mozilla.browserquest.network.packet.client.HelloPacket;
-import org.mozilla.browserquest.network.packet.client.MovePacket;
-import org.mozilla.browserquest.network.packet.client.ZonePacket;
+import org.mozilla.browserquest.network.packet.client.EnterZone;
+import org.mozilla.browserquest.network.packet.client.SendMessage;
+import org.mozilla.browserquest.network.packet.client.EnterWorld;
+import org.mozilla.browserquest.network.packet.client.StartMove;
 
 import java.util.HashMap;
 
@@ -17,10 +17,10 @@ public class PacketHandler {
     public PacketHandler(Injector injector) {
         this.injector = injector;
 
-        addPacketPrototype(Packet.HELLO, HelloPacket.class);
-        addPacketPrototype(Packet.MOVE, MovePacket.class);
-        addPacketPrototype(Packet.ZONE, ZonePacket.class);
-        addPacketPrototype(Packet.CHAT, ChatPacket.class);
+        addPacketPrototype(Packet.HELLO, EnterWorld.class);
+        addPacketPrototype(Packet.MOVE, StartMove.class);
+        addPacketPrototype(Packet.ZONE, EnterZone.class);
+        addPacketPrototype(Packet.CHAT, SendMessage.class);
     }
 
     public void addPacketPrototype(int opcode, Class<? extends Packet> prototype) {
