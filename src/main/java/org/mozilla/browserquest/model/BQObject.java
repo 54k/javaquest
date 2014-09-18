@@ -2,12 +2,14 @@ package org.mozilla.browserquest.model;
 
 import org.mozilla.browserquest.actor.Actor;
 import org.mozilla.browserquest.actor.Actor.Prototype;
-import org.mozilla.browserquest.model.interfaces.Positionable;
 import org.mozilla.browserquest.model.actor.knownlist.KnownList;
 import org.mozilla.browserquest.model.actor.knownlist.ObjectKnownList;
+import org.mozilla.browserquest.model.interfaces.Identifiable;
+import org.mozilla.browserquest.model.interfaces.Positionable;
+import org.vertx.java.core.json.JsonArray;
 
 @Prototype
-public abstract class BQObject extends Actor implements Positionable {
+public abstract class BQObject extends Actor implements Identifiable, Positionable {
 
     private int id;
     private String name;
@@ -26,6 +28,7 @@ public abstract class BQObject extends Actor implements Positionable {
         return new ObjectKnownList(this);
     }
 
+    @Override
     public int getId() {
         return id;
     }
@@ -91,5 +94,38 @@ public abstract class BQObject extends Actor implements Positionable {
     public void setPosition(Position position) {
         x = position.getX();
         y = position.getY();
+    }
+
+    public abstract JsonArray getInfo();
+
+    public void onSpawn() {
+    }
+
+    public void onDecay() {
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        BQObject obj = (BQObject) o;
+
+        return id == obj.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return id;
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "[id=" + id + ", name=" + name + ']';
     }
 }

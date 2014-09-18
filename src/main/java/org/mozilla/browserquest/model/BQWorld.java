@@ -1,16 +1,14 @@
 package org.mozilla.browserquest.model;
 
 import com.google.inject.Inject;
+import org.mozilla.browserquest.model.actor.BQPlayer;
 import org.mozilla.browserquest.template.BQWorldTemplate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class BQWorld {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(BQWorld.class);
 
     private static final int REGION_WIDTH = 28;
     private static final int REGION_HEIGHT = 12;
@@ -20,6 +18,7 @@ public class BQWorld {
     private final int regionOffset;
 
     private Map<Integer, BQObject> objects = new ConcurrentHashMap<>();
+    private Map<Integer, BQPlayer> players = new ConcurrentHashMap<>();
 
     private Map<Integer, BQWorldRegion> regions = new ConcurrentHashMap<>();
 
@@ -44,8 +43,6 @@ public class BQWorld {
                 addSurroundingRegions(i, j);
             }
         }
-
-        LOGGER.info("Regions initialized.");
     }
 
     private int getRegionId(int x, int y) {
@@ -76,11 +73,66 @@ public class BQWorld {
         return regions.get(getRegionId(x, y));
     }
 
-    public void storeObject(BQObject object) {
+    public void addObject(BQObject object) {
         objects.put(object.getId(), object);
+        if (object instanceof BQPlayer) {
+            addPlayer((BQPlayer) object);
+        }
     }
 
     public void removeObject(BQObject object) {
         objects.remove(object.getId(), object);
+        if (object instanceof BQPlayer) {
+            removePlayer((BQPlayer) object);
+        }
+    }
+
+    public BQObject findObject(int id) {
+        return objects.get(id);
+    }
+
+    public Map<Integer, BQObject> getObjects() {
+        return Collections.unmodifiableMap(players);
+    }
+
+    private void addPlayer(BQPlayer player) {
+        players.put(player.getId(), player);
+    }
+
+    private void removePlayer(BQPlayer player) {
+        players.remove(player.getId());
+    }
+
+    public Map<Integer, BQPlayer> getPlayers() {
+        return Collections.unmodifiableMap(players);
+    }
+
+    public void spawnObject(BQObject object) {
+        BQWorldRegion region = getRegion(object.getPosition());
+        object.setRegion(region);
+        region.addObject(object);
+        object.getKnownList().updateKnownObjects();
+        object.onSpawn();
+    }
+
+    public void decayObject(BQObject object) {
+        BQWorldRegion region = object.getRegion();
+        region.removeObject(object);
+        object.setRegion(null);
+        object.getKnownList().clearKnownObjects();
+        object.onDecay();
+    }
+
+    public void updateObject(BQObject object) {
+        BQWorldRegion oldRegion = object.getRegion();
+        BQWorldRegion newRegion = getRegion(object.getPosition());
+
+        if (oldRegion != newRegion) {
+            oldRegion.removeObject(object);
+            object.setRegion(newRegion);
+            newRegion.addObject(object);
+        }
+
+        object.getKnownList().updateKnownObjects();
     }
 }

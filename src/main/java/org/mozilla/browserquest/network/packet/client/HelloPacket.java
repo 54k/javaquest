@@ -4,7 +4,6 @@ import com.google.inject.Inject;
 import org.mozilla.browserquest.actor.ActorFactory;
 import org.mozilla.browserquest.idfactory.IdFactory;
 import org.mozilla.browserquest.model.BQWorld;
-import org.mozilla.browserquest.model.BQWorldRegion;
 import org.mozilla.browserquest.model.Position;
 import org.mozilla.browserquest.model.actor.BQPlayer;
 import org.mozilla.browserquest.network.packet.Packet;
@@ -61,12 +60,6 @@ public class HelloPacket extends Packet {
 
         player.setPosition(startPosition);
 
-        world.storeObject(player);
-        BQWorldRegion region = world.getRegion(player.getPosition());
-        region.addObject(player);
-        player.setRegion(region);
-        player.getKnownList().updateKnownObjects();
-
         JsonArray welcomePacket = new JsonArray();
         welcomePacket.addNumber(Packet.WELCOME);
         welcomePacket.addNumber(player.getId());   //id
@@ -76,6 +69,9 @@ public class HelloPacket extends Packet {
         welcomePacket.addNumber(0);        //hp
 
         getConnection().write(welcomePacket.encode());
+
+        world.addObject(player);
+        world.spawnObject(player);
         //        boolean hasEnteredInGame = BQPlayer.isHasEnteredInGame();
         //
         //        if (hasEnteredInGame) {

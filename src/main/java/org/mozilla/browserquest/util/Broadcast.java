@@ -2,7 +2,6 @@ package org.mozilla.browserquest.util;
 
 import org.mozilla.browserquest.model.BQObject;
 import org.mozilla.browserquest.model.actor.BQPlayer;
-import org.mozilla.browserquest.model.interfaces.Positionable;
 
 public final class Broadcast {
 

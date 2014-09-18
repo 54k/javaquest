@@ -4,6 +4,7 @@ import org.mozilla.browserquest.model.BQWorldRegion;
 import org.mozilla.browserquest.model.Position;
 
 public interface Positionable {
+
     BQWorldRegion getRegion();
 
     void setRegion(BQWorldRegion region);

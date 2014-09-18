@@ -16,6 +16,8 @@ public class BQWorldRegion {
 
     private Set<BQWorldRegion> surroundingRegions = new HashSet<>();
 
+    private boolean active = true;
+
     void addSurroundingRegion(BQWorldRegion region) {
         Preconditions.checkNotNull(region);
         surroundingRegions.add(region);
@@ -45,5 +47,9 @@ public class BQWorldRegion {
 
     public Map<Integer, BQPlayer> getPlayers() {
         return Collections.unmodifiableMap(players);
+    }
+
+    public boolean isActive() {
+        return active;
     }
 }
