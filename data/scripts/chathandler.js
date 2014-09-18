@@ -3,31 +3,30 @@ function write(p, m) {
 }
 
 function broadcast(p, m) {
-    for each (var kp in p.knownList.knownPlayers.values) {
+    for each (var kp in p.knownList.knownPlayers.values()) {
         kp.connection.write(JSON.stringify(m));
     }
 }
 
 exports = {
     commands: {
-        "pos": function (p, m) {
+        "/position": function (p, m) {
             m.push("x: " + p.x + ", y: " + p.y);
             write(p, m);
         },
-        "players": function (p, m) {
+        "/around": function (p, m) {
             var players = 0;
-            for (var r in p.region.surroundingRegions) {
-                players += r.players.size;
+            for each(var r in p.region.surroundingRegions) {
+                players += r.players.size();
             }
-            m.push("Players around: " + players);
+            m.push("Players around: " + Math.max(players - 1, 0));
             write(p, m);
         },
-        "online": function (p, m) {
-            var table = "<table><tr><td>ID</td><td>NAME</td>POS<td></td></tr>";
-            for each (var wp in p.world.players.values) {
-				table += "<tr><td>" + wp.id + "</td><td>" + wp.name + "</td><td>" + wp.x + ", y: " + wp.y + "</td></tr>";
+        "/who": function (p, m) {
+			var table = "<p>ID -- NAME -- POSITION</p>";
+            for each (var wp in p.world.players.values()) {
+				table += "<p>" + wp.id + " -- " + wp.name + " -- [x: " + wp.x + ", y: " + wp.y + "]</p>";
             }
-			table += "</table>";
 			m.push(table);
 			write(p, m);
         }
