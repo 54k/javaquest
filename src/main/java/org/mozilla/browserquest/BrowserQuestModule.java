@@ -5,14 +5,14 @@ import com.google.inject.Provides;
 import com.google.inject.Scopes;
 import org.mozilla.browserquest.actor.ActorFactory;
 import org.mozilla.browserquest.actor.DefaultActorFactory;
-import org.mozilla.browserquest.idfactory.DefaultIdFactoryService;
-import org.mozilla.browserquest.idfactory.IdFactoryService;
+import org.mozilla.browserquest.idfactory.DefaultIdFactory;
+import org.mozilla.browserquest.idfactory.IdFactory;
 import org.mozilla.browserquest.model.BQWorld;
 import org.mozilla.browserquest.script.DefaultScriptService;
 import org.mozilla.browserquest.script.ScriptService;
 import org.mozilla.browserquest.staticdata.DataService;
 import org.mozilla.browserquest.staticdata.DefaultDataService;
-import org.mozilla.browserquest.staticdata.template.BQWorldTemplate;
+import org.mozilla.browserquest.template.BQWorldTemplate;
 import org.vertx.java.core.Vertx;
 import org.vertx.java.core.file.FileSystem;
 import org.vertx.java.core.logging.Logger;
@@ -33,7 +33,7 @@ public class BrowserQuestModule extends AbstractModule {
         bind(ScriptService.class).to(DefaultScriptService.class).asEagerSingleton();
         bind(DataService.class).to(DefaultDataService.class).asEagerSingleton();
 
-        bind(IdFactoryService.class).to(DefaultIdFactoryService.class).in(Scopes.SINGLETON);
+        bind(IdFactory.class).to(DefaultIdFactory.class).in(Scopes.SINGLETON);
         bind(ActorFactory.class).to(DefaultActorFactory.class).in(Scopes.SINGLETON);
 
         bind(BQWorld.class).asEagerSingleton();

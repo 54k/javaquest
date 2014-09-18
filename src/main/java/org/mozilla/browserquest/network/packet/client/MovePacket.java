@@ -1,8 +1,8 @@
 package org.mozilla.browserquest.network.packet.client;
 
 import org.mozilla.browserquest.model.actor.BQPlayer;
-import org.mozilla.browserquest.model.behavior.Position;
-import org.mozilla.browserquest.model.behavior.Positionable;
+import org.mozilla.browserquest.model.Position;
+import org.mozilla.browserquest.model.interfaces.Positionable;
 import org.mozilla.browserquest.network.packet.Packet;
 import org.mozilla.browserquest.util.Broadcast;
 import org.vertx.java.core.json.JsonArray;
@@ -31,8 +31,8 @@ public class MovePacket extends Packet {
 
         JsonArray jsonArray = new JsonArray();
         jsonArray.addNumber(Packet.MOVE);
-        jsonArray.addNumber(BQPlayer.getObjectId());   //id
-        Position position = BQPlayer.asBehavior(Positionable.class).getPosition();
+        jsonArray.addNumber(BQPlayer.getId());   //id
+        Position position = BQPlayer.getPosition();
         jsonArray.addNumber(position.getX());   //x
         jsonArray.addNumber(position.getY());      //y
 

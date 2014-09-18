@@ -1,7 +1,7 @@
 package org.mozilla.browserquest.model;
 
 import com.google.inject.Inject;
-import org.mozilla.browserquest.staticdata.template.BQWorldTemplate;
+import org.mozilla.browserquest.template.BQWorldTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,9 +58,7 @@ public class BQWorld {
             for (int j = y - REGION_HEIGHT; j <= y + REGION_HEIGHT; j += REGION_HEIGHT) {
                 if (isValidRegionPosition(i, j)) {
                     BQWorldRegion sr = regions.get(getRegionId(i, j));
-                    if (region != sr) {
-                        region.addSurroundingRegion(sr);
-                    }
+                    region.addSurroundingRegion(sr);
                 }
             }
         }
@@ -68,5 +66,21 @@ public class BQWorld {
 
     private boolean isValidRegionPosition(int x, int y) {
         return x >= 0 && y >= 0 && x <= width && y <= height;
+    }
+
+    public BQWorldRegion getRegion(Position position) {
+        return getRegion(position.getX(), position.getY());
+    }
+
+    public BQWorldRegion getRegion(int x, int y) {
+        return regions.get(getRegionId(x, y));
+    }
+
+    public void storeObject(BQObject object) {
+        objects.put(object.getId(), object);
+    }
+
+    public void removeObject(BQObject object) {
+        objects.remove(object.getId(), object);
     }
 }

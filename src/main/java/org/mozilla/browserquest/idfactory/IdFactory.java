@@ -1,6 +1,6 @@
 package org.mozilla.browserquest.idfactory;
 
-public interface IdFactoryService {
+public interface IdFactory {
 
     int getNextId();
 

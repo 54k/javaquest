@@ -1,13 +1,9 @@
-package org.mozilla.browserquest.model.behavior;
+package org.mozilla.browserquest.model.interfaces;
 
-import org.mozilla.browserquest.model.BQObject;
 import org.mozilla.browserquest.model.BQWorldRegion;
-import org.mozilla.browserquest.model.knownlist.KnownList;
+import org.mozilla.browserquest.model.Position;
 
 public interface Positionable {
-
-    KnownList<BQObject> getKnownList();
-
     BQWorldRegion getRegion();
 
     void setRegion(BQWorldRegion region);
@@ -19,6 +15,8 @@ public interface Positionable {
     int getY();
 
     void setY(int y);
+
+    void setXY(int x, int y);
 
     Position getPosition();
 

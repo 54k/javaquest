@@ -1,4 +1,4 @@
-package org.mozilla.browserquest.staticdata.template;
+package org.mozilla.browserquest.template;
 
 import java.util.List;
 import java.util.Map;

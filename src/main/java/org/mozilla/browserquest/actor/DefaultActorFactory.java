@@ -1,6 +1,7 @@
 package org.mozilla.browserquest.actor;
 
 import com.google.common.base.Preconditions;
+import javassist.ClassClassPath;
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtMethod;
@@ -111,6 +112,7 @@ public class DefaultActorFactory implements ActorFactory {
     }
 
     private CtClass asCtClass(Class<?> clazz) throws Exception {
+        classPool.appendClassPath(new ClassClassPath(clazz));
         return classPool.get(clazz.getName());
     }
 }

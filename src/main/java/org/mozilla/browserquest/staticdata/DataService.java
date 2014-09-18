@@ -1,6 +1,6 @@
 package org.mozilla.browserquest.staticdata;
 
-import org.mozilla.browserquest.staticdata.template.BQWorldTemplate;
+import org.mozilla.browserquest.template.BQWorldTemplate;
 
 public interface DataService {
 

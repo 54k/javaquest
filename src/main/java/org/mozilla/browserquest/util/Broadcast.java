@@ -2,6 +2,7 @@ package org.mozilla.browserquest.util;
 
 import org.mozilla.browserquest.model.BQObject;
 import org.mozilla.browserquest.model.actor.BQPlayer;
+import org.mozilla.browserquest.model.interfaces.Positionable;
 
 public final class Broadcast {
 
@@ -9,11 +10,11 @@ public final class Broadcast {
     }
 
     public static void toSelf(BQPlayer object, String packet) {
-        //        object.getConnection().write(packet);
+        object.getConnection().write(packet);
     }
 
     public static void toKnownPlayers(BQObject object, String packet) {
-        //        object.getKnownList().getKnownPlayers().values().forEach(p -> p.getConnection().write(packet));
+        object.getKnownList().getKnownPlayers().values().forEach(p -> p.getConnection().write(packet));
     }
 
     public static void toSelfAndKnownPlayers(BQPlayer object, String packet) {
@@ -22,7 +23,7 @@ public final class Broadcast {
     }
 
     public static void toPlayersInRegion(BQObject object, String packet) {
-        //        object.asBehavior(Positionable.class).getRegion().getObjects().values().stream().filter(p -> p != object).forEach(p -> p.getConnection().write(packet));
+        object.getRegion().getPlayers().values().stream().filter(p -> p != object).forEach(p -> p.getConnection().write(packet));
     }
 
     public static void toSelfAndPlayersInRegion(BQPlayer object, String packet) {

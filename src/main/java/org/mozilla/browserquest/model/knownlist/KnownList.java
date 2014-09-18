@@ -5,9 +5,9 @@ import org.mozilla.browserquest.model.actor.BQPlayer;
 
 import java.util.Map;
 
-public interface KnownList<T extends BQObject> {
+public interface KnownList {
 
-    T getActiveObject();
+    BQObject getActiveObject();
 
     Map<Integer, BQObject> getKnownObjects();
 

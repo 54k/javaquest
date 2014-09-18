@@ -2,9 +2,15 @@ package org.mozilla.browserquest.network.packet.client;
 
 import com.google.inject.Inject;
 import org.mozilla.browserquest.actor.ActorFactory;
+import org.mozilla.browserquest.idfactory.IdFactory;
 import org.mozilla.browserquest.model.BQWorld;
+import org.mozilla.browserquest.model.BQWorldRegion;
+import org.mozilla.browserquest.model.Position;
 import org.mozilla.browserquest.model.actor.BQPlayer;
 import org.mozilla.browserquest.network.packet.Packet;
+import org.mozilla.browserquest.template.BQWorldTemplate;
+import org.mozilla.browserquest.template.CheckpointTemplate;
+import org.vertx.java.core.json.JsonArray;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -16,6 +22,10 @@ public class HelloPacket extends Packet {
     private BQWorld world;
     @Inject
     private ActorFactory actorFactory;
+    @Inject
+    private BQWorldTemplate template;
+    @Inject
+    private IdFactory idFactory;
 
     private String playerName;
     private int armor;
@@ -34,7 +44,38 @@ public class HelloPacket extends Packet {
             getConnection().setPlayer(actorFactory.newActor(BQPlayer.class));
         }
 
-        BQPlayer BQPlayer = getConnection().getPlayer();
+        BQPlayer player = getConnection().getPlayer();
+        player.setConnection(getConnection());
+
+        player.setId(idFactory.getNextId());
+        player.setName(playerName);
+
+        Position startPosition = new Position();
+        for (CheckpointTemplate checkpointTemplate : template.getCheckpoints()) {
+            if (checkpointTemplate.getS() == 1) {
+                startPosition.setX(checkpointTemplate.getX());
+                startPosition.setY(checkpointTemplate.getY());
+                break;
+            }
+        }
+
+        player.setPosition(startPosition);
+
+        world.storeObject(player);
+        BQWorldRegion region = world.getRegion(player.getPosition());
+        region.addObject(player);
+        player.setRegion(region);
+        player.getKnownList().updateKnownObjects();
+
+        JsonArray welcomePacket = new JsonArray();
+        welcomePacket.addNumber(Packet.WELCOME);
+        welcomePacket.addNumber(player.getId());   //id
+        welcomePacket.addString(player.getName());   //name
+        welcomePacket.addNumber(player.getX());   //x
+        welcomePacket.addNumber(player.getY());      //y
+        welcomePacket.addNumber(0);        //hp
+
+        getConnection().write(welcomePacket.encode());
         //        boolean hasEnteredInGame = BQPlayer.isHasEnteredInGame();
         //
         //        if (hasEnteredInGame) {

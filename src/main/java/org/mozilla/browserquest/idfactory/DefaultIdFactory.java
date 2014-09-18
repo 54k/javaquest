@@ -4,7 +4,7 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class DefaultIdFactoryService implements IdFactoryService {
+public class DefaultIdFactory implements IdFactory {
 
     private AtomicInteger sequence = new AtomicInteger();
     private Queue<Integer> queue = new ConcurrentLinkedQueue<>();

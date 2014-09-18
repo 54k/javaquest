@@ -1,7 +1,7 @@
 package org.mozilla.browserquest.staticdata;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.mozilla.browserquest.staticdata.template.BQWorldTemplate;
+import org.mozilla.browserquest.template.BQWorldTemplate;
 
 import java.io.File;
 

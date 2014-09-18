@@ -1,4 +1,4 @@
-package org.mozilla.browserquest.staticdata.template;
+package org.mozilla.browserquest.template;
 
 // Zone?
 public class CheckpointTemplate {
