@@ -3,8 +3,8 @@ package org.mozilla.browserquest.model;
 import org.mozilla.browserquest.actor.Actor;
 import org.mozilla.browserquest.actor.Actor.Prototype;
 import org.mozilla.browserquest.model.interfaces.Positionable;
-import org.mozilla.browserquest.model.knownlist.KnownList;
-import org.mozilla.browserquest.model.knownlist.ObjectKnownList;
+import org.mozilla.browserquest.model.actor.knownlist.KnownList;
+import org.mozilla.browserquest.model.actor.knownlist.ObjectKnownList;
 
 @Prototype
 public abstract class BQObject extends Actor implements Positionable {

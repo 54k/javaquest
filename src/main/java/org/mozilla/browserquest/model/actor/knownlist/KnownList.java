@@ -1,4 +1,4 @@
-package org.mozilla.browserquest.model.knownlist;
+package org.mozilla.browserquest.model.actor.knownlist;
 
 import org.mozilla.browserquest.model.BQObject;
 import org.mozilla.browserquest.model.actor.BQPlayer;
