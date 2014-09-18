@@ -5,6 +5,8 @@ import com.google.inject.Provides;
 import com.google.inject.Scopes;
 import org.mozilla.browserquest.actor.ActorFactory;
 import org.mozilla.browserquest.actor.DefaultActorFactory;
+import org.mozilla.browserquest.chat.ChatHandler;
+import org.mozilla.browserquest.chat.DefaultChatHandler;
 import org.mozilla.browserquest.idfactory.DefaultIdFactory;
 import org.mozilla.browserquest.idfactory.IdFactory;
 import org.mozilla.browserquest.model.BQWorld;
@@ -32,6 +34,8 @@ public class BrowserQuestModule extends AbstractModule {
     protected void configure() {
         bind(ScriptService.class).to(DefaultScriptService.class).asEagerSingleton();
         bind(DataService.class).to(DefaultDataService.class).asEagerSingleton();
+
+        bind(ChatHandler.class).to(DefaultChatHandler.class).asEagerSingleton();
 
         bind(IdFactory.class).to(DefaultIdFactory.class).in(Scopes.SINGLETON);
         bind(ActorFactory.class).to(DefaultActorFactory.class).in(Scopes.SINGLETON);

@@ -1,6 +1,7 @@
 package org.mozilla.browserquest.model;
 
 import com.google.common.base.Preconditions;
+import org.mozilla.browserquest.model.actor.BQObject;
 import org.mozilla.browserquest.model.actor.BQPlayer;
 
 import java.util.Collections;

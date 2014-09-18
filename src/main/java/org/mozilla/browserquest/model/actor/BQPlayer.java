@@ -1,15 +1,15 @@
 package org.mozilla.browserquest.model.actor;
 
 import org.mozilla.browserquest.actor.Actor.Prototype;
-import org.mozilla.browserquest.model.BQObject;
 import org.mozilla.browserquest.model.actor.behavior.MovableBehavior;
 import org.mozilla.browserquest.model.actor.knownlist.KnownList;
 import org.mozilla.browserquest.model.actor.knownlist.PlayerKnownList;
+import org.mozilla.browserquest.model.interfaces.MovableProjection;
 import org.mozilla.browserquest.network.NetworkConnection;
 import org.vertx.java.core.json.JsonArray;
 
 @Prototype({MovableBehavior.class})
-public abstract class BQPlayer extends BQObject {
+public abstract class BQPlayer extends BQObject implements MovableProjection {
 
     private NetworkConnection connection;
 

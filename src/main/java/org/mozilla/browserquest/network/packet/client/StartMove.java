@@ -1,7 +1,6 @@
 package org.mozilla.browserquest.network.packet.client;
 
 import org.mozilla.browserquest.model.actor.BQPlayer;
-import org.mozilla.browserquest.model.interfaces.Movable;
 import org.mozilla.browserquest.network.packet.Packet;
 
 public class StartMove extends Packet {
@@ -18,6 +17,6 @@ public class StartMove extends Packet {
     @Override
     public void run() {
         BQPlayer player = getConnection().getPlayer();
-        player.asBehavior(Movable.class).moveTo(x, y);
+        player.asMovable().moveTo(x, y);
     }
 }

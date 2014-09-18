@@ -1,6 +1,7 @@
 package org.mozilla.browserquest.model;
 
 import com.google.inject.Inject;
+import org.mozilla.browserquest.model.actor.BQObject;
 import org.mozilla.browserquest.model.actor.BQPlayer;
 import org.mozilla.browserquest.template.BQWorldTemplate;
 
@@ -105,34 +106,5 @@ public class BQWorld {
 
     public Map<Integer, BQPlayer> getPlayers() {
         return Collections.unmodifiableMap(players);
-    }
-
-    public void spawnObject(BQObject object) {
-        BQWorldRegion region = getRegion(object.getPosition());
-        object.setRegion(region);
-        region.addObject(object);
-        object.getKnownList().updateKnownObjects();
-        object.onSpawn();
-    }
-
-    public void decayObject(BQObject object) {
-        BQWorldRegion region = object.getRegion();
-        region.removeObject(object);
-        object.setRegion(null);
-        object.getKnownList().clearKnownObjects();
-        object.onDecay();
-    }
-
-    public void updateObject(BQObject object) {
-        BQWorldRegion oldRegion = object.getRegion();
-        BQWorldRegion newRegion = getRegion(object.getPosition());
-
-        if (oldRegion != newRegion) {
-            oldRegion.removeObject(object);
-            object.setRegion(newRegion);
-            newRegion.addObject(object);
-        }
-
-        object.getKnownList().updateKnownObjects();
     }
 }

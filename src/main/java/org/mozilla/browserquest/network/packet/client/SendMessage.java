@@ -1,10 +1,13 @@
 package org.mozilla.browserquest.network.packet.client;
 
+import com.google.inject.Inject;
+import org.mozilla.browserquest.chat.ChatHandler;
 import org.mozilla.browserquest.network.packet.Packet;
-import org.mozilla.browserquest.util.Broadcast;
-import org.vertx.java.core.json.JsonArray;
 
 public class SendMessage extends Packet {
+
+    @Inject
+    private ChatHandler chatHandler;
 
     private String message;
 
@@ -15,11 +18,12 @@ public class SendMessage extends Packet {
 
     @Override
     public void run() {
-        JsonArray jsonArray = new JsonArray();
-        jsonArray.add(Packet.CHAT);
-        jsonArray.add(getConnection().getPlayer().getId());
-        jsonArray.add(message);
-
-        Broadcast.toSelfAndPlayersInRegion(getConnection().getPlayer(), jsonArray.encode());
+        chatHandler.handle(getConnection().getPlayer(), message);
+//        JsonArray jsonArray = new JsonArray();
+//        jsonArray.add(Packet.CHAT);
+//        jsonArray.add(getConnection().getPlayer().getId());
+//        jsonArray.add(message);
+//
+//        Broadcast.toSelfAndPlayersInRegion(getConnection().getPlayer(), jsonArray.encode());
     }
 }

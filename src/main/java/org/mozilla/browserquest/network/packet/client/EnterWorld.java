@@ -58,7 +58,9 @@ public class EnterWorld extends Packet {
             }
         }
 
+        world.addObject(player);
         player.setWorld(world);
+        player.setRegion(world.getRegion(startPosition));
         player.setPosition(startPosition);
 
         JsonArray welcomePacket = new JsonArray();
@@ -71,7 +73,6 @@ public class EnterWorld extends Packet {
 
         getConnection().write(welcomePacket.encode());
 
-        world.addObject(player);
-        world.spawnObject(player);
+        player.spawnMe();
     }
 }

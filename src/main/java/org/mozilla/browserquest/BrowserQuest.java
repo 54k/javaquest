@@ -3,10 +3,8 @@ package org.mozilla.browserquest;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import org.mozilla.browserquest.model.BQWorld;
 import org.mozilla.browserquest.network.DefaultNetworkServer;
 import org.mozilla.browserquest.network.NetworkServer;
-import org.mozilla.browserquest.script.ScriptService;
 import org.vertx.java.core.file.FileSystem;
 import org.vertx.java.core.http.HttpServerRequest;
 import org.vertx.java.core.json.JsonArray;
@@ -14,8 +12,6 @@ import org.vertx.java.core.json.JsonObject;
 import org.vertx.java.core.logging.Logger;
 import org.vertx.java.platform.Verticle;
 
-import javax.script.SimpleScriptContext;
-import java.io.File;
 import java.util.Optional;
 
 public class BrowserQuest extends Verticle {
@@ -24,19 +20,12 @@ public class BrowserQuest extends Verticle {
     private Logger logger;
     @Inject
     private FileSystem fileSystem;
-    @Inject
-    private BQWorld world;
-    @Inject
-    private ScriptService scriptService;
-
     private NetworkServer networkServer;
 
     @Override
     public void start() {
         Injector injector = Guice.createInjector(new BrowserQuestModule(getVertx(), getContainer()));
         injector.injectMembers(this);
-        SimpleScriptContext ctx = new SimpleScriptContext();
-        scriptService.newProxy(Runnable.class, new File(ScriptService.SCRIPT_FOLDER, "test.js"), ctx).run();
 
         logger.info("Starting BrowserQuest server");
 

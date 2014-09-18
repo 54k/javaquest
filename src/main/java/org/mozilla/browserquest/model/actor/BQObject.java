@@ -1,7 +1,10 @@
-package org.mozilla.browserquest.model;
+package org.mozilla.browserquest.model.actor;
 
 import org.mozilla.browserquest.actor.Actor;
 import org.mozilla.browserquest.actor.Actor.Prototype;
+import org.mozilla.browserquest.model.BQWorld;
+import org.mozilla.browserquest.model.BQWorldRegion;
+import org.mozilla.browserquest.model.Position;
 import org.mozilla.browserquest.model.actor.knownlist.KnownList;
 import org.mozilla.browserquest.model.actor.knownlist.ObjectKnownList;
 import org.mozilla.browserquest.model.interfaces.Identifiable;
@@ -92,8 +95,24 @@ public abstract class BQObject extends Actor implements Identifiable, Positionab
 
     @Override
     public void setXY(int x, int y) {
+        assert getRegion() != null;
+
         this.x = x;
         this.y = y;
+        updateRegion();
+    }
+
+    public void updateRegion() {
+        BQWorldRegion oldRegion = getRegion();
+        BQWorldRegion newRegion = getWorld().getRegion(getPosition());
+
+        if (oldRegion != newRegion) {
+            oldRegion.removeObject(this);
+            setRegion(newRegion);
+            newRegion.addObject(this);
+        }
+
+        getKnownList().updateKnownObjects();
     }
 
     @Override
@@ -103,13 +122,32 @@ public abstract class BQObject extends Actor implements Identifiable, Positionab
 
     @Override
     public void setPosition(Position position) {
-        x = position.getX();
-        y = position.getY();
+        setXY(position.getX(), position.getY());
     }
 
     public abstract JsonArray getInfo();
 
+    public void spawnMe() {
+        assert getRegion() == null;
+
+        BQWorldRegion region = world.getRegion(getPosition());
+        setRegion(region);
+        region.addObject(this);
+        getKnownList().updateKnownObjects();
+        onSpawn();
+    }
+
     public void onSpawn() {
+    }
+
+    public void decayMe() {
+        assert getRegion() != null;
+
+        BQWorldRegion region = getRegion();
+        region.removeObject(this);
+        setRegion(null);
+        getKnownList().clearKnownObjects();
+        onDecay();
     }
 
     public void onDecay() {

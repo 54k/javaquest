@@ -2,7 +2,7 @@ package org.mozilla.browserquest.model.actor.behavior;
 
 import org.mozilla.browserquest.actor.Behavior;
 import org.mozilla.browserquest.actor.Behavior.Prototype;
-import org.mozilla.browserquest.model.BQObject;
+import org.mozilla.browserquest.model.actor.BQObject;
 import org.mozilla.browserquest.model.BQWorldRegion;
 import org.mozilla.browserquest.model.Position;
 import org.mozilla.browserquest.model.interfaces.Movable;

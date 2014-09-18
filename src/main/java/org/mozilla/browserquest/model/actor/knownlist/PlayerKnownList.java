@@ -1,6 +1,6 @@
 package org.mozilla.browserquest.model.actor.knownlist;
 
-import org.mozilla.browserquest.model.BQObject;
+import org.mozilla.browserquest.model.actor.BQObject;
 import org.mozilla.browserquest.model.actor.BQPlayer;
 import org.mozilla.browserquest.network.packet.Packet;
 import org.vertx.java.core.json.JsonArray;
