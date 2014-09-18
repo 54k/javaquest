@@ -60,9 +60,9 @@ public class EnterWorld extends Packet {
 
         world.addObject(player);
         player.setWorld(world);
-        player.setRegion(world.getRegion(startPosition));
-        player.setPosition(startPosition);
-
+        player.setX(startPosition.getX());
+        player.setY(startPosition.getY());
+		
         JsonArray welcomePacket = new JsonArray();
         welcomePacket.addNumber(Packet.WELCOME);
         welcomePacket.addNumber(player.getId());   //id
