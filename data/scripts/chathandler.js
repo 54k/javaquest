@@ -10,22 +10,18 @@ function broadcast(p, m) {
 
 exports = {
     commands: {
-        "/position": function (p, m) {
-            m.push("x: " + p.x + ", y: " + p.y);
-            write(p, m);
-        },
         "/around": function (p, m) {
             var players = 0;
             for each(var r in p.region.surroundingRegions) {
                 players += r.players.size();
             }
-            m.push("Players around: " + Math.max(players - 1, 0));
+            m.push("players around: " + Math.max(players - 1, 0));
             write(p, m);
         },
         "/who": function (p, m) {
-			var table = "<p>ID -- NAME -- POSITION</p>";
+			var table = "";
             for each (var wp in p.world.players.values()) {
-				table += "<p>" + wp.id + " -- " + wp.name + " -- [x: " + wp.x + ", y: " + wp.y + "]</p>";
+				table += "<p>" + wp.toString() + " - (x: " + wp.x + ", y: " + wp.y + ")</p>";
             }
 			m.push(table);
 			write(p, m);
@@ -34,7 +30,15 @@ exports = {
             p.connection.close();
         },
         "/me": function (p, m) {
-            m.push(p.toString());
+            m.push(p.toString()  + " - (x: " + wp.x + ", y: " + wp.y + ")");
+            write(p, m);
+        },
+        "/knownlist": function (p, m) {
+            var table = "";
+            for each (var o in p.knownList.knownObjects.values()) {
+                table += "<p>" + o.toString() + "</p>";
+            }
+            m.push(table.length == 0 ? "empty" : table);
             write(p, m);
         },
         "/help": function (p, m) {

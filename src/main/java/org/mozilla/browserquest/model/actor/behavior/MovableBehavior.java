@@ -4,9 +4,8 @@ import org.mozilla.browserquest.actor.Behavior;
 import org.mozilla.browserquest.actor.Behavior.Prototype;
 import org.mozilla.browserquest.model.Position;
 import org.mozilla.browserquest.model.actor.BQObject;
-import org.mozilla.browserquest.model.interfaces.Movable;
 import org.mozilla.browserquest.network.packet.Packet;
-import org.mozilla.browserquest.util.Broadcast;
+import org.mozilla.browserquest.util.BroadcastUtil;
 import org.vertx.java.core.json.JsonArray;
 
 @Prototype(Movable.class)
@@ -15,7 +14,7 @@ public class MovableBehavior extends Behavior<BQObject> implements Movable {
     @Override
     public void moveTo(int x, int y) {
         BQObject activeObject = getActor();
-        activeObject.setXY(x, y);
+        activeObject.asPositionable().setXY(x, y);
 
         Position position = activeObject.getPosition();
 
@@ -25,6 +24,6 @@ public class MovableBehavior extends Behavior<BQObject> implements Movable {
         jsonArray.addNumber(position.getX());   //x
         jsonArray.addNumber(position.getY());      //y
 
-        Broadcast.toKnownPlayers(activeObject, jsonArray.encode());
+        BroadcastUtil.toKnownPlayers(activeObject, jsonArray.encode());
     }
 }

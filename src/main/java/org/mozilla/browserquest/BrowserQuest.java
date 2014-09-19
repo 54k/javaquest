@@ -3,6 +3,7 @@ package org.mozilla.browserquest;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import org.mozilla.browserquest.model.BQWorld;
 import org.mozilla.browserquest.network.DefaultNetworkServer;
 import org.mozilla.browserquest.network.NetworkServer;
 import org.vertx.java.core.file.FileSystem;
@@ -20,6 +21,9 @@ public class BrowserQuest extends Verticle {
     private Logger logger;
     @Inject
     private FileSystem fileSystem;
+    @Inject
+    private BQWorld world;
+
     private NetworkServer networkServer;
 
     @Override
@@ -63,8 +67,7 @@ public class BrowserQuest extends Verticle {
     }
 
     private String getWorldDistribution() {
-        JsonArray status = new JsonArray();
-        //        world.getWorldInstances().stream().forEach(world -> status.add(world.getPlayersCount()));
+        JsonArray status = new JsonArray(new Object[]{world.getPlayers().size()});
         return status.encode();
     }
 }

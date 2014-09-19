@@ -5,14 +5,14 @@ import org.mozilla.browserquest.actor.Actor.Prototype;
 import org.mozilla.browserquest.model.BQWorld;
 import org.mozilla.browserquest.model.BQWorldRegion;
 import org.mozilla.browserquest.model.Position;
+import org.mozilla.browserquest.model.actor.behavior.PositionableBehavior;
 import org.mozilla.browserquest.model.actor.knownlist.KnownList;
 import org.mozilla.browserquest.model.actor.knownlist.ObjectKnownList;
-import org.mozilla.browserquest.model.interfaces.Identifiable;
-import org.mozilla.browserquest.model.interfaces.Positionable;
+import org.mozilla.browserquest.model.projection.ObjectProjection;
 import org.vertx.java.core.json.JsonArray;
 
-@Prototype
-public abstract class BQObject extends Actor implements Identifiable, Positionable {
+@Prototype({PositionableBehavior.class})
+public abstract class BQObject extends Actor implements ObjectProjection {
 
     private int id;
     private String name;
@@ -33,7 +33,6 @@ public abstract class BQObject extends Actor implements Identifiable, Positionab
         return new ObjectKnownList(this);
     }
 
-    @Override
     public int getId() {
         return id;
     }
@@ -54,7 +53,6 @@ public abstract class BQObject extends Actor implements Identifiable, Positionab
         return knownList;
     }
 
-    @Override
     public BQWorld getWorld() {
         return world;
     }
@@ -63,95 +61,44 @@ public abstract class BQObject extends Actor implements Identifiable, Positionab
         this.world = world;
     }
 
-    @Override
     public BQWorldRegion getRegion() {
         return region;
     }
 
-    @Override
     public void setRegion(BQWorldRegion region) {
         this.region = region;
     }
 
-    @Override
     public int getX() {
         return x;
     }
 
-    @Override
     public void setX(int x) {
         this.x = x;
     }
 
-    @Override
     public int getY() {
         return y;
     }
 
-    @Override
     public void setY(int y) {
         this.y = y;
     }
 
-    @Override
     public void setXY(int x, int y) {
-        assert getRegion() != null;
-
         this.x = x;
         this.y = y;
-        updateRegion();
     }
 
-    public void updateRegion() {
-        BQWorldRegion oldRegion = getRegion();
-        BQWorldRegion newRegion = getWorld().findRegion(getPosition());
-
-        if (oldRegion != newRegion) {
-            oldRegion.removeObject(this);
-            setRegion(newRegion);
-            newRegion.addObject(this);
-        }
-
-        getKnownList().updateKnownObjects();
-    }
-
-    @Override
     public Position getPosition() {
         return new Position(x, y);
     }
 
-    @Override
     public void setPosition(Position position) {
         setXY(position.getX(), position.getY());
     }
 
     public abstract JsonArray getInfo();
-
-    public void spawnMe() {
-        assert getRegion() == null;
-
-        BQWorldRegion region = world.findRegion(getPosition());
-        setRegion(region);
-        region.addObject(this);
-        getKnownList().updateKnownObjects();
-        onSpawn();
-    }
-
-    public void onSpawn() {
-    }
-
-    public void decayMe() {
-        assert getRegion() != null;
-
-        BQWorldRegion region = getRegion();
-        region.removeObject(this);
-        setRegion(null);
-        getKnownList().clearKnownObjects();
-        onDecay();
-    }
-
-    public void onDecay() {
-    }
 
     @Override
     public boolean equals(Object o) {

@@ -3,9 +3,9 @@ package org.mozilla.browserquest.util;
 import org.mozilla.browserquest.model.actor.BQObject;
 import org.mozilla.browserquest.model.actor.BQPlayer;
 
-public final class Broadcast {
+public final class BroadcastUtil {
 
-    private Broadcast() {
+    private BroadcastUtil() {
     }
 
     public static void toSelf(BQPlayer object, String packet) {

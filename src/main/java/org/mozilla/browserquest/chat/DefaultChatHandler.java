@@ -8,19 +8,11 @@ import java.io.File;
 
 public class DefaultChatHandler implements ChatHandler {
 
-    private ChatHandler scriptChatHandler;
-
     @Inject
-    public DefaultChatHandler(ScriptService scriptService) {
-        load(scriptService);
-    }
-
-    private void load(ScriptService scriptService) {
-        scriptChatHandler = scriptService.newProxy(ChatHandler.class, new File(ScriptService.SCRIPT_FOLDER, "chathandler.js"));
-    }
+    private ScriptService scriptService;
 
     @Override
     public void handle(BQPlayer player, String message) {
-        scriptChatHandler.handle(player, message);
+        scriptService.newProxy(ChatHandler.class, new File(ScriptService.SCRIPT_FOLDER, "chathandler.js")).handle(player, message);
     }
 }

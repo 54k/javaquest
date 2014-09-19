@@ -4,9 +4,9 @@ import com.google.common.base.Preconditions;
 import org.mozilla.browserquest.model.BQWorldRegion;
 import org.mozilla.browserquest.model.actor.BQObject;
 import org.mozilla.browserquest.model.actor.BQPlayer;
+import org.mozilla.browserquest.util.PositionUtil;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -37,7 +37,7 @@ public class ObjectKnownList implements KnownList {
     }
 
     @Override
-    public boolean addKnownObject(BQObject object) {
+    public boolean addObject(BQObject object) {
         if (object == null) {
             return false;
         }
@@ -46,20 +46,32 @@ public class ObjectKnownList implements KnownList {
             return false;
         }
 
+        if (!inRange(object)) {
+            return false;
+        }
+
+        addToKnownList(object);
+        return true;
+    }
+
+    private boolean inRange(BQObject object) {
+        return PositionUtil.inRange(object, activeObject, getDistanceToFindObject(object));
+    }
+
+    public void addToKnownList(BQObject object) {
         knownObjects.put(object.getId(), object);
         if (object instanceof BQPlayer) {
             knownPlayers.put(object.getId(), (BQPlayer) object);
         }
 
         onObjectAddedToKnownList(object);
-        return true;
     }
 
     protected void onObjectAddedToKnownList(BQObject object) {
     }
 
     @Override
-    public boolean removeKnownObject(BQObject object) {
+    public boolean removeObject(BQObject object) {
         if (object == null) {
             return false;
         }
@@ -68,24 +80,36 @@ public class ObjectKnownList implements KnownList {
             return false;
         }
 
+        if (!outOfRange(object)) {
+            return false;
+        }
+
+        removeFromKnownList(object);
+        return true;
+    }
+
+    private boolean outOfRange(BQObject object) {
+        return PositionUtil.outOfRange(object, activeObject, getDistanceToForgetObject(object));
+    }
+
+    public void removeFromKnownList(BQObject object) {
         knownObjects.remove(object.getId());
         if (object instanceof BQPlayer) {
             knownPlayers.remove(object.getId());
         }
         onObjectRemovedFromKnownList(object);
-        return true;
     }
 
     protected void onObjectRemovedFromKnownList(BQObject object) {
     }
 
     @Override
-    public void clearKnownObjects() {
-        Iterator<BQObject> it = knownObjects.values().iterator();
-        while (it.hasNext()) {
-            BQObject object = it.next();
-            it.remove();
-            object.getKnownList().removeKnownObject(activeObject);
+    public void clearKnownList() {
+        knownObjects.clear();
+        BQWorldRegion region = activeObject.getRegion();
+        for (BQWorldRegion sr : region.getSurroundingRegions()) {
+            Collection<BQObject> objects = sr.getObjects().values();
+            objects.stream().filter(object -> object != activeObject).forEach(object -> object.getKnownList().removeFromKnownList(activeObject));
         }
     }
 
@@ -95,20 +119,19 @@ public class ObjectKnownList implements KnownList {
     }
 
     @Override
-    public void updateKnownObjects() {
+    public void updateKnownList() {
         forgetObjects();
         findObjects();
     }
 
     private void forgetObjects() {
-        Iterator<BQObject> it = knownObjects.values().iterator();
-        while (it.hasNext()) {
-            BQObject object = it.next();
-            if (!isObjectInRange(object, getDistanceToForgetObject(object))) {
-                it.remove();
-                onObjectRemovedFromKnownList(object);
-                object.getKnownList().removeKnownObject(activeObject);
-            }
+        BQWorldRegion region = activeObject.getRegion();
+        for (BQWorldRegion sr : region.getSurroundingRegions()) {
+            Collection<BQObject> objects = sr.getObjects().values();
+            objects.stream().filter(object -> object != activeObject).forEach(object -> {
+                removeObject(object);
+                object.getKnownList().removeObject(activeObject);
+            });
         }
     }
 
@@ -120,15 +143,14 @@ public class ObjectKnownList implements KnownList {
         BQWorldRegion region = activeObject.getRegion();
         for (BQWorldRegion sr : region.getSurroundingRegions()) {
             Collection<BQObject> objects = sr.getObjects().values();
-            objects.stream().filter(object -> object != activeObject && isObjectInRange(object, getDistanceToFindObject(object))).forEach(this::addKnownObject);
+            objects.stream().filter(object -> object != activeObject).forEach(object -> {
+                addObject(object);
+                object.getKnownList().addObject(activeObject);
+            });
         }
     }
 
     protected int getDistanceToFindObject(BQObject object) {
         return 0;
-    }
-
-    private boolean isObjectInRange(BQObject object, int range) {
-        return Math.abs(object.getX() - activeObject.getX()) <= range && Math.abs(object.getY() - activeObject.getY()) <= range;
     }
 }

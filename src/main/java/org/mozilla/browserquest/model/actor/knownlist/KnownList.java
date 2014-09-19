@@ -13,13 +13,17 @@ public interface KnownList {
 
     Map<Integer, BQPlayer> getKnownPlayers();
 
-    boolean addKnownObject(BQObject object);
+    boolean addObject(BQObject object);
 
-    boolean removeKnownObject(BQObject object);
+    boolean removeObject(BQObject object);
 
-    void clearKnownObjects();
+    void addToKnownList(BQObject object);
+
+    void removeFromKnownList(BQObject object);
+
+    void clearKnownList();
 
     boolean knowsObject(BQObject object);
 
-    void updateKnownObjects();
+    void updateKnownList();
 }
