@@ -58,8 +58,6 @@ public class EnterWorld extends Packet {
             }
         }
 
-        world.addObject(player);
-        player.setWorld(world);
         player.setX(startPosition.getX());
         player.setY(startPosition.getY());
 		
@@ -72,6 +70,9 @@ public class EnterWorld extends Packet {
         welcomePacket.addNumber(0);        //hp
 
         getConnection().write(welcomePacket.encode());
+
+        world.addObject(player);
+        player.setWorld(world);
 
         player.spawnMe();
     }
