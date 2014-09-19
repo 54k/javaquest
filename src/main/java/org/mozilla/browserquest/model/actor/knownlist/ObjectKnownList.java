@@ -1,8 +1,8 @@
 package org.mozilla.browserquest.model.actor.knownlist;
 
 import com.google.common.base.Preconditions;
-import org.mozilla.browserquest.model.actor.BQObject;
 import org.mozilla.browserquest.model.BQWorldRegion;
+import org.mozilla.browserquest.model.actor.BQObject;
 import org.mozilla.browserquest.model.actor.BQPlayer;
 
 import java.util.Collection;

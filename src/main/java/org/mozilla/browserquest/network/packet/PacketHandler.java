@@ -2,9 +2,9 @@ package org.mozilla.browserquest.network.packet;
 
 import com.google.inject.Injector;
 import org.mozilla.browserquest.network.DefaultNetworkConnection;
+import org.mozilla.browserquest.network.packet.client.EnterWorld;
 import org.mozilla.browserquest.network.packet.client.EnterZone;
 import org.mozilla.browserquest.network.packet.client.SendMessage;
-import org.mozilla.browserquest.network.packet.client.EnterWorld;
 import org.mozilla.browserquest.network.packet.client.StartMove;
 
 import java.util.HashMap;

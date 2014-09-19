@@ -19,11 +19,11 @@ public class SendMessage extends Packet {
     @Override
     public void run() {
         chatHandler.handle(getConnection().getPlayer(), message);
-//        JsonArray jsonArray = new JsonArray();
-//        jsonArray.add(Packet.CHAT);
-//        jsonArray.add(getConnection().getPlayer().getId());
-//        jsonArray.add(message);
-//
-//        Broadcast.toSelfAndPlayersInRegion(getConnection().getPlayer(), jsonArray.encode());
+        //        JsonArray jsonArray = new JsonArray();
+        //        jsonArray.add(Packet.CHAT);
+        //        jsonArray.add(getConnection().getPlayer().getId());
+        //        jsonArray.add(message);
+        //
+        //        Broadcast.toSelfAndPlayersInRegion(getConnection().getPlayer(), jsonArray.encode());
     }
 }

@@ -16,8 +16,7 @@ public class DefaultChatHandler implements ChatHandler {
     }
 
     private void load(ScriptService scriptService) {
-        scriptChatHandler = scriptService.newProxy(ChatHandler.class,
-                new File(ScriptService.SCRIPT_FOLDER, "chathandler.js"));
+        scriptChatHandler = scriptService.newProxy(ChatHandler.class, new File(ScriptService.SCRIPT_FOLDER, "chathandler.js"));
     }
 
     @Override

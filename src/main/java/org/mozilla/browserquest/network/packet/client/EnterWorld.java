@@ -60,7 +60,7 @@ public class EnterWorld extends Packet {
 
         player.setX(startPosition.getX());
         player.setY(startPosition.getY());
-		
+
         JsonArray welcomePacket = new JsonArray();
         welcomePacket.addNumber(Packet.WELCOME);
         welcomePacket.addNumber(player.getId());   //id
