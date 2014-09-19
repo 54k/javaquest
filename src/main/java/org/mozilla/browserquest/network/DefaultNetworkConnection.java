@@ -2,6 +2,7 @@ package org.mozilla.browserquest.network;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import org.mozilla.browserquest.idfactory.IdFactory;
 import org.mozilla.browserquest.model.BQWorld;
 import org.mozilla.browserquest.model.actor.BQPlayer;
 import org.mozilla.browserquest.network.packet.PacketHandler;
@@ -27,6 +28,8 @@ public class DefaultNetworkConnection implements NetworkConnection {
 
     @Inject
     private BQWorld world;
+    @Inject
+    private IdFactory idFactory;
 
     public DefaultNetworkConnection(Vertx vertx, Injector injector, ServerWebSocket channel) {
         this.vertx = vertx;
@@ -62,6 +65,7 @@ public class DefaultNetworkConnection implements NetworkConnection {
         vertx.cancelTimer(disconnectTaskId);
         player.decayMe();
         world.removeObject(player);
+        idFactory.releaseId(player.getId());
         //        WorldInstance worldInstance = BQPlayer.getWorld();
         //        if (worldInstance != null) {
         //            BQPlayer.getKnownList().clearKnownObjects();
