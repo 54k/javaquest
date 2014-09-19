@@ -17,7 +17,7 @@ public class MovableBehavior extends Behavior<BQObject> implements Movable {
     public void moveTo(int x, int y) {
         BQObject activeObject = getActor();
         activeObject.setXY(x, y);
-        updateRegions();
+
         Position position = activeObject.getPosition();
 
         JsonArray jsonArray = new JsonArray();
@@ -27,19 +27,5 @@ public class MovableBehavior extends Behavior<BQObject> implements Movable {
         jsonArray.addNumber(position.getY());      //y
 
         Broadcast.toKnownPlayers(activeObject, jsonArray.encode());
-    }
-
-    public void updateRegions() {
-        BQObject object = getActor();
-        BQWorldRegion oldRegion = object.getRegion();
-        BQWorldRegion newRegion = object.getWorld().getRegion(object.getPosition());
-
-        if (oldRegion != newRegion) {
-            oldRegion.removeObject(object);
-            object.setRegion(newRegion);
-            newRegion.addObject(object);
-        }
-
-        object.getKnownList().updateKnownObjects();
     }
 }
