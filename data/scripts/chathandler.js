@@ -29,6 +29,19 @@ exports = {
             }
 			m.push(table);
 			write(p, m);
+        },
+        "/disconnect": function (p, m) {
+            p.connection.close();
+        },
+        "/help": function (p, m) {
+            var cnames = "";
+            for (var cname in this) {
+                if (cname != "/help") {
+                    cnames += "<p>" + cname + "</p>";
+                }
+            }
+            m.push(cnames);
+            write(p, m);
         }
     },
 
