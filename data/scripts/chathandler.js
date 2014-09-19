@@ -33,6 +33,10 @@ exports = {
         "/disconnect": function (p, m) {
             p.connection.close();
         },
+        "/me": function (p, m) {
+            m.push(p.toString());
+            write(p, m);
+        },
         "/help": function (p, m) {
             var cnames = "";
             for (var cname in this) {

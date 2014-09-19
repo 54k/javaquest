@@ -14,6 +14,7 @@ import org.mozilla.browserquest.script.DefaultScriptService;
 import org.mozilla.browserquest.script.ScriptService;
 import org.mozilla.browserquest.staticdata.DataService;
 import org.mozilla.browserquest.staticdata.DefaultDataService;
+import org.mozilla.browserquest.task.KnownListUpdater;
 import org.mozilla.browserquest.template.BQWorldTemplate;
 import org.vertx.java.core.Vertx;
 import org.vertx.java.core.file.FileSystem;
@@ -41,6 +42,7 @@ public class BrowserQuestModule extends AbstractModule {
         bind(ActorFactory.class).to(DefaultActorFactory.class).in(Scopes.SINGLETON);
 
         bind(BQWorld.class).asEagerSingleton();
+        bind(KnownListUpdater.class).asEagerSingleton();
     }
 
     @Provides

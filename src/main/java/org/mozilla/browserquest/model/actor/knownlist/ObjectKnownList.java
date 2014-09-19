@@ -52,7 +52,6 @@ public class ObjectKnownList implements KnownList {
         }
 
         onObjectAddedToKnownList(object);
-        object.getKnownList().addKnownObject(activeObject);
         return true;
     }
 
@@ -74,7 +73,6 @@ public class ObjectKnownList implements KnownList {
             knownPlayers.remove(object.getId());
         }
         onObjectRemovedFromKnownList(object);
-        object.getKnownList().removeKnownObject(activeObject);
         return true;
     }
 

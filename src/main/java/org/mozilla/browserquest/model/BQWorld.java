@@ -66,12 +66,16 @@ public class BQWorld {
         return x >= 0 && y >= 0 && x <= width && y <= height;
     }
 
-    public BQWorldRegion getRegion(Position position) {
-        return getRegion(position.getX(), position.getY());
+    public BQWorldRegion findRegion(Position position) {
+        return findRegion(position.getX(), position.getY());
     }
 
-    public BQWorldRegion getRegion(int x, int y) {
+    public BQWorldRegion findRegion(int x, int y) {
         return regions.get(getRegionId(x, y));
+    }
+
+    public Map<Integer, BQWorldRegion> getRegions() {
+        return Collections.unmodifiableMap(regions);
     }
 
     public void addObject(BQObject object) {

@@ -104,7 +104,7 @@ public abstract class BQObject extends Actor implements Identifiable, Positionab
 
     public void updateRegion() {
         BQWorldRegion oldRegion = getRegion();
-        BQWorldRegion newRegion = getWorld().getRegion(getPosition());
+        BQWorldRegion newRegion = getWorld().findRegion(getPosition());
 
         if (oldRegion != newRegion) {
             oldRegion.removeObject(this);
@@ -130,7 +130,7 @@ public abstract class BQObject extends Actor implements Identifiable, Positionab
     public void spawnMe() {
         assert getRegion() == null;
 
-        BQWorldRegion region = world.getRegion(getPosition());
+        BQWorldRegion region = world.findRegion(getPosition());
         setRegion(region);
         region.addObject(this);
         getKnownList().updateKnownObjects();

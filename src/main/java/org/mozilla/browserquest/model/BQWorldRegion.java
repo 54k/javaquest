@@ -17,7 +17,7 @@ public class BQWorldRegion {
 
     private Set<BQWorldRegion> surroundingRegions = new HashSet<>();
 
-    private boolean active = true;
+    private boolean active = false;
 
     void addSurroundingRegion(BQWorldRegion region) {
         Preconditions.checkNotNull(region);
@@ -32,14 +32,28 @@ public class BQWorldRegion {
         objects.put(object.getId(), object);
         if (object instanceof BQPlayer) {
             players.put(object.getId(), (BQPlayer) object);
+            if (players.size() == 1) {
+                activateRegion();
+            }
         }
+    }
+
+    private void activateRegion() {
+        active = true;
     }
 
     public void removeObject(BQObject object) {
         objects.remove(object.getId());
         if (object instanceof BQPlayer) {
             players.remove(object.getId());
+            if (players.isEmpty()) {
+                deactivateRegion();
+            }
         }
+    }
+
+    private void deactivateRegion() {
+        active = false;
     }
 
     public Map<Integer, BQObject> getObjects() {
