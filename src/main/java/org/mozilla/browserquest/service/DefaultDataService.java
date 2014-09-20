@@ -1,4 +1,4 @@
-package org.mozilla.browserquest.staticdata;
+package org.mozilla.browserquest.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.mozilla.browserquest.template.BQWorldTemplate;

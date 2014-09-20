@@ -1,4 +1,4 @@
-package org.mozilla.browserquest.idfactory;
+package org.mozilla.browserquest.service;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;

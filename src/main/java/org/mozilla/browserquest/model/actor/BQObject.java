@@ -4,11 +4,12 @@ import org.mozilla.browserquest.actor.Actor;
 import org.mozilla.browserquest.actor.Actor.Prototype;
 import org.mozilla.browserquest.model.BQWorld;
 import org.mozilla.browserquest.model.BQWorldRegion;
+import org.mozilla.browserquest.model.Heading;
 import org.mozilla.browserquest.model.Position;
 import org.mozilla.browserquest.model.actor.behavior.PositionableBehavior;
 import org.mozilla.browserquest.model.actor.knownlist.KnownList;
 import org.mozilla.browserquest.model.actor.knownlist.ObjectKnownList;
-import org.mozilla.browserquest.model.projection.ObjectProjection;
+import org.mozilla.browserquest.model.actor.projection.ObjectProjection;
 import org.vertx.java.core.json.JsonArray;
 
 @Prototype({PositionableBehavior.class})
@@ -17,15 +18,18 @@ public abstract class BQObject extends Actor implements ObjectProjection {
     private int id;
     private String name;
 
+    private BQType type;
+
     private KnownList knownList;
 
     private BQWorld world;
     private BQWorldRegion region;
 
-    private int x;
-    private int y;
+    private Position position;
+    private Heading heading;
 
     protected BQObject() {
+        position = new Position();
         knownList = initKnownList();
     }
 
@@ -49,6 +53,14 @@ public abstract class BQObject extends Actor implements ObjectProjection {
         this.name = name;
     }
 
+    public BQType getType() {
+        return type;
+    }
+
+    public void setType(BQType type) {
+        this.type = type;
+    }
+
     public KnownList getKnownList() {
         return knownList;
     }
@@ -70,35 +82,48 @@ public abstract class BQObject extends Actor implements ObjectProjection {
     }
 
     public int getX() {
-        return x;
+        return position.getX();
     }
 
     public void setX(int x) {
-        this.x = x;
+        position.setX(x);
     }
 
     public int getY() {
-        return y;
+        return position.getY();
     }
 
     public void setY(int y) {
-        this.y = y;
+        position.setY(y);
     }
 
     public void setXY(int x, int y) {
-        this.x = x;
-        this.y = y;
+        position.setXY(x, y);
     }
 
     public Position getPosition() {
-        return new Position(x, y);
+        return position;
     }
 
     public void setPosition(Position position) {
         setXY(position.getX(), position.getY());
     }
 
+    public Heading getHeading() {
+        return heading;
+    }
+
+    public void setHeading(Heading heading) {
+        this.heading = heading;
+    }
+
     public abstract JsonArray getInfo();
+
+    public void onSpawn() {
+    }
+
+    public void onDecay() {
+    }
 
     @Override
     public boolean equals(Object o) {

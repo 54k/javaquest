@@ -1,21 +1,22 @@
 package org.mozilla.browserquest.model.actor;
 
 import org.mozilla.browserquest.actor.Actor.Prototype;
-import org.mozilla.browserquest.model.actor.behavior.MovableBehavior;
 import org.mozilla.browserquest.model.actor.knownlist.KnownList;
 import org.mozilla.browserquest.model.actor.knownlist.PlayerKnownList;
-import org.mozilla.browserquest.model.projection.PlayerProjection;
 import org.mozilla.browserquest.network.NetworkConnection;
 import org.vertx.java.core.json.JsonArray;
 
-@Prototype({MovableBehavior.class})
-public abstract class BQPlayer extends BQObject implements PlayerProjection {
+@Prototype
+public abstract class BQPlayer extends BQCharacter {
 
     private NetworkConnection connection;
 
     private int hitPoints;
     private int maxHitPoints;
-    private int heading;
+
+    public BQPlayer() {
+        setType(BQType.WARRIOR);
+    }
 
     public NetworkConnection getConnection() {
         return connection;
@@ -41,14 +42,6 @@ public abstract class BQPlayer extends BQObject implements PlayerProjection {
         this.maxHitPoints = maxHitPoints;
     }
 
-    public int getHeading() {
-        return heading;
-    }
-
-    public void setHeading(int heading) {
-        this.heading = heading;
-    }
-
     @Override
     protected KnownList initKnownList() {
         return new PlayerKnownList(this);
@@ -56,6 +49,6 @@ public abstract class BQPlayer extends BQObject implements PlayerProjection {
 
     @Override
     public JsonArray getInfo() {
-        return new JsonArray(new Object[]{getId(), 1, getX(), getY(), getName(), getHeading(), 21, 60});
+        return new JsonArray(new Object[]{getId(), getType().getId(), getX(), getY(), getName(), getHeading(), 21, 60});
     }
 }

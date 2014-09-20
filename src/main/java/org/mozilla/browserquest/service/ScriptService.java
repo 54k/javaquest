@@ -1,4 +1,4 @@
-package org.mozilla.browserquest.script;
+package org.mozilla.browserquest.service;
 
 import javax.script.ScriptContext;
 import javax.script.ScriptEngine;

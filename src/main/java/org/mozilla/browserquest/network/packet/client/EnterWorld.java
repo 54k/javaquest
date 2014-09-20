@@ -2,11 +2,11 @@ package org.mozilla.browserquest.network.packet.client;
 
 import com.google.inject.Inject;
 import org.mozilla.browserquest.actor.ActorFactory;
-import org.mozilla.browserquest.idfactory.IdFactory;
 import org.mozilla.browserquest.model.BQWorld;
 import org.mozilla.browserquest.model.Position;
 import org.mozilla.browserquest.model.actor.BQPlayer;
 import org.mozilla.browserquest.network.packet.Packet;
+import org.mozilla.browserquest.service.IdFactory;
 import org.mozilla.browserquest.template.BQWorldTemplate;
 import org.mozilla.browserquest.template.CheckpointTemplate;
 import org.vertx.java.core.json.JsonArray;
@@ -61,13 +61,14 @@ public class EnterWorld extends Packet {
         player.setX(startPosition.getX());
         player.setY(startPosition.getY());
 
-        JsonArray welcomePacket = new JsonArray();
-        welcomePacket.addNumber(Packet.WELCOME);
-        welcomePacket.addNumber(player.getId());   //id
-        welcomePacket.addString(player.getName());   //name
-        welcomePacket.addNumber(player.getX());   //x
-        welcomePacket.addNumber(player.getY());      //y
-        welcomePacket.addNumber(0);        //hp
+        JsonArray welcomePacket = new JsonArray(new Object[]{
+                Packet.WELCOME,
+                player.getId(),
+                player.getName(),
+                player.getX(),
+                player.getY(),
+                player.getMaxHitPoints()
+        });
 
         getConnection().write(welcomePacket.encode());
 

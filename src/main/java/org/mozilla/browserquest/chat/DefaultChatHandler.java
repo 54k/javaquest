@@ -2,7 +2,7 @@ package org.mozilla.browserquest.chat;
 
 import com.google.inject.Inject;
 import org.mozilla.browserquest.model.actor.BQPlayer;
-import org.mozilla.browserquest.script.ScriptService;
+import org.mozilla.browserquest.service.ScriptService;
 
 import java.io.File;
 

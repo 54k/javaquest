@@ -12,7 +12,7 @@ exports = {
     commands: {
         "/around": function (p, m) {
             var players = 0;
-            for each(var r in p.region.surroundingRegions) {
+            for each (var r in p.region.surroundingRegions) {
                 players += r.players.size();
             }
             m.push("players around: " + Math.max(players - 1, 0));

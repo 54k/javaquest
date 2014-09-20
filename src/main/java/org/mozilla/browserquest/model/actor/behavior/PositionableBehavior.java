@@ -61,11 +61,9 @@ public class PositionableBehavior extends Behavior<BQObject> implements Position
         actor.setRegion(region);
         region.addObject(actor);
         actor.getKnownList().updateKnownList();
-        onSpawn();
+        actor.onSpawn();
     }
 
-    public void onSpawn() {
-    }
 
     public void decayMe() {
         BQObject actor = getActor();
@@ -76,9 +74,7 @@ public class PositionableBehavior extends Behavior<BQObject> implements Position
         region.removeObject(actor);
         actor.getKnownList().clearKnownList();
         actor.setRegion(null);
-        onDecay();
+        actor.onDecay();
     }
 
-    public void onDecay() {
-    }
 }

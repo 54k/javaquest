@@ -7,18 +7,23 @@ import org.mozilla.browserquest.actor.ActorFactory;
 import org.mozilla.browserquest.actor.DefaultActorFactory;
 import org.mozilla.browserquest.chat.ChatHandler;
 import org.mozilla.browserquest.chat.DefaultChatHandler;
-import org.mozilla.browserquest.idfactory.DefaultIdFactory;
-import org.mozilla.browserquest.idfactory.IdFactory;
 import org.mozilla.browserquest.model.BQWorld;
-import org.mozilla.browserquest.script.DefaultScriptService;
-import org.mozilla.browserquest.script.ScriptService;
-import org.mozilla.browserquest.staticdata.DataService;
-import org.mozilla.browserquest.staticdata.DefaultDataService;
+import org.mozilla.browserquest.service.DataService;
+import org.mozilla.browserquest.service.DefaultDataService;
+import org.mozilla.browserquest.service.DefaultIdFactory;
+import org.mozilla.browserquest.service.DefaultScriptService;
+import org.mozilla.browserquest.service.DefaultSpawnService;
+import org.mozilla.browserquest.service.IdFactory;
+import org.mozilla.browserquest.service.ScriptService;
+import org.mozilla.browserquest.service.SpawnService;
 import org.mozilla.browserquest.template.BQWorldTemplate;
+import org.mozilla.browserquest.template.RoamingAreaTemplate;
 import org.vertx.java.core.Vertx;
 import org.vertx.java.core.file.FileSystem;
 import org.vertx.java.core.logging.Logger;
 import org.vertx.java.platform.Container;
+
+import java.util.List;
 
 public class BrowserQuestModule extends AbstractModule {
 
@@ -41,11 +46,17 @@ public class BrowserQuestModule extends AbstractModule {
         bind(ActorFactory.class).to(DefaultActorFactory.class).in(Scopes.SINGLETON);
 
         bind(BQWorld.class).asEagerSingleton();
+        bind(SpawnService.class).to(DefaultSpawnService.class).asEagerSingleton();
     }
 
     @Provides
-    private BQWorldTemplate worldMapTemplate(DataService dataService) {
+    private BQWorldTemplate getWorldMapTemplate(DataService dataService) {
         return dataService.getWorldTemplate();
+    }
+
+    @Provides
+    private List<RoamingAreaTemplate> getRoamingAreaTemplates(DataService dataService) {
+        return dataService.getWorldTemplate().getRoamingAreas();
     }
 
     @Provides

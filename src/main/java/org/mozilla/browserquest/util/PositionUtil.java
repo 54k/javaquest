@@ -1,19 +1,39 @@
 package org.mozilla.browserquest.util;
 
+import org.mozilla.browserquest.model.Area;
+import org.mozilla.browserquest.model.Heading;
+import org.mozilla.browserquest.model.Position;
 import org.mozilla.browserquest.model.actor.BQObject;
+
+import java.util.Random;
 
 public final class PositionUtil {
 
     private PositionUtil() {
     }
 
-    public static boolean inRange(BQObject o1, BQObject o2, int range) {
+    public static boolean isInRange(BQObject o1, BQObject o2, int range) {
         int dy = Math.abs(o1.getY() - o2.getY());
         int dx = Math.abs(o1.getX() - o2.getX());
         return dx <= range && dy <= range;
     }
 
-    public static boolean outOfRange(BQObject o1, BQObject o2, int range) {
-        return !inRange(o1, o2, range);
+    public static boolean isOutOfRange(BQObject o1, BQObject o2, int range) {
+        return !isInRange(o1, o2, range);
+    }
+
+    public static Position getRandomPositionInside(int x, int y, int width, int height) {
+        Random random = new Random();
+        return new Position(x + random.nextInt(width + 1), y + random.nextInt(height + 1));
+    }
+
+    public static Position getRandomPositionInside(Area area) {
+        return getRandomPositionInside(area.getX(), area.getY(), area.getWidth(), area.getHeight());
+    }
+
+    public static Heading getRandomHeading() {
+        Random random = new Random();
+        Heading[] values = Heading.values();
+        return values[random.nextInt(values.length)];
     }
 }

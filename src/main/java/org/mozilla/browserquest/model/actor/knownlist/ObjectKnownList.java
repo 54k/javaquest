@@ -55,7 +55,7 @@ public class ObjectKnownList implements KnownList {
     }
 
     private boolean inRange(BQObject object) {
-        return PositionUtil.inRange(object, activeObject, getDistanceToFindObject(object));
+        return PositionUtil.isInRange(object, activeObject, getDistanceToFindObject(object));
     }
 
     public void addToKnownList(BQObject object) {
@@ -89,7 +89,7 @@ public class ObjectKnownList implements KnownList {
     }
 
     private boolean outOfRange(BQObject object) {
-        return PositionUtil.outOfRange(object, activeObject, getDistanceToForgetObject(object));
+        return PositionUtil.isOutOfRange(object, activeObject, getDistanceToForgetObject(object));
     }
 
     public void removeFromKnownList(BQObject object) {

@@ -1,4 +1,4 @@
-package org.mozilla.browserquest.script;
+package org.mozilla.browserquest.service;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;

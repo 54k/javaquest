@@ -1,6 +1,7 @@
 package org.mozilla.browserquest.template;
 
 public class RoamingAreaTemplate {
+
     private int id;
     private int x;
     private int y;
@@ -65,12 +66,3 @@ public class RoamingAreaTemplate {
         this.nb = nb;
     }
 }
-//{
-//        "id": 0,
-//        "x": 10,
-//        "y": 206,
-//        "width": 13,
-//        "height": 7,
-//        "type": "rat",
-//        "nb": 3
-//        },

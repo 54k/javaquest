@@ -2,10 +2,10 @@ package org.mozilla.browserquest.network;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import org.mozilla.browserquest.idfactory.IdFactory;
 import org.mozilla.browserquest.model.BQWorld;
 import org.mozilla.browserquest.model.actor.BQPlayer;
 import org.mozilla.browserquest.network.packet.PacketHandler;
+import org.mozilla.browserquest.service.IdFactory;
 import org.vertx.java.core.Vertx;
 import org.vertx.java.core.http.ServerWebSocket;
 import org.vertx.java.core.http.WebSocketFrame;

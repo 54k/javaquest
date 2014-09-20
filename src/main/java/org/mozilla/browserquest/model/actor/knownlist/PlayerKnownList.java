@@ -34,11 +34,11 @@ public class PlayerKnownList extends ObjectKnownList {
 
     @Override
     protected int getDistanceToForgetObject(BQObject object) {
-        return 10;
+        return 30;
     }
 
     @Override
     protected int getDistanceToFindObject(BQObject object) {
-        return 5;
+        return 25;
     }
 }
