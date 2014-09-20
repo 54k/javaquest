@@ -30,7 +30,7 @@ exports = {
             p.connection.close();
         },
         "/me": function (p, m) {
-            m.push(p.toString()  + " - (x: " + wp.x + ", y: " + wp.y + ")");
+            m.push(p.toString()  + " - (x: " + p.x + ", y: " + p.y + ")");
             write(p, m);
         },
         "/knownlist": function (p, m) {
