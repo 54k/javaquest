@@ -12,7 +12,7 @@ import org.mozilla.browserquest.model.actor.knownlist.ObjectKnownList;
 import org.mozilla.browserquest.model.actor.projection.ObjectProjection;
 import org.vertx.java.core.json.JsonArray;
 
-@Prototype({PositionableBehavior.class})
+@Prototype(PositionableBehavior.class)
 public abstract class BQObject extends Actor implements ObjectProjection {
 
     private int id;
