@@ -17,7 +17,7 @@ public class BQWorldRegion {
 
     private Set<BQWorldRegion> surroundingRegions = new HashSet<>();
 
-    private boolean active = false;
+    private boolean active;
 
     void addSurroundingRegion(BQWorldRegion region) {
         Preconditions.checkNotNull(region);
