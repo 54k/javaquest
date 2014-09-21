@@ -1,4 +1,4 @@
-package org.mozilla.browserquest.model.actor.behavior;
+package org.mozilla.browserquest.model.behavior;
 
 public interface Movable {
 

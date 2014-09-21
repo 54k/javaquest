@@ -1,4 +1,4 @@
-package org.mozilla.browserquest.model.actor.behavior;
+package org.mozilla.browserquest.model.behavior;
 
 import org.mozilla.browserquest.model.Position;
 

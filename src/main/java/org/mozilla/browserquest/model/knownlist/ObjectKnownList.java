@@ -1,4 +1,4 @@
-package org.mozilla.browserquest.model.actor.knownlist;
+package org.mozilla.browserquest.model.knownlist;
 
 import com.google.common.base.Preconditions;
 import org.mozilla.browserquest.model.BQWorldRegion;

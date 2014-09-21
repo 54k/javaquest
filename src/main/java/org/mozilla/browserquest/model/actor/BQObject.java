@@ -6,10 +6,10 @@ import org.mozilla.browserquest.model.BQWorld;
 import org.mozilla.browserquest.model.BQWorldRegion;
 import org.mozilla.browserquest.model.Heading;
 import org.mozilla.browserquest.model.Position;
-import org.mozilla.browserquest.model.actor.behavior.PositionableBehavior;
-import org.mozilla.browserquest.model.actor.knownlist.KnownList;
-import org.mozilla.browserquest.model.actor.knownlist.ObjectKnownList;
-import org.mozilla.browserquest.model.actor.projection.ObjectProjection;
+import org.mozilla.browserquest.model.behavior.PositionableBehavior;
+import org.mozilla.browserquest.model.knownlist.KnownList;
+import org.mozilla.browserquest.model.knownlist.ObjectKnownList;
+import org.mozilla.browserquest.model.projection.ObjectProjection;
 import org.vertx.java.core.json.JsonArray;
 
 @Prototype(PositionableBehavior.class)
