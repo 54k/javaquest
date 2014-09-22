@@ -12,19 +12,11 @@ import org.vertx.java.core.json.JsonArray;
 public class CombatControllerBehavior extends Behavior<BQCharacter> implements CombatController {
 
     @Override
-    public void setTarget(BQCharacter target) {
+    public void attackTarget(BQCharacter target) {
         BQCharacter actor = getActor();
-
-        BQCharacter oldTarget = actor.getTarget();
-        if (oldTarget != null) {
-            oldTarget.onStopAttacking(actor);
-        }
-
-        actor.setTarget(target);
-        target.onStartAttacking(actor);
-
         actor.getPositionController().setPosition(PositionUtil.getRandomPositionNear(target));
-        JsonArray attackPacket = new JsonArray(new Object[]{Packet.ATTACK, actor.getId(), actor.getTarget().getId()});
+
+        JsonArray attackPacket = new JsonArray(new Object[]{Packet.ATTACK, actor.getId(), target.getId()});
         BroadcastUtil.toKnownPlayers(actor, attackPacket.encode());
     }
 }

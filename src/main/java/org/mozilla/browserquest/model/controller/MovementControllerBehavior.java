@@ -18,9 +18,8 @@ public class MovementControllerBehavior extends Behavior<BQCharacter> implements
         actor.getPositionController().setXY(x, y);
         actor.setHeading(Heading.BOTTOM);
 
-        JsonArray jsonArray = new JsonArray(new Object[]{Packet.MOVE, actor.getId(), actor.getX(), actor.getY()});
-
-        BroadcastUtil.toKnownPlayers(actor, jsonArray.encode());
+        JsonArray movePacket = new JsonArray(new Object[]{Packet.MOVE, actor.getId(), actor.getX(), actor.getY()});
+        BroadcastUtil.toKnownPlayers(actor, movePacket.encode());
     }
 
     @Override
