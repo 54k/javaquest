@@ -21,7 +21,7 @@ exports = {
         "/who": function (p, m) {
 			var table = "";
             for each (var wp in p.world.players.values()) {
-				table += "<p>" + wp.toString() + " - (x: " + wp.x + ", y: " + wp.y + ")</p>";
+				table += "<p>" + wp.toString() + " - " + wp.position.toString() + "</p>";
             }
 			m.push(table);
 			write(p, m);
@@ -30,7 +30,7 @@ exports = {
             p.connection.close();
         },
         "/me": function (p, m) {
-            m.push(p.toString()  + " - (x: " + p.x + ", y: " + p.y + ")");
+            m.push(p.toString()  + " - " + p.position.toString());
             write(p, m);
         },
         "/knownlist": function (p, m) {
