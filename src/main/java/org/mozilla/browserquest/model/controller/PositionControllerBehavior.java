@@ -49,7 +49,7 @@ public class PositionControllerBehavior extends Behavior<BQObject> implements Po
             newRegion.addObject(actor);
         }
 
-        actor.getKnownList().updateKnownList();
+        actor.getKnownListController().updateKnownList();
     }
 
     public void spawnMe() {
@@ -60,7 +60,7 @@ public class PositionControllerBehavior extends Behavior<BQObject> implements Po
         BQWorldRegion region = actor.getWorld().findRegion(actor.getPosition());
         actor.setRegion(region);
         region.addObject(actor);
-        actor.getKnownList().updateKnownList();
+        actor.getKnownListController().updateKnownList();
         actor.onSpawn();
     }
 
@@ -72,7 +72,7 @@ public class PositionControllerBehavior extends Behavior<BQObject> implements Po
 
         BQWorldRegion region = actor.getRegion();
         region.removeObject(actor);
-        actor.getKnownList().clearKnownList();
+        actor.getKnownListController().clearKnownList();
         actor.setRegion(null);
         actor.onDecay();
     }

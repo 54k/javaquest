@@ -1,7 +1,6 @@
 package org.mozilla.browserquest.model;
 
 import org.mozilla.browserquest.actor.ActorFactory;
-import org.mozilla.browserquest.model.actor.BQCharacter;
 import org.mozilla.browserquest.model.actor.BQObject;
 import org.mozilla.browserquest.model.actor.BQType;
 import org.mozilla.browserquest.service.IdFactory;
@@ -16,12 +15,9 @@ public class BQSpawn {
 
     private ActorFactory actorFactory;
     private IdFactory idFactory;
-
     private BQWorld world;
 
-    private Class<? extends BQObject> prototype;
     private BQType type;
-
     private Area area;
 
     private int maximumCount;
@@ -29,7 +25,6 @@ public class BQSpawn {
     private Set<BQObject> objects = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
     public BQSpawn(RoamingAreaTemplate template, ActorFactory actorFactory, IdFactory idFactory, BQWorld world) {
-        prototype = BQCharacter.class;
         type = BQType.fromString(template.getType());
         area = new Area(template.getX(), template.getY(), template.getWidth(), template.getHeight());
         maximumCount = template.getNb();
@@ -46,7 +41,7 @@ public class BQSpawn {
     }
 
     public void doSpawn() {
-        BQObject object = actorFactory.newActor(prototype);
+        BQObject object = actorFactory.newActor(type.getPrototype());
         object.setId(idFactory.getNextId());
 
         object.setType(type);

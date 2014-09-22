@@ -13,7 +13,7 @@ public final class BroadcastUtil {
     }
 
     public static void toKnownPlayers(BQObject object, String packet) {
-        object.getKnownList().getKnownPlayers().values().forEach(p -> p.getConnection().write(packet));
+        object.getKnownListController().getKnownPlayers().values().forEach(p -> p.getConnection().write(packet));
     }
 
     public static void toSelfAndKnownPlayers(BQPlayer object, String packet) {

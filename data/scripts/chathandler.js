@@ -3,7 +3,7 @@ function write(p, m) {
 }
 
 function broadcast(p, m) {
-    for each (var kp in p.knownList.knownPlayers.values()) {
+    for each (var kp in p.knownPlayers.values()) {
         kp.connection.write(JSON.stringify(m));
     }
 }
@@ -35,7 +35,7 @@ exports = {
         },
         "/knownlist": function (p, m) {
             var table = "";
-            for each (var o in p.knownList.knownObjects.values()) {
+            for each (var o in p.knownObjects.values()) {
                 table += "<p>" + o.toString() + "</p>";
             }
             m.push(table.length == 0 ? "empty" : table);

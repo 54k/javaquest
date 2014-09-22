@@ -6,13 +6,15 @@ import org.mozilla.browserquest.model.BQWorld;
 import org.mozilla.browserquest.model.BQWorldRegion;
 import org.mozilla.browserquest.model.Heading;
 import org.mozilla.browserquest.model.Position;
+import org.mozilla.browserquest.model.controller.KnownListControllerBehavior;
 import org.mozilla.browserquest.model.controller.PositionControllerBehavior;
-import org.mozilla.browserquest.model.knownlist.KnownList;
-import org.mozilla.browserquest.model.knownlist.ObjectKnownList;
 import org.mozilla.browserquest.model.projection.ObjectProjection;
 import org.vertx.java.core.json.JsonArray;
 
-@ActorPrototype(PositionControllerBehavior.class)
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+@ActorPrototype({PositionControllerBehavior.class, KnownListControllerBehavior.class})
 public abstract class BQObject extends Actor implements ObjectProjection {
 
     private int id;
@@ -20,21 +22,17 @@ public abstract class BQObject extends Actor implements ObjectProjection {
 
     private BQType type;
 
-    private KnownList knownList;
-
     private BQWorld world;
     private BQWorldRegion region;
 
     private Position position;
     private Heading heading;
 
+    private Map<Integer, BQObject> knownObjects = new ConcurrentHashMap<>();
+    private Map<Integer, BQPlayer> knownPlayers = new ConcurrentHashMap<>();
+
     protected BQObject() {
         position = new Position();
-        knownList = initKnownList();
-    }
-
-    protected KnownList initKnownList() {
-        return new ObjectKnownList(this);
     }
 
     public int getId() {
@@ -59,10 +57,6 @@ public abstract class BQObject extends Actor implements ObjectProjection {
 
     public void setType(BQType type) {
         this.type = type;
-    }
-
-    public KnownList getKnownList() {
-        return knownList;
     }
 
     public BQWorld getWorld() {
@@ -117,12 +111,34 @@ public abstract class BQObject extends Actor implements ObjectProjection {
         this.heading = heading;
     }
 
+    public Map<Integer, BQObject> getKnownObjects() {
+        return knownObjects;
+    }
+
+    public Map<Integer, BQPlayer> getKnownPlayers() {
+        return knownPlayers;
+    }
+
     public abstract JsonArray getInfo();
 
     public void onSpawn() {
     }
 
     public void onDecay() {
+    }
+
+    public void onObjectAddedToKnownList(BQObject object) {
+    }
+
+    public void onObjectRemovedFromKnownList(BQObject object) {
+    }
+
+    public int getDistanceToForgetObject(BQObject object) {
+        return 0;
+    }
+
+    public int getDistanceToFindObject(BQObject object) {
+        return 0;
     }
 
     @Override

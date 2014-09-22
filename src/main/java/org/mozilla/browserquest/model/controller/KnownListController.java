@@ -1,13 +1,11 @@
-package org.mozilla.browserquest.model.knownlist;
+package org.mozilla.browserquest.model.controller;
 
 import org.mozilla.browserquest.model.actor.BQObject;
 import org.mozilla.browserquest.model.actor.BQPlayer;
 
 import java.util.Map;
 
-public interface KnownList {
-
-    BQObject getActiveObject();
+public interface KnownListController {
 
     Map<Integer, BQObject> getKnownObjects();
 

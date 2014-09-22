@@ -1,6 +1,7 @@
-package org.mozilla.browserquest.model.knownlist;
+package org.mozilla.browserquest.model.controller;
 
-import com.google.common.base.Preconditions;
+import org.mozilla.browserquest.actor.Behavior;
+import org.mozilla.browserquest.actor.BehaviorPrototype;
 import org.mozilla.browserquest.model.BQWorldRegion;
 import org.mozilla.browserquest.model.actor.BQObject;
 import org.mozilla.browserquest.model.actor.BQPlayer;
@@ -8,32 +9,18 @@ import org.mozilla.browserquest.util.PositionUtil;
 
 import java.util.Collection;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
-public class ObjectKnownList implements KnownList {
-
-    private BQObject activeObject;
-    private Map<Integer, BQObject> knownObjects = new ConcurrentHashMap<>();
-    private Map<Integer, BQPlayer> knownPlayers = new ConcurrentHashMap<>();
-
-    public ObjectKnownList(BQObject activeObject) {
-        Preconditions.checkNotNull(activeObject);
-        this.activeObject = activeObject;
-    }
-
-    @Override
-    public BQObject getActiveObject() {
-        return activeObject;
-    }
+@BehaviorPrototype(KnownListController.class)
+public class KnownListControllerBehavior extends Behavior<BQObject> implements KnownListController {
 
     @Override
     public Map<Integer, BQObject> getKnownObjects() {
-        return knownObjects;
+        return getActor().getKnownObjects();
     }
 
     @Override
     public Map<Integer, BQPlayer> getKnownPlayers() {
-        return knownPlayers;
+        return getActor().getKnownPlayers();
     }
 
     @Override
@@ -55,19 +42,19 @@ public class ObjectKnownList implements KnownList {
     }
 
     private boolean inRange(BQObject object) {
-        return PositionUtil.isInRange(object, activeObject, getDistanceToFindObject(object));
+        BQObject actor = getActor();
+        return PositionUtil.isInRange(object, actor, actor.getDistanceToFindObject(object));
     }
 
+    @Override
     public void addToKnownList(BQObject object) {
-        knownObjects.put(object.getId(), object);
+        BQObject actor = getActor();
+        actor.getKnownObjects().put(object.getId(), object);
         if (object instanceof BQPlayer) {
-            knownPlayers.put(object.getId(), (BQPlayer) object);
+            actor.getKnownPlayers().put(object.getId(), (BQPlayer) object);
         }
 
-        onObjectAddedToKnownList(object);
-    }
-
-    protected void onObjectAddedToKnownList(BQObject object) {
+        actor.onObjectAddedToKnownList(object);
     }
 
     @Override
@@ -89,33 +76,35 @@ public class ObjectKnownList implements KnownList {
     }
 
     private boolean outOfRange(BQObject object) {
-        return PositionUtil.isOutOfRange(object, activeObject, getDistanceToForgetObject(object));
+        return PositionUtil.isOutOfRange(object, getActor(), getActor().getDistanceToForgetObject(object));
     }
 
     public void removeFromKnownList(BQObject object) {
-        knownObjects.remove(object.getId());
+        BQObject actor = getActor();
+        actor.getKnownObjects().remove(object.getId());
         if (object instanceof BQPlayer) {
-            knownPlayers.remove(object.getId());
+            actor.getKnownPlayers().remove(object.getId());
         }
-        onObjectRemovedFromKnownList(object);
-    }
-
-    protected void onObjectRemovedFromKnownList(BQObject object) {
+        actor.onObjectRemovedFromKnownList(object);
     }
 
     @Override
     public void clearKnownList() {
-        knownObjects.clear();
-        BQWorldRegion region = activeObject.getRegion();
+        BQObject actor = getActor();
+        actor.getKnownObjects().clear();
+        actor.getKnownPlayers().clear();
+
+        BQWorldRegion region = actor.getRegion();
         for (BQWorldRegion sr : region.getSurroundingRegions()) {
             Collection<BQObject> objects = sr.getObjects().values();
-            objects.stream().filter(object -> object != activeObject).forEach(object -> object.getKnownList().removeFromKnownList(activeObject));
+            objects.stream().filter(object -> object != actor).forEach(object -> object.getKnownListController().removeFromKnownList(actor));
         }
     }
 
     @Override
     public boolean knowsObject(BQObject object) {
-        return activeObject == object || knownObjects.containsKey(object.getId());
+        BQObject actor = getActor();
+        return actor == object || actor.getKnownObjects().containsKey(object.getId());
     }
 
     @Override
@@ -125,32 +114,26 @@ public class ObjectKnownList implements KnownList {
     }
 
     private void forgetObjects() {
-        BQWorldRegion region = activeObject.getRegion();
+        BQObject actor = getActor();
+        BQWorldRegion region = actor.getRegion();
         for (BQWorldRegion sr : region.getSurroundingRegions()) {
             Collection<BQObject> objects = sr.getObjects().values();
-            objects.stream().filter(object -> object != activeObject).forEach(object -> {
+            objects.stream().filter(object -> object != actor).forEach(object -> {
                 removeObject(object);
-                object.getKnownList().removeObject(activeObject);
+                object.getKnownListController().removeObject(actor);
             });
         }
-    }
-
-    protected int getDistanceToForgetObject(BQObject object) {
-        return 0;
     }
 
     private void findObjects() {
-        BQWorldRegion region = activeObject.getRegion();
+        BQObject actor = getActor();
+        BQWorldRegion region = actor.getRegion();
         for (BQWorldRegion sr : region.getSurroundingRegions()) {
             Collection<BQObject> objects = sr.getObjects().values();
-            objects.stream().filter(object -> object != activeObject).forEach(object -> {
+            objects.stream().filter(object -> object != actor).forEach(object -> {
                 addObject(object);
-                object.getKnownList().addObject(activeObject);
+                object.getKnownListController().addObject(actor);
             });
         }
-    }
-
-    protected int getDistanceToFindObject(BQObject object) {
-        return 0;
     }
 }
