@@ -5,6 +5,7 @@ import org.mozilla.browserquest.network.DefaultNetworkConnection;
 import org.mozilla.browserquest.network.packet.client.EnterWorld;
 import org.mozilla.browserquest.network.packet.client.EnterZone;
 import org.mozilla.browserquest.network.packet.client.SendMessage;
+import org.mozilla.browserquest.network.packet.client.StartAttack;
 import org.mozilla.browserquest.network.packet.client.StartMove;
 
 import java.util.HashMap;
@@ -21,6 +22,7 @@ public class PacketHandler {
         addPacketPrototype(Packet.MOVE, StartMove.class);
         addPacketPrototype(Packet.ZONE, EnterZone.class);
         addPacketPrototype(Packet.CHAT, SendMessage.class);
+        addPacketPrototype(Packet.ATTACK, StartAttack.class);
     }
 
     public void addPacketPrototype(int opcode, Class<? extends Packet> prototype) {

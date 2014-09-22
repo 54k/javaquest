@@ -64,7 +64,6 @@ public class PositionControllerBehavior extends Behavior<BQObject> implements Po
         actor.onSpawn();
     }
 
-
     public void decayMe() {
         BQObject actor = getActor();
 

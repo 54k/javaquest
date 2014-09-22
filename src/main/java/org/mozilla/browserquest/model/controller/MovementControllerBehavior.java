@@ -3,6 +3,7 @@ package org.mozilla.browserquest.model.controller;
 import org.mozilla.browserquest.actor.Behavior;
 import org.mozilla.browserquest.actor.BehaviorPrototype;
 import org.mozilla.browserquest.model.Heading;
+import org.mozilla.browserquest.model.Position;
 import org.mozilla.browserquest.model.actor.BQCharacter;
 import org.mozilla.browserquest.network.packet.Packet;
 import org.mozilla.browserquest.util.BroadcastUtil;
@@ -17,13 +18,13 @@ public class MovementControllerBehavior extends Behavior<BQCharacter> implements
         actor.getPositionController().setXY(x, y);
         actor.setHeading(Heading.BOTTOM);
 
-        JsonArray jsonArray = new JsonArray(new Object[]{
-                Packet.MOVE,
-                actor.getId(),
-                actor.getX(),
-                actor.getY()
-        });
+        JsonArray jsonArray = new JsonArray(new Object[]{Packet.MOVE, actor.getId(), actor.getX(), actor.getY()});
 
         BroadcastUtil.toKnownPlayers(actor, jsonArray.encode());
+    }
+
+    @Override
+    public void moveTo(Position position) {
+        moveTo(position.getX(), position.getY());
     }
 }

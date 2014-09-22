@@ -36,4 +36,12 @@ public final class PositionUtil {
         Heading[] values = Heading.values();
         return values[random.nextInt(values.length)];
     }
+
+    public static Position getRandomPositionNear(BQObject object) {
+        Random random = new Random();
+        Position position = new Position();
+        Position objectPosition = object.getPosition();
+        position.setXY(objectPosition.getX() + (random.nextInt(2) - 1), objectPosition.getY() + (random.nextInt(2) - 1));
+        return position;
+    }
 }

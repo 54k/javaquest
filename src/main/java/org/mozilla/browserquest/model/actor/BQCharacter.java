@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public abstract class BQCharacter extends BQObject implements CharacterProjection {
 
     private Map<Integer, BQCharacter> attackers = new ConcurrentHashMap<>();
-    private BQObject target;
+    private BQCharacter target;
 
     private int hitPoints;
     private int maxHitPoints;
@@ -24,11 +24,11 @@ public abstract class BQCharacter extends BQObject implements CharacterProjectio
         return attackers;
     }
 
-    public BQObject getTarget() {
+    public BQCharacter getTarget() {
         return target;
     }
 
-    public void setTarget(BQObject target) {
+    public void setTarget(BQCharacter target) {
         this.target = target;
     }
 
@@ -62,7 +62,10 @@ public abstract class BQCharacter extends BQObject implements CharacterProjectio
     public void onDie(BQCharacter killer) {
     }
 
-    public void onAttack(BQCharacter attacker) {
+    public void onStopAttacking(BQCharacter attacker) {
+    }
+
+    public void onStartAttacking(BQCharacter attacker) {
     }
 
     @Override

@@ -4,5 +4,5 @@ import org.mozilla.browserquest.model.actor.BQCharacter;
 
 public interface CombatController {
 
-    void attack(BQCharacter character);
+    void setTarget(BQCharacter target);
 }

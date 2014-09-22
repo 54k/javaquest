@@ -3,10 +3,6 @@ package org.mozilla.browserquest.actor;
 import com.google.common.base.Preconditions;
 import com.google.common.eventbus.EventBus;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
 import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
