@@ -1,18 +1,18 @@
 package org.mozilla.browserquest.model.actor;
 
 import org.mozilla.browserquest.actor.Actor;
-import org.mozilla.browserquest.actor.Actor.Prototype;
+import org.mozilla.browserquest.actor.ActorPrototype;
 import org.mozilla.browserquest.model.BQWorld;
 import org.mozilla.browserquest.model.BQWorldRegion;
 import org.mozilla.browserquest.model.Heading;
 import org.mozilla.browserquest.model.Position;
-import org.mozilla.browserquest.model.behavior.PositionableBehavior;
+import org.mozilla.browserquest.model.controller.PositionControllerBehavior;
 import org.mozilla.browserquest.model.knownlist.KnownList;
 import org.mozilla.browserquest.model.knownlist.ObjectKnownList;
 import org.mozilla.browserquest.model.projection.ObjectProjection;
 import org.vertx.java.core.json.JsonArray;
 
-@Prototype(PositionableBehavior.class)
+@ActorPrototype(PositionControllerBehavior.class)
 public abstract class BQObject extends Actor implements ObjectProjection {
 
     private int id;

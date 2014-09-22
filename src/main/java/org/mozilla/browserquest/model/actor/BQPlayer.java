@@ -1,12 +1,12 @@
 package org.mozilla.browserquest.model.actor;
 
-import org.mozilla.browserquest.actor.Actor.Prototype;
+import org.mozilla.browserquest.actor.ActorPrototype;
 import org.mozilla.browserquest.model.knownlist.KnownList;
 import org.mozilla.browserquest.model.knownlist.PlayerKnownList;
 import org.mozilla.browserquest.network.NetworkConnection;
 import org.vertx.java.core.json.JsonArray;
 
-@Prototype
+@ActorPrototype
 public abstract class BQPlayer extends BQCharacter {
 
     private NetworkConnection connection;

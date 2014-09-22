@@ -1,17 +1,18 @@
 package org.mozilla.browserquest.model.actor;
 
-import org.mozilla.browserquest.actor.Actor.Prototype;
-import org.mozilla.browserquest.model.behavior.MovableBehavior;
+import org.mozilla.browserquest.actor.ActorPrototype;
+import org.mozilla.browserquest.model.controller.CombatControllerBehavior;
+import org.mozilla.browserquest.model.controller.MovementControllerBehavior;
 import org.mozilla.browserquest.model.projection.CharacterProjection;
 import org.vertx.java.core.json.JsonArray;
 
-import java.util.Collections;
-import java.util.Set;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
-@Prototype(MovableBehavior.class)
+@ActorPrototype({MovementControllerBehavior.class, CombatControllerBehavior.class})
 public abstract class BQCharacter extends BQObject implements CharacterProjection {
 
-    private Set<BQCharacter> attackers;
+    private Map<Integer, BQCharacter> attackers = new ConcurrentHashMap<>();
     private BQObject target;
 
     private int hitPoints;
@@ -19,8 +20,8 @@ public abstract class BQCharacter extends BQObject implements CharacterProjectio
 
     private boolean dead;
 
-    public Set<BQCharacter> getAttackers() {
-        return Collections.unmodifiableSet(attackers);
+    public Map<Integer, BQCharacter> getAttackers() {
+        return attackers;
     }
 
     public BQObject getTarget() {
@@ -53,6 +54,15 @@ public abstract class BQCharacter extends BQObject implements CharacterProjectio
 
     public void setDead(boolean dead) {
         this.dead = dead;
+    }
+
+    public void onRevive() {
+    }
+
+    public void onDie(BQCharacter killer) {
+    }
+
+    public void onAttack(BQCharacter attacker) {
     }
 
     @Override

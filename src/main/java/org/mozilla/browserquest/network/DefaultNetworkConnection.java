@@ -63,7 +63,7 @@ public class DefaultNetworkConnection implements NetworkConnection {
 
     private void onDisconnect(Void v) {
         vertx.cancelTimer(disconnectTaskId);
-        player.asPositionable().decayMe();
+        player.getPositionController().decayMe();
         world.removeObject(player);
         idFactory.releaseId(player.getId());
     }

@@ -11,7 +11,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Actor.Prototype
+@ActorPrototype
 public abstract class Actor {
 
     private EventBus eventBus = new EventBus(getClass().getCanonicalName());
@@ -64,14 +64,4 @@ public abstract class Actor {
         eventBus.unregister(object);
     }
 
-    @Retention(RetentionPolicy.RUNTIME)
-    @Target(ElementType.TYPE)
-    public @interface Prototype {
-        Class<? extends Behavior>[] value() default {};
-    }
-
-    @Retention(RetentionPolicy.RUNTIME)
-    @Target(ElementType.TYPE)
-    public @interface Projection {
-    }
 }

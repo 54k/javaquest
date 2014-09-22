@@ -79,7 +79,7 @@ public class DefaultActorFactory implements ActorFactory {
 
         Collection<BehaviorDefinition> behaviorDefinitions = new HashSet<>();
 
-        for (Class<? extends Behavior> impl : actorPrototype.getAnnotation(Actor.Prototype.class).value()) {
+        for (Class<? extends Behavior> impl : actorPrototype.getAnnotation(ActorPrototype.class).value()) {
             Class<?> type = getBehaviorType(impl);
             behaviorDefinitions.add(new BehaviorDefinition(type, impl));
         }
@@ -88,7 +88,7 @@ public class DefaultActorFactory implements ActorFactory {
     }
 
     private static Class<?> getBehaviorType(Class<? extends Behavior> behavior) {
-        return behavior.getAnnotation(Behavior.Prototype.class).value();
+        return behavior.getAnnotation(BehaviorPrototype.class).value();
     }
 
     private static Collection<ProjectionDefinition> getProjectionDefinitions(Class<?> actorPrototype) throws Exception {
@@ -104,7 +104,7 @@ public class DefaultActorFactory implements ActorFactory {
 
         if (!actorPrototype.isInterface()) {
             projectionDefinitions.addAll(getProjectionDefinitions(actorPrototype.getSuperclass()));
-        } else if (actorPrototype.getAnnotation(Actor.Projection.class) != null) {
+        } else if (actorPrototype.getAnnotation(ActorProjection.class) != null) {
             for (Method method : actorPrototype.getDeclaredMethods()) {
                 projectionDefinitions.add(new ProjectionDefinition(method, method.getReturnType()));
             }

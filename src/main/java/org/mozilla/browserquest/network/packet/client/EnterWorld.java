@@ -70,6 +70,6 @@ public class EnterWorld extends Packet {
         world.addObject(player);
         player.setWorld(world);
 
-        player.asPositionable().spawnMe();
+        player.getPositionController().spawnMe();
     }
 }

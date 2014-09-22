@@ -55,7 +55,7 @@ public class BQSpawn {
         world.addObject(object);
         object.setPosition(PositionUtil.getRandomPositionInside(area));
         object.setHeading(PositionUtil.getRandomHeading());
-        object.asPositionable().spawnMe();
+        object.getPositionController().spawnMe();
 
         objects.add(object);
     }

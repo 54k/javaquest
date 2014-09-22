@@ -1,10 +1,10 @@
 package org.mozilla.browserquest.model.projection;
 
-import org.mozilla.browserquest.actor.Actor.Projection;
-import org.mozilla.browserquest.model.behavior.Positionable;
+import org.mozilla.browserquest.actor.ActorProjection;
+import org.mozilla.browserquest.model.controller.PositionController;
 
-@Projection
+@ActorProjection
 public interface ObjectProjection {
 
-    Positionable asPositionable();
+    PositionController getPositionController();
 }

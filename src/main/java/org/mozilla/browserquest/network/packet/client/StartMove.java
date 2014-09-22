@@ -17,6 +17,6 @@ public class StartMove extends Packet {
     @Override
     public void run() {
         BQPlayer player = getConnection().getPlayer();
-        player.asMovable().moveTo(x, y);
+        player.getMovementController().moveTo(x, y);
     }
 }

@@ -1,13 +1,13 @@
-package org.mozilla.browserquest.model.behavior;
+package org.mozilla.browserquest.model.controller;
 
 import org.mozilla.browserquest.actor.Behavior;
-import org.mozilla.browserquest.actor.Behavior.Prototype;
+import org.mozilla.browserquest.actor.BehaviorPrototype;
 import org.mozilla.browserquest.model.BQWorldRegion;
 import org.mozilla.browserquest.model.Position;
 import org.mozilla.browserquest.model.actor.BQObject;
 
-@Prototype(Positionable.class)
-public class PositionableBehavior extends Behavior<BQObject> implements Positionable {
+@BehaviorPrototype(PositionController.class)
+public class PositionControllerBehavior extends Behavior<BQObject> implements PositionController {
 
     @Override
     public void setX(int x) {

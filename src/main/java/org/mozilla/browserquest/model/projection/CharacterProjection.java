@@ -1,10 +1,13 @@
 package org.mozilla.browserquest.model.projection;
 
-import org.mozilla.browserquest.actor.Actor.Projection;
-import org.mozilla.browserquest.model.behavior.Movable;
+import org.mozilla.browserquest.actor.ActorProjection;
+import org.mozilla.browserquest.model.controller.CombatController;
+import org.mozilla.browserquest.model.controller.MovementController;
 
-@Projection
+@ActorProjection
 public interface CharacterProjection {
 
-    Movable asMovable();
+    MovementController getMovementController();
+
+    CombatController getCombatController();
 }

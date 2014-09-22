@@ -1,8 +1,8 @@
-package org.mozilla.browserquest.model.behavior;
+package org.mozilla.browserquest.model.controller;
 
 import org.mozilla.browserquest.model.Position;
 
-public interface Positionable {
+public interface PositionController {
 
     void setX(int x);
 
