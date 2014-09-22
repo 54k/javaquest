@@ -119,7 +119,9 @@ public abstract class BQObject extends Actor implements ObjectProjection {
         return knownPlayers;
     }
 
-    public abstract JsonArray getInfo();
+    public JsonArray getInfo() {
+        return new JsonArray(new Object[]{getId(), getType().getId(), getX(), getY(), getHeading().getValue()});
+    }
 
     public void onSpawn() {
     }

@@ -4,7 +4,6 @@ import org.mozilla.browserquest.actor.ActorPrototype;
 import org.mozilla.browserquest.model.controller.CombatControllerBehavior;
 import org.mozilla.browserquest.model.controller.MovementControllerBehavior;
 import org.mozilla.browserquest.model.projection.CharacterProjection;
-import org.vertx.java.core.json.JsonArray;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -66,10 +65,5 @@ public abstract class BQCharacter extends BQObject implements CharacterProjectio
     }
 
     public void onStartAttacking(BQCharacter attacker) {
-    }
-
-    @Override
-    public JsonArray getInfo() {
-        return new JsonArray(new Object[]{getId(), getType().getId(), getX(), getY(), getHeading().getValue()});
     }
 }
