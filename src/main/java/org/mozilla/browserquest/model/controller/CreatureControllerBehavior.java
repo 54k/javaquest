@@ -15,6 +15,9 @@ public class CreatureControllerBehavior extends Behavior<BQCreature> implements 
     @Override
     public void onAttack(BQCharacter attacker, int damage) {
         BQCreature actor = getActor();
+        JsonArray attackPacket = new JsonArray(new Object[]{Packet.ATTACK, actor.getId(), attacker.getId()});
+        BroadcastUtil.toKnownPlayers(actor, attackPacket.encode());
+
         JsonArray damagePacket = new JsonArray(new Object[]{Packet.DAMAGE, attacker.getId(), damage});
         BroadcastUtil.toKnownPlayers(actor, damagePacket.encode());
         actor.getCombatController().attackTarget(attacker);
