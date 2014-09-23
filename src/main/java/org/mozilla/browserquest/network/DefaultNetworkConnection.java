@@ -1,7 +1,6 @@
 package org.mozilla.browserquest.network;
 
-import com.google.inject.Inject;
-import com.google.inject.Injector;
+import org.mozilla.browserquest.inject.LazyInject;
 import org.mozilla.browserquest.model.BQWorld;
 import org.mozilla.browserquest.model.actor.BQPlayer;
 import org.mozilla.browserquest.network.packet.PacketHandler;
@@ -11,31 +10,25 @@ import org.vertx.java.core.http.ServerWebSocket;
 import org.vertx.java.core.http.WebSocketFrame;
 import org.vertx.java.core.json.impl.Json;
 
-//import org.mozilla.browserquest.world.WorldInstance;
-
 public class DefaultNetworkConnection implements NetworkConnection {
 
     private static final long DISCONNECT_TIMEOUT = 1000 * 60 * 15;
-    private final Injector injector;
 
+    @LazyInject
     private Vertx vertx;
+    @LazyInject
+    private BQWorld world;
+    @LazyInject
+    private IdFactory idFactory;
+
     private PacketHandler packetHandler;
     private ServerWebSocket channel;
-
     private BQPlayer player;
 
     private long disconnectTaskId;
 
-    @Inject
-    private BQWorld world;
-    @Inject
-    private IdFactory idFactory;
-
-    public DefaultNetworkConnection(Vertx vertx, Injector injector, ServerWebSocket channel) {
-        this.vertx = vertx;
-        this.injector = injector;
-        injector.injectMembers(this);
-        packetHandler = new PacketHandler(this.injector);
+    public DefaultNetworkConnection(ServerWebSocket channel) {
+        packetHandler = new PacketHandler();
         this.channel = channel;
         this.channel.frameHandler(this::onFrame);
         this.channel.closeHandler(this::onDisconnect);

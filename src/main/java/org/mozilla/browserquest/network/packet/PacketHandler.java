@@ -1,6 +1,5 @@
 package org.mozilla.browserquest.network.packet;
 
-import com.google.inject.Injector;
 import org.mozilla.browserquest.network.DefaultNetworkConnection;
 import org.mozilla.browserquest.network.packet.client.EnterWorld;
 import org.mozilla.browserquest.network.packet.client.EnterZone;
@@ -15,11 +14,8 @@ import java.util.HashMap;
 public class PacketHandler {
 
     private HashMap<Integer, Class<? extends Packet>> prototypes = new HashMap<>();
-    private Injector injector;
 
-    public PacketHandler(Injector injector) {
-        this.injector = injector;
-
+    public PacketHandler() {
         addPacketPrototype(Packet.HELLO, EnterWorld.class);
         addPacketPrototype(Packet.MOVE, StartMove.class);
         addPacketPrototype(Packet.ZONE, EnterZone.class);
@@ -45,7 +41,6 @@ public class PacketHandler {
 
         try {
             Packet p = prototype.newInstance();
-            injector.injectMembers(p);
             p.setConnection(connection);
             Object[] data = new Object[packetData.length - 1];
             System.arraycopy(packetData, 1, data, 0, data.length);

@@ -1,7 +1,7 @@
 package org.mozilla.browserquest.network.packet.client;
 
-import com.google.inject.Inject;
 import org.mozilla.browserquest.actor.ActorFactory;
+import org.mozilla.browserquest.inject.LazyInject;
 import org.mozilla.browserquest.model.BQWorld;
 import org.mozilla.browserquest.model.Heading;
 import org.mozilla.browserquest.model.Position;
@@ -18,13 +18,13 @@ public class EnterWorld extends Packet {
 
     private static final AtomicInteger seq = new AtomicInteger(0);
 
-    @Inject
+    @LazyInject
     private BQWorld world;
-    @Inject
+    @LazyInject
     private ActorFactory actorFactory;
-    @Inject
+    @LazyInject
     private BQWorldTemplate template;
-    @Inject
+    @LazyInject
     private IdFactory idFactory;
 
     private String playerName;

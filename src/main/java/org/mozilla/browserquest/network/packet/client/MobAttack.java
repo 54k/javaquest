@@ -1,6 +1,6 @@
 package org.mozilla.browserquest.network.packet.client;
 
-import com.google.inject.Inject;
+import org.mozilla.browserquest.inject.LazyInject;
 import org.mozilla.browserquest.model.BQWorld;
 import org.mozilla.browserquest.model.actor.BQCharacter;
 import org.mozilla.browserquest.model.actor.BQObject;
@@ -11,7 +11,7 @@ import org.vertx.java.core.json.JsonArray;
 
 public class MobAttack extends Packet {
 
-    @Inject
+    @LazyInject
     private BQWorld world;
 
     private int target;

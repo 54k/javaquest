@@ -7,6 +7,7 @@ import org.mozilla.browserquest.actor.ActorFactory;
 import org.mozilla.browserquest.actor.DefaultActorFactory;
 import org.mozilla.browserquest.chat.ChatHandler;
 import org.mozilla.browserquest.chat.DefaultChatHandler;
+import org.mozilla.browserquest.inject.LazyInjectAspect;
 import org.mozilla.browserquest.model.BQWorld;
 import org.mozilla.browserquest.service.DataService;
 import org.mozilla.browserquest.service.DefaultDataService;
@@ -25,6 +26,8 @@ import org.vertx.java.platform.Container;
 
 import java.util.List;
 
+import static org.aspectj.lang.Aspects.aspectOf;
+
 public class BrowserQuestModule extends AbstractModule {
 
     private Vertx vertx;
@@ -37,9 +40,10 @@ public class BrowserQuestModule extends AbstractModule {
 
     @Override
     protected void configure() {
+        requestInjection(aspectOf(LazyInjectAspect.class));
+
         bind(ScriptService.class).to(DefaultScriptService.class).asEagerSingleton();
         bind(DataService.class).to(DefaultDataService.class).asEagerSingleton();
-
         bind(ChatHandler.class).to(DefaultChatHandler.class).asEagerSingleton();
 
         bind(IdFactory.class).to(DefaultIdFactory.class).in(Scopes.SINGLETON);

@@ -1,22 +1,14 @@
 package org.mozilla.browserquest.model.controller;
 
-import com.google.inject.Inject;
 import org.mozilla.browserquest.actor.Behavior;
 import org.mozilla.browserquest.actor.BehaviorPrototype;
-import org.mozilla.browserquest.model.BQWorld;
 import org.mozilla.browserquest.model.BQWorldRegion;
 import org.mozilla.browserquest.model.Position;
 import org.mozilla.browserquest.model.actor.BQObject;
 import org.mozilla.browserquest.model.event.PositionListener;
-import org.vertx.java.core.logging.Logger;
 
 @BehaviorPrototype(PositionController.class)
 public class PositionControllerBehavior extends Behavior<BQObject> implements PositionController {
-
-    @Inject
-    private BQWorld world;
-    @Inject
-    private Logger logger;
 
     @Override
     public void setX(int x) {
@@ -62,7 +54,6 @@ public class PositionControllerBehavior extends Behavior<BQObject> implements Po
     }
 
     public void spawnMe() {
-        logger.info(world.toString());
         BQObject actor = getActor();
 
         assert actor.getRegion() == null;

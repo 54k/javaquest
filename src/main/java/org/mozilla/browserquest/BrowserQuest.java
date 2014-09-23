@@ -3,11 +3,9 @@ package org.mozilla.browserquest;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import org.mozilla.browserquest.aspect.InjectAspect;
 import org.mozilla.browserquest.model.BQWorld;
 import org.mozilla.browserquest.network.DefaultNetworkServer;
 import org.mozilla.browserquest.network.NetworkServer;
-import org.mozilla.browserquest.service.DefaultSpawnService;
 import org.mozilla.browserquest.service.SpawnService;
 import org.vertx.java.core.file.FileSystem;
 import org.vertx.java.core.http.HttpServerRequest;
@@ -32,7 +30,6 @@ public class BrowserQuest extends Verticle {
     @Override
     public void start() {
         Injector injector = Guice.createInjector(new BrowserQuestModule(getVertx(), getContainer()));
-        InjectAspect.injector = injector;
         injector.injectMembers(this);
 
         injector.getInstance(BQWorld.class);
@@ -43,7 +40,7 @@ public class BrowserQuest extends Verticle {
         JsonObject config = getContainer().config();
         int port = Optional.ofNullable(config.getInteger("serverPort")).orElse(8000);
 
-        networkServer = new DefaultNetworkServer(vertx, injector);
+        networkServer = new DefaultNetworkServer();
         networkServer.noMatch(this::onNotFoundRequest).getWithRegEx("^/client/.+", this::onContentRequest).get("/status", this::onStatusRequest).listen(port);
 
         logger.info("BrowserQuest started at port " + port);
