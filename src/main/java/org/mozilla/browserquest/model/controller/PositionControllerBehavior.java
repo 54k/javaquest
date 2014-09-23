@@ -38,7 +38,7 @@ public class PositionControllerBehavior extends Behavior<BQObject> implements Po
         updateRegion();
     }
 
-    public void updateRegion() {
+    private void updateRegion() {
         BQObject actor = getActor();
 
         BQWorldRegion oldRegion = actor.getRegion();
