@@ -123,18 +123,6 @@ public abstract class BQObject extends Actor implements ObjectProjection {
         return new JsonArray(new Object[]{getId(), getType().getId(), getX(), getY(), getHeading().getValue()});
     }
 
-    public void onSpawn() {
-    }
-
-    public void onDecay() {
-    }
-
-    public void onObjectAddedToKnownList(BQObject object) {
-    }
-
-    public void onObjectRemovedFromKnownList(BQObject object) {
-    }
-
     public int getDistanceToForgetObject(BQObject object) {
         return 0;
     }

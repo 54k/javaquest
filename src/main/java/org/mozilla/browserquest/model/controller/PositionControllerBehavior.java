@@ -5,6 +5,7 @@ import org.mozilla.browserquest.actor.BehaviorPrototype;
 import org.mozilla.browserquest.model.BQWorldRegion;
 import org.mozilla.browserquest.model.Position;
 import org.mozilla.browserquest.model.actor.BQObject;
+import org.mozilla.browserquest.model.event.PositionListener;
 
 @BehaviorPrototype(PositionController.class)
 public class PositionControllerBehavior extends Behavior<BQObject> implements PositionController {
@@ -61,7 +62,7 @@ public class PositionControllerBehavior extends Behavior<BQObject> implements Po
         actor.setRegion(region);
         region.addObject(actor);
         actor.getKnownListController().updateKnownList();
-        actor.onSpawn();
+        actor.post(PositionListener.class).onSpawn();
     }
 
     public void decayMe() {
@@ -73,7 +74,6 @@ public class PositionControllerBehavior extends Behavior<BQObject> implements Po
         region.removeObject(actor);
         actor.getKnownListController().clearKnownList();
         actor.setRegion(null);
-        actor.onDecay();
+        actor.post(PositionListener.class).onDecay();
     }
-
 }

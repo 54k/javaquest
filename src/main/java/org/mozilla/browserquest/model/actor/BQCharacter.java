@@ -54,13 +54,4 @@ public abstract class BQCharacter extends BQObject implements CharacterProjectio
     public void setDead(boolean dead) {
         this.dead = dead;
     }
-
-    public void onRevive() {
-    }
-
-    public void onDie(BQCharacter killer) {
-    }
-
-    public void onHit(BQCharacter attacker, int damage) {
-    }
 }
