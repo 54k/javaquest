@@ -3,9 +3,12 @@ package org.mozilla.browserquest;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import org.mozilla.browserquest.aspect.InjectAspect;
 import org.mozilla.browserquest.model.BQWorld;
 import org.mozilla.browserquest.network.DefaultNetworkServer;
 import org.mozilla.browserquest.network.NetworkServer;
+import org.mozilla.browserquest.service.DefaultSpawnService;
+import org.mozilla.browserquest.service.SpawnService;
 import org.vertx.java.core.file.FileSystem;
 import org.vertx.java.core.http.HttpServerRequest;
 import org.vertx.java.core.json.JsonArray;
@@ -29,7 +32,11 @@ public class BrowserQuest extends Verticle {
     @Override
     public void start() {
         Injector injector = Guice.createInjector(new BrowserQuestModule(getVertx(), getContainer()));
+        InjectAspect.injector = injector;
         injector.injectMembers(this);
+
+        injector.getInstance(BQWorld.class);
+        injector.getInstance(SpawnService.class);
 
         logger.info("Starting BrowserQuest server");
 

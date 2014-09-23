@@ -45,8 +45,8 @@ public class BrowserQuestModule extends AbstractModule {
         bind(IdFactory.class).to(DefaultIdFactory.class).in(Scopes.SINGLETON);
         bind(ActorFactory.class).to(DefaultActorFactory.class).in(Scopes.SINGLETON);
 
-        bind(BQWorld.class).asEagerSingleton();
-        bind(SpawnService.class).to(DefaultSpawnService.class).asEagerSingleton();
+        bind(BQWorld.class).in(Scopes.SINGLETON);
+        bind(SpawnService.class).to(DefaultSpawnService.class).in(Scopes.SINGLETON);
     }
 
     @Provides
