@@ -63,7 +63,7 @@ public class DefaultActorFactory implements ActorFactory {
 
     private CtMethod makeProjectionMethod(ProjectionDefinition projectionDefinition, CtClass prototype) throws Exception {
         return CtNewMethod.make(asCtClass(projectionDefinition.getProjection()), projectionDefinition.getMethod().getName(), new CtClass[0], new CtClass[0],
-                "return asBehavior(" + projectionDefinition.getProjection().getCanonicalName() + ".class);", prototype);
+                "return getBehavior(" + projectionDefinition.getProjection().getCanonicalName() + ".class);", prototype);
     }
 
     private static ActorDefinition getActorDefinition(Class<? extends Actor> actorPrototype) throws Exception {

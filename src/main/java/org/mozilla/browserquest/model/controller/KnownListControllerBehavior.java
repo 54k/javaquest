@@ -5,6 +5,7 @@ import org.mozilla.browserquest.actor.BehaviorPrototype;
 import org.mozilla.browserquest.model.BQWorldRegion;
 import org.mozilla.browserquest.model.actor.BQObject;
 import org.mozilla.browserquest.model.actor.BQPlayer;
+import org.mozilla.browserquest.model.event.KnownListListener;
 import org.mozilla.browserquest.util.PositionUtil;
 
 import java.util.Collection;
@@ -53,8 +54,7 @@ public class KnownListControllerBehavior extends Behavior<BQObject> implements K
         if (object instanceof BQPlayer) {
             actor.getKnownPlayers().put(object.getId(), (BQPlayer) object);
         }
-
-        actor.onObjectAddedToKnownList(object);
+        actor.post(KnownListListener.class).onObjectAddedToKnownList(object);
     }
 
     @Override
@@ -85,7 +85,7 @@ public class KnownListControllerBehavior extends Behavior<BQObject> implements K
         if (object instanceof BQPlayer) {
             actor.getKnownPlayers().remove(object.getId());
         }
-        actor.onObjectRemovedFromKnownList(object);
+        actor.post(KnownListListener.class).onObjectRemovedFromKnownList(object);
     }
 
     @Override

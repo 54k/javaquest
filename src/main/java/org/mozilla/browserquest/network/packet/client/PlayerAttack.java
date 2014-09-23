@@ -7,7 +7,7 @@ import org.mozilla.browserquest.model.actor.BQObject;
 import org.mozilla.browserquest.model.actor.BQPlayer;
 import org.mozilla.browserquest.network.packet.Packet;
 
-public class AttackTarget extends Packet {
+public class PlayerAttack extends Packet {
 
     @Inject
     private BQWorld world;

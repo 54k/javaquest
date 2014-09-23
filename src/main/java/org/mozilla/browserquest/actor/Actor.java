@@ -1,7 +1,7 @@
 package org.mozilla.browserquest.actor;
 
 import com.google.common.base.Preconditions;
-import com.google.common.eventbus.EventBus;
+import org.mozilla.browserquest.util.ListenersContainer;
 
 import java.util.Collections;
 import java.util.Map;
@@ -10,11 +10,11 @@ import java.util.concurrent.ConcurrentHashMap;
 @ActorPrototype
 public abstract class Actor {
 
-    private EventBus eventBus = new EventBus(getClass().getCanonicalName());
+    private ListenersContainer listenersContainer = new ListenersContainer();
     private final Map<Class<?>, Behavior> behaviors = new ConcurrentHashMap<>();
 
     @SuppressWarnings("unchecked")
-    public <T> T asBehavior(Class<T> type) {
+    public <T> T getBehavior(Class<T> type) {
         Preconditions.checkNotNull(type);
         return (T) behaviors.get(type);
     }
@@ -48,16 +48,15 @@ public abstract class Actor {
         return behaviors.containsKey(type);
     }
 
-    public void register(Object object) {
-        eventBus.register(object);
+    public <T> T post(Class<T> type) {
+        return listenersContainer.post(type);
     }
 
-    public void event(Object event) {
-        eventBus.post(event);
+    public void register(Object listener) {
+        listenersContainer.register(listener);
     }
 
-    public void unregister(Object object) {
-        eventBus.unregister(object);
+    public void unregister(Object listener) {
+        listenersContainer.unregister(listener);
     }
-
 }

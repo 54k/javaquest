@@ -2,7 +2,8 @@ package org.mozilla.browserquest.network.packet;
 
 import com.google.inject.Injector;
 import org.mozilla.browserquest.network.DefaultNetworkConnection;
-import org.mozilla.browserquest.network.packet.client.AttackTarget;
+import org.mozilla.browserquest.network.packet.client.MobAttack;
+import org.mozilla.browserquest.network.packet.client.PlayerAttack;
 import org.mozilla.browserquest.network.packet.client.EnterWorld;
 import org.mozilla.browserquest.network.packet.client.EnterZone;
 import org.mozilla.browserquest.network.packet.client.SendMessage;
@@ -24,7 +25,8 @@ public class PacketHandler {
         addPacketPrototype(Packet.ZONE, EnterZone.class);
         addPacketPrototype(Packet.CHAT, SendMessage.class);
         addPacketPrototype(Packet.ATTACK, StartAttack.class);
-        addPacketPrototype(Packet.HIT, AttackTarget.class);
+        addPacketPrototype(Packet.HIT, PlayerAttack.class);
+        addPacketPrototype(Packet.HURT, MobAttack.class);
     }
 
     public void addPacketPrototype(int opcode, Class<? extends Packet> prototype) {

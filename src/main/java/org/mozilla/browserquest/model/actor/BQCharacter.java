@@ -60,4 +60,7 @@ public abstract class BQCharacter extends BQObject implements CharacterProjectio
 
     public void onDie(BQCharacter killer) {
     }
+
+    public void onHit(BQCharacter attacker, int damage) {
+    }
 }
