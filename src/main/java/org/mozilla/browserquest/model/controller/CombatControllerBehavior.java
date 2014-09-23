@@ -10,11 +10,6 @@ public class CombatControllerBehavior extends Behavior<BQCharacter> implements C
 
     @Override
     public void attackTarget(BQCharacter target) {
-        target.getCombatController().receiveDamage(getActor(), 5);
-    }
-
-    @Override
-    public void receiveDamage(BQCharacter attacker, int damage) {
-        getActor().post(CombatListener.class).onAttack(attacker, damage);
+        target.post(CombatListener.class).onAttack(getActor(), 5);
     }
 }

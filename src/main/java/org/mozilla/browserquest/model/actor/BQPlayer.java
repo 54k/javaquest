@@ -29,11 +29,11 @@ public abstract class BQPlayer extends BQCharacter {
 
     @Override
     public int getDistanceToForgetObject(BQObject object) {
-        return 8;
+        return 25;
     }
 
     @Override
     public int getDistanceToFindObject(BQObject object) {
-        return 5;
+        return 20;
     }
 }

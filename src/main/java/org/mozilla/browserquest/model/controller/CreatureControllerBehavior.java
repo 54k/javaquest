@@ -2,6 +2,7 @@ package org.mozilla.browserquest.model.controller;
 
 import org.mozilla.browserquest.actor.Behavior;
 import org.mozilla.browserquest.actor.BehaviorPrototype;
+import org.mozilla.browserquest.model.BQSpawn;
 import org.mozilla.browserquest.model.actor.BQCharacter;
 import org.mozilla.browserquest.model.actor.BQCreature;
 import org.mozilla.browserquest.model.event.CombatListener;
@@ -16,11 +17,18 @@ public class CreatureControllerBehavior extends Behavior<BQCreature> implements 
     @Override
     public void onAttack(BQCharacter attacker, int damage) {
         BQCreature actor = getActor();
-        JsonArray attackPacket = new JsonArray(new Object[]{Packet.ATTACK, actor.getId(), attacker.getId()});
-        BroadcastUtil.toKnownPlayers(actor, attackPacket.encode());
 
         JsonArray damagePacket = new JsonArray(new Object[]{Packet.DAMAGE, attacker.getId(), damage});
         BroadcastUtil.toKnownPlayers(actor, damagePacket.encode());
+
+        getActor().getStatusController().reduceHitPoints(attacker, damage);
+
+        if (actor.isDead()) {
+            return;
+        }
+
+        JsonArray attackPacket = new JsonArray(new Object[]{Packet.ATTACK, actor.getId(), attacker.getId()});
+        BroadcastUtil.toKnownPlayers(actor, attackPacket.encode());
         actor.getCombatController().attackTarget(attacker);
     }
 
@@ -30,5 +38,12 @@ public class CreatureControllerBehavior extends Behavior<BQCreature> implements 
 
     @Override
     public void onDie(BQCharacter killer) {
+        BQCreature actor = getActor();
+        actor.getPositionController().decayMe();
+
+        BQSpawn spawn = actor.getSpawn();
+        if (spawn != null) {
+            spawn.decreaseCount(actor);
+        }
     }
 }

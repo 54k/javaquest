@@ -3,12 +3,13 @@ package org.mozilla.browserquest.model.actor;
 import org.mozilla.browserquest.actor.ActorPrototype;
 import org.mozilla.browserquest.model.controller.CombatControllerBehavior;
 import org.mozilla.browserquest.model.controller.MovementControllerBehavior;
+import org.mozilla.browserquest.model.controller.StatusControllerBehavior;
 import org.mozilla.browserquest.model.projection.CharacterProjection;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-@ActorPrototype({MovementControllerBehavior.class, CombatControllerBehavior.class})
+@ActorPrototype({MovementControllerBehavior.class, CombatControllerBehavior.class, StatusControllerBehavior.class})
 public abstract class BQCharacter extends BQObject implements CharacterProjection {
 
     private Map<Integer, BQCharacter> attackers = new ConcurrentHashMap<>();
