@@ -1,5 +1,6 @@
 package org.mozilla.browserquest.model.controller;
 
+import com.google.common.base.Preconditions;
 import org.mozilla.browserquest.actor.Behavior;
 import org.mozilla.browserquest.actor.BehaviorPrototype;
 import org.mozilla.browserquest.model.BQWorldRegion;
@@ -29,12 +30,10 @@ public class PositionControllerBehavior extends Behavior<BQObject> implements Po
 
     @Override
     public void setXY(int x, int y) {
+        Preconditions.checkArgument(isSpawned());
+
         BQObject actor = getActor();
-
-        assert actor.getRegion() != null;
-
-        actor.setX(x);
-        actor.setY(y);
+        actor.setXY(x, y);
         updateRegion();
     }
 
@@ -53,27 +52,32 @@ public class PositionControllerBehavior extends Behavior<BQObject> implements Po
         actor.getKnownListController().updateKnownList();
     }
 
+    @Override
     public void spawnMe() {
+        Preconditions.checkArgument(!isSpawned());
+
         BQObject actor = getActor();
-
-        assert actor.getRegion() == null;
-
         BQWorldRegion region = actor.getWorld().findRegion(actor.getPosition());
-        actor.setRegion(region);
         region.addObject(actor);
+        actor.setRegion(region);
         actor.getKnownListController().updateKnownList();
         actor.post(PositionListener.class).onSpawn();
     }
 
+    @Override
     public void decayMe() {
+        Preconditions.checkArgument(isSpawned());
+
         BQObject actor = getActor();
-
-        assert actor.getRegion() != null;
-
         BQWorldRegion region = actor.getRegion();
         region.removeObject(actor);
         actor.getKnownListController().clearKnownList();
         actor.setRegion(null);
         actor.post(PositionListener.class).onDecay();
+    }
+
+    @Override
+    public boolean isSpawned() {
+        return getActor().getRegion() != null;
     }
 }

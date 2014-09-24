@@ -15,4 +15,6 @@ public interface PositionController {
     void spawnMe();
 
     void decayMe();
+
+    boolean isSpawned();
 }
