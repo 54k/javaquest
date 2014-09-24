@@ -14,7 +14,7 @@ public class CombatControllerBehavior extends Behavior<BQCharacter> implements C
     public void attackTarget(BQCharacter target) {
         BQCharacter actor = getActor();
         Position position = PositionUtil.getRandomPositionNear(target);
-        actor.getMovementController().moveTo(position);
+        actor.getPositionController().setPosition(position);
         // TODO calculate damage
         target.post(CombatListener.class).onAttack(actor, 5);
     }

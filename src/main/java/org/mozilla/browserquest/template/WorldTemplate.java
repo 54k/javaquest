@@ -3,7 +3,7 @@ package org.mozilla.browserquest.template;
 import java.util.List;
 import java.util.Map;
 
-public class BQWorldTemplate {
+public class WorldTemplate {
 
     private int width;
     private int height;

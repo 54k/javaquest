@@ -1,8 +1,13 @@
 package org.mozilla.browserquest.service;
 
-import org.mozilla.browserquest.template.BQWorldTemplate;
+import org.mozilla.browserquest.template.CreatureTemplate;
+import org.mozilla.browserquest.template.WorldTemplate;
+
+import java.util.Map;
 
 public interface DataService {
 
-    BQWorldTemplate getWorldTemplate();
+    WorldTemplate getWorldTemplate();
+
+    Map<String, CreatureTemplate> getCreatureTemplates();
 }

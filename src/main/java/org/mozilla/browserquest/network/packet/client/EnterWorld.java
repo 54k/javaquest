@@ -8,7 +8,7 @@ import org.mozilla.browserquest.model.Position;
 import org.mozilla.browserquest.model.actor.BQPlayer;
 import org.mozilla.browserquest.network.packet.Packet;
 import org.mozilla.browserquest.service.IdFactory;
-import org.mozilla.browserquest.template.BQWorldTemplate;
+import org.mozilla.browserquest.template.WorldTemplate;
 import org.mozilla.browserquest.template.CheckpointTemplate;
 import org.vertx.java.core.json.JsonArray;
 
@@ -23,7 +23,7 @@ public class EnterWorld extends Packet {
     @LazyInject
     private ActorFactory actorFactory;
     @LazyInject
-    private BQWorldTemplate template;
+    private WorldTemplate template;
     @LazyInject
     private IdFactory idFactory;
 

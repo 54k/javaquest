@@ -17,7 +17,7 @@ import org.mozilla.browserquest.service.DefaultSpawnService;
 import org.mozilla.browserquest.service.IdFactory;
 import org.mozilla.browserquest.service.ScriptService;
 import org.mozilla.browserquest.service.SpawnService;
-import org.mozilla.browserquest.template.BQWorldTemplate;
+import org.mozilla.browserquest.template.WorldTemplate;
 import org.mozilla.browserquest.template.RoamingAreaTemplate;
 import org.vertx.java.core.Vertx;
 import org.vertx.java.core.file.FileSystem;
@@ -54,7 +54,7 @@ public class BrowserQuestModule extends AbstractModule {
     }
 
     @Provides
-    private BQWorldTemplate getWorldMapTemplate(DataService dataService) {
+    private WorldTemplate getWorldMapTemplate(DataService dataService) {
         return dataService.getWorldTemplate();
     }
 

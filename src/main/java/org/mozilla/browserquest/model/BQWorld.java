@@ -3,7 +3,7 @@ package org.mozilla.browserquest.model;
 import com.google.inject.Inject;
 import org.mozilla.browserquest.model.actor.BQObject;
 import org.mozilla.browserquest.model.actor.BQPlayer;
-import org.mozilla.browserquest.template.BQWorldTemplate;
+import org.mozilla.browserquest.template.WorldTemplate;
 
 import java.util.Collections;
 import java.util.Map;
@@ -24,7 +24,7 @@ public class BQWorld {
     private Map<Integer, BQWorldRegion> regions = new ConcurrentHashMap<>();
 
     @Inject
-    public BQWorld(BQWorldTemplate worldTemplate) {
+    public BQWorld(WorldTemplate worldTemplate) {
         width = worldTemplate.getWidth();
         height = worldTemplate.getHeight();
         regionOffset = height / REGION_HEIGHT + 1;
