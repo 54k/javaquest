@@ -17,8 +17,10 @@ public abstract class BQCharacter extends BQObject implements CharacterProjectio
 
     private int hitPoints;
     private int maxHitPoints;
-
     private boolean dead;
+
+    private int weapon;
+    private int armor;
 
     public Map<Integer, BQCharacter> getAttackers() {
         return attackers;
@@ -54,5 +56,21 @@ public abstract class BQCharacter extends BQObject implements CharacterProjectio
 
     public void setDead(boolean dead) {
         this.dead = dead;
+    }
+
+    public int getArmor() {
+        return armor;
+    }
+
+    public void setArmor(int armor) {
+        this.armor = armor;
+    }
+
+    public int getWeapon() {
+        return weapon;
+    }
+
+    public void setWeapon(int weapon) {
+        this.weapon = weapon;
     }
 }

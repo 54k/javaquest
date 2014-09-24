@@ -30,7 +30,7 @@ public class PlayerControllerBehavior extends Behavior<BQPlayer> implements Play
 
     @Override
     public void onAttack(BQCharacter attacker, int damage) {
-        JsonArray damagePacket = new JsonArray(new Object[]{Packet.DAMAGE, attacker.getId(), damage});
+        JsonArray damagePacket = new JsonArray(new Object[]{Packet.HURT, attacker.getId(), damage});
         BroadcastUtil.toSelf(getActor(), damagePacket.encode());
     }
 }

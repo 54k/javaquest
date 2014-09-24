@@ -121,6 +121,8 @@ public class BQSpawn {
 
         creature.setMaxHitPoints(creatureTemplate.getHitPoints());
         creature.setHitPoints(creatureTemplate.getHitPoints());
+        creature.setWeapon(creatureTemplate.getWeapon());
+        creature.setArmor(creatureTemplate.getArmor());
 
         creature.getPositionController().spawnMe();
         spawnedCreatures.add(creature);

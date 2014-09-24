@@ -13,6 +13,8 @@ public abstract class BQPlayer extends BQCharacter {
 
     public BQPlayer() {
         setType(BQType.WARRIOR);
+        setWeapon(1);
+        setArmor(1);
     }
 
     public NetworkConnection getConnection() {
