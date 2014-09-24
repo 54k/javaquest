@@ -1,4 +1,8 @@
-package org.mozilla.browserquest.model.actor;
+package org.mozilla.browserquest.model;
+
+import org.mozilla.browserquest.model.actor.BQCreature;
+import org.mozilla.browserquest.model.actor.BQObject;
+import org.mozilla.browserquest.model.actor.BQPlayer;
 
 public enum BQType {
 

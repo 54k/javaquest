@@ -15,8 +15,7 @@ public class StatusControllerBehavior extends Behavior<BQCharacter> implements S
         if (newHitPoints <= 0) {
             actor.setDead(true);
             actor.post(StatusListener.class).onDie(attacker);
-        } else {
-            actor.setHitPoints(newHitPoints);
         }
+        actor.setHitPoints(newHitPoints);
     }
 }

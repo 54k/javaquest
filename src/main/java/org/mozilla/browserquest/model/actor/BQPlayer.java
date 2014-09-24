@@ -1,6 +1,7 @@
 package org.mozilla.browserquest.model.actor;
 
 import org.mozilla.browserquest.actor.ActorPrototype;
+import org.mozilla.browserquest.model.BQType;
 import org.mozilla.browserquest.model.controller.PlayerControllerBehavior;
 import org.mozilla.browserquest.network.NetworkConnection;
 import org.vertx.java.core.json.JsonArray;

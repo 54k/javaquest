@@ -27,9 +27,17 @@ public class ListenersContainer {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    private void register(Class type, Object listener) {
+    private void register(Class<?> type, Object listener) {
+        validateType(type);
         getProxyFor(type).listeners.add(listener);
+    }
+
+    private static void validateType(Class<?> type) {
+        for (Method method : type.getDeclaredMethods()) {
+            if (method.getReturnType() != void.class) {
+                throw new IllegalArgumentException();
+            }
+        }
     }
 
     private Proxy getProxyFor(Class<?> type) {
@@ -60,7 +68,7 @@ public class ListenersContainer {
     private static final class Proxy implements InvocationHandler {
 
         private volatile Object proxy;
-        private final Set listeners = Collections.newSetFromMap(new ConcurrentHashMap<>());
+        private final Set<? super Object> listeners = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {

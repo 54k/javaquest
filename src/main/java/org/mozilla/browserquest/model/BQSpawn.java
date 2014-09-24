@@ -4,7 +4,6 @@ import org.mozilla.browserquest.actor.ActorFactory;
 import org.mozilla.browserquest.inject.LazyInject;
 import org.mozilla.browserquest.model.actor.BQCreature;
 import org.mozilla.browserquest.model.actor.BQObject;
-import org.mozilla.browserquest.model.actor.BQType;
 import org.mozilla.browserquest.service.IdFactory;
 import org.mozilla.browserquest.template.RoamingAreaTemplate;
 import org.mozilla.browserquest.util.PositionUtil;
@@ -28,6 +27,8 @@ public class BQSpawn {
     private BQType type;
     private Area area;
 
+    private boolean respawn;
+
     private int maximumCount;
     private int pendingSpawns;
     private Set<BQObject> spawnedCreatures = Collections.newSetFromMap(new ConcurrentHashMap<>());
@@ -36,6 +37,26 @@ public class BQSpawn {
         type = BQType.fromString(template.getType());
         area = new Area(template.getX(), template.getY(), template.getWidth(), template.getHeight());
         maximumCount = template.getNb();
+    }
+
+    public int getMaximumCount() {
+        return maximumCount;
+    }
+
+    public void setMaximumCount(int maximumCount) {
+        this.maximumCount = maximumCount;
+    }
+
+    public boolean isRespawnEnabled() {
+        return respawn;
+    }
+
+    public void stopRespawn() {
+        respawn = false;
+    }
+
+    public void startRespawn() {
+        respawn = true;
     }
 
     public void spawnAll() {
@@ -55,14 +76,6 @@ public class BQSpawn {
         return doSpawn(creature);
     }
 
-    public void decreaseCount(BQCreature creature) {
-        spawnedCreatures.remove(creature);
-        if ((pendingSpawns + spawnedCreatures.size()) < maximumCount) {
-            pendingSpawns++;
-            vertx.setTimer(1000, l -> respawnCreature(creature));
-        }
-    }
-
     private BQCreature doSpawn(BQCreature creature) {
         creature.setPosition(PositionUtil.getRandomPositionInside(area));
         creature.setHeading(PositionUtil.getRandomHeading());
@@ -74,8 +87,18 @@ public class BQSpawn {
         return creature;
     }
 
+    public void decreaseCount(BQCreature creature) {
+        spawnedCreatures.remove(creature);
+        if ((pendingSpawns + spawnedCreatures.size()) < maximumCount) {
+            pendingSpawns++;
+            vertx.setTimer(1000, l -> respawnCreature(creature));
+        }
+    }
+
     private void respawnCreature(BQCreature creature) {
-        doSpawn(creature);
+        if (respawn) {
+            doSpawn(creature);
+        }
         pendingSpawns--;
     }
 }

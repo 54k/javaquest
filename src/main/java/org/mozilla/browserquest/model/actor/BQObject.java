@@ -2,6 +2,7 @@ package org.mozilla.browserquest.model.actor;
 
 import org.mozilla.browserquest.actor.Actor;
 import org.mozilla.browserquest.actor.ActorPrototype;
+import org.mozilla.browserquest.model.BQType;
 import org.mozilla.browserquest.model.BQWorld;
 import org.mozilla.browserquest.model.BQWorldRegion;
 import org.mozilla.browserquest.model.Heading;
