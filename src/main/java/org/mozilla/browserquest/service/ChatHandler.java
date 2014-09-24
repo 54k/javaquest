@@ -1,4 +1,4 @@
-package org.mozilla.browserquest.chat;
+package org.mozilla.browserquest.service;
 
 import org.mozilla.browserquest.model.actor.BQPlayer;
 

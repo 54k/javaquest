@@ -27,24 +27,51 @@ public class BQSpawn {
     private BQType type;
     private Area area;
 
+    private int minRespawnDelay;
+    private int maxRespawnDelay;
+
     private boolean respawn;
 
-    private int maximumCount;
+    private int maxSpawns;
     private int pendingSpawns;
     private Set<BQObject> spawnedCreatures = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
     public BQSpawn(RoamingAreaTemplate template) {
         type = BQType.fromString(template.getType());
         area = new Area(template.getX(), template.getY(), template.getWidth(), template.getHeight());
-        maximumCount = template.getNb();
+        maxSpawns = template.getNb();
     }
 
-    public int getMaximumCount() {
-        return maximumCount;
+    public BQType getType() {
+        return type;
     }
 
-    public void setMaximumCount(int maximumCount) {
-        this.maximumCount = maximumCount;
+    public void setType(BQType type) {
+        this.type = type;
+    }
+
+    public Area getArea() {
+        return area;
+    }
+
+    public void setArea(Area area) {
+        this.area = area;
+    }
+
+    public int getMinRespawnDelay() {
+        return minRespawnDelay;
+    }
+
+    public void setMinRespawnDelay(int minRespawnDelay) {
+        this.minRespawnDelay = minRespawnDelay;
+    }
+
+    public int getMaxRespawnDelay() {
+        return maxRespawnDelay;
+    }
+
+    public void setMaxRespawnDelay(int maxRespawnDelay) {
+        this.maxRespawnDelay = maxRespawnDelay;
     }
 
     public boolean isRespawnEnabled() {
@@ -59,8 +86,16 @@ public class BQSpawn {
         respawn = true;
     }
 
+    public int getMaxSpawns() {
+        return maxSpawns;
+    }
+
+    public void setMaxSpawns(int maxSpawns) {
+        this.maxSpawns = maxSpawns;
+    }
+
     public void spawnAll() {
-        for (int i = 0; i < maximumCount; i++) {
+        for (int i = 0; i < maxSpawns; i++) {
             spawnOne();
         }
     }
@@ -89,7 +124,7 @@ public class BQSpawn {
 
     public void decreaseCount(BQCreature creature) {
         spawnedCreatures.remove(creature);
-        if ((pendingSpawns + spawnedCreatures.size()) < maximumCount) {
+        if ((pendingSpawns + spawnedCreatures.size()) < maxSpawns) {
             pendingSpawns++;
             vertx.setTimer(1000, l -> respawnCreature(creature));
         }
