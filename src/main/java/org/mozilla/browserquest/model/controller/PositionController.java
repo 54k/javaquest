@@ -12,9 +12,7 @@ public interface PositionController {
 
     void setPosition(Position position);
 
-    void spawnMe();
+    void spawn();
 
-    void decayMe();
-
-    boolean isSpawned();
+    void decay();
 }

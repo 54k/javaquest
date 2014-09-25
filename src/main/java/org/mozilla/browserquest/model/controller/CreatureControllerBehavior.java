@@ -39,7 +39,7 @@ public class CreatureControllerBehavior extends Behavior<BQCreature> implements 
     @Override
     public void onDie(BQCharacter killer) {
         BQCreature actor = getActor();
-        actor.getPositionController().decayMe();
+        actor.getPositionController().decay();
 
         BQSpawn spawn = actor.getSpawn();
         if (spawn != null) {

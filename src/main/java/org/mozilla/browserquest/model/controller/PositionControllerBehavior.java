@@ -30,9 +30,9 @@ public class PositionControllerBehavior extends Behavior<BQObject> implements Po
 
     @Override
     public void setXY(int x, int y) {
-        Preconditions.checkArgument(isSpawned());
-
         BQObject actor = getActor();
+        Preconditions.checkState(actor.isSpawned());
+
         actor.setXY(x, y);
         updateRegion();
     }
@@ -48,15 +48,14 @@ public class PositionControllerBehavior extends Behavior<BQObject> implements Po
             actor.setRegion(newRegion);
             newRegion.addObject(actor);
         }
-
         actor.getKnownListController().updateKnownList();
     }
 
     @Override
-    public void spawnMe() {
-        Preconditions.checkArgument(!isSpawned());
-
+    public void spawn() {
         BQObject actor = getActor();
+        Preconditions.checkState(!actor.isSpawned());
+
         BQWorldRegion region = actor.getWorld().findRegion(actor.getPosition());
         region.addObject(actor);
         actor.setRegion(region);
@@ -65,19 +64,14 @@ public class PositionControllerBehavior extends Behavior<BQObject> implements Po
     }
 
     @Override
-    public void decayMe() {
-        Preconditions.checkArgument(isSpawned());
-
+    public void decay() {
         BQObject actor = getActor();
+        Preconditions.checkState(actor.isSpawned());
+
         BQWorldRegion region = actor.getRegion();
         region.removeObject(actor);
         actor.getKnownListController().clearKnownList();
         actor.setRegion(null);
         actor.post(PositionListener.class).onDecay();
-    }
-
-    @Override
-    public boolean isSpawned() {
-        return getActor().getRegion() != null;
     }
 }

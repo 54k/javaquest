@@ -156,4 +156,8 @@ public abstract class BQObject extends Actor implements ObjectProjection {
     public String toString() {
         return getClass().getSimpleName() + "(id=" + id + ", name=" + name + ')';
     }
+
+    public boolean isSpawned() {
+        return region != null;
+    }
 }

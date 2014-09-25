@@ -1,5 +1,6 @@
 package org.mozilla.browserquest.model;
 
+import com.google.common.base.Preconditions;
 import org.mozilla.browserquest.actor.ActorFactory;
 import org.mozilla.browserquest.inject.LazyInject;
 import org.mozilla.browserquest.model.actor.BQCreature;
@@ -93,38 +94,39 @@ public class BQSpawn {
 
     public void spawnAll() {
         for (int i = 0; i < maxSpawns; i++) {
-            spawnNew();
+            spawnOne();
         }
     }
 
-    public BQCreature spawnNew() {
+    public BQCreature spawnOne() {
         BQCreature creature = actorFactory.newActor(BQCreature.class);
         creature.setId(idFactory.getNextId());
         creature.setType(type);
         creature.setName(type.name());
+        creature.setWeapon(template.getWeapon());
+        creature.setArmor(template.getArmor());
+        creature.setMaxHitPoints(template.getHitPoints());
+
         creature.setWorld(world);
         creature.setSpawn(this);
         world.addObject(creature);
-        return spawn(creature);
+        return doSpawn(creature);
     }
 
-    private BQCreature spawn(BQCreature creature) {
+    private BQCreature doSpawn(BQCreature creature) {
         creature.setPosition(PositionUtil.getRandomPositionInside(area));
         creature.setHeading(PositionUtil.getRandomHeading());
         creature.setDead(false);
 
-        creature.setMaxHitPoints(template.getHitPoints());
-        creature.setHitPoints(template.getHitPoints());
-        creature.setWeapon(template.getWeapon());
-        creature.setArmor(template.getArmor());
+        creature.setHitPoints(creature.getMaxHitPoints());
 
-        creature.getPositionController().spawnMe();
+        creature.getPositionController().spawn();
         spawnedCreatures.add(creature);
         return creature;
     }
 
     public void respawn(BQCreature creature) {
-        assert !creature.getPositionController().isSpawned();
+        Preconditions.checkState(!creature.isSpawned());
         if (!spawnedCreatures.remove(creature)) {
             return;
         }
@@ -137,7 +139,7 @@ public class BQSpawn {
 
     private void respawnCreature(BQCreature creature) {
         if (respawnEnabled) {
-            spawn(creature);
+            doSpawn(creature);
         }
         pendingSpawns--;
     }
