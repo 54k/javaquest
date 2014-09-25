@@ -4,11 +4,10 @@ import org.mozilla.browserquest.actor.ActorFactory;
 import org.mozilla.browserquest.inject.LazyInject;
 import org.mozilla.browserquest.model.actor.BQCreature;
 import org.mozilla.browserquest.model.actor.BQObject;
-import org.mozilla.browserquest.service.DataService;
 import org.mozilla.browserquest.service.IdFactory;
 import org.mozilla.browserquest.template.CreatureTemplate;
-import org.mozilla.browserquest.template.RoamingAreaTemplate;
 import org.mozilla.browserquest.util.PositionUtil;
+import org.mozilla.browserquest.util.RandomUtils;
 import org.vertx.java.core.Vertx;
 
 import java.util.Collections;
@@ -25,11 +24,9 @@ public class BQSpawn {
     private IdFactory idFactory;
     @LazyInject
     private BQWorld world;
-    @LazyInject
-    private DataService dataService;
 
     private BQType type;
-    private CreatureTemplate creatureTemplate;
+    private CreatureTemplate template;
 
     private Area area;
 
@@ -42,11 +39,8 @@ public class BQSpawn {
     private int pendingSpawns;
     private Set<BQObject> spawnedCreatures = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
-    public BQSpawn(RoamingAreaTemplate template) {
-        type = BQType.fromString(template.getType());
-        area = new Area(template.getX(), template.getY(), template.getWidth(), template.getHeight());
-        maxSpawns = template.getNb();
-        creatureTemplate = dataService.getCreatureTemplates().get(template.getType());
+    public BQSpawn(CreatureTemplate template) {
+        this.template = template;
     }
 
     public BQType getType() {
@@ -119,10 +113,10 @@ public class BQSpawn {
         creature.setHeading(PositionUtil.getRandomHeading());
         creature.setDead(false);
 
-        creature.setMaxHitPoints(creatureTemplate.getHitPoints());
-        creature.setHitPoints(creatureTemplate.getHitPoints());
-        creature.setWeapon(creatureTemplate.getWeapon());
-        creature.setArmor(creatureTemplate.getArmor());
+        creature.setMaxHitPoints(template.getHitPoints());
+        creature.setHitPoints(template.getHitPoints());
+        creature.setWeapon(template.getWeapon());
+        creature.setArmor(template.getArmor());
 
         creature.getPositionController().spawnMe();
         spawnedCreatures.add(creature);
@@ -130,10 +124,13 @@ public class BQSpawn {
     }
 
     public void decreaseCount(BQCreature creature) {
-        spawnedCreatures.remove(creature);
+        if (!spawnedCreatures.remove(creature)) {
+            return;
+        }
+
         if ((pendingSpawns + spawnedCreatures.size()) < maxSpawns) {
             pendingSpawns++;
-            vertx.setTimer(1000, l -> respawnCreature(creature));
+            vertx.setTimer(RandomUtils.getRandomBetween(minRespawnDelay, maxRespawnDelay), l -> respawnCreature(creature));
         }
     }
 
