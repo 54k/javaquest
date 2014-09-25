@@ -93,11 +93,11 @@ public class BQSpawn {
 
     public void spawnAll() {
         for (int i = 0; i < maxSpawns; i++) {
-            spawnOne();
+            spawnNew();
         }
     }
 
-    public BQCreature spawnOne() {
+    public BQCreature spawnNew() {
         BQCreature creature = actorFactory.newActor(BQCreature.class);
         creature.setId(idFactory.getNextId());
         creature.setType(type);
@@ -105,10 +105,10 @@ public class BQSpawn {
         creature.setWorld(world);
         creature.setSpawn(this);
         world.addObject(creature);
-        return doSpawn(creature);
+        return spawn(creature);
     }
 
-    private BQCreature doSpawn(BQCreature creature) {
+    private BQCreature spawn(BQCreature creature) {
         creature.setPosition(PositionUtil.getRandomPositionInside(area));
         creature.setHeading(PositionUtil.getRandomHeading());
         creature.setDead(false);
@@ -123,7 +123,8 @@ public class BQSpawn {
         return creature;
     }
 
-    public void decreaseCount(BQCreature creature) {
+    public void respawn(BQCreature creature) {
+        assert !creature.getPositionController().isSpawned();
         if (!spawnedCreatures.remove(creature)) {
             return;
         }
@@ -136,7 +137,7 @@ public class BQSpawn {
 
     private void respawnCreature(BQCreature creature) {
         if (respawnEnabled) {
-            doSpawn(creature);
+            spawn(creature);
         }
         pendingSpawns--;
     }

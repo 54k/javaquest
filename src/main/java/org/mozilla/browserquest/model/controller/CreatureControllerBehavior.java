@@ -43,7 +43,7 @@ public class CreatureControllerBehavior extends Behavior<BQCreature> implements 
 
         BQSpawn spawn = actor.getSpawn();
         if (spawn != null) {
-            spawn.decreaseCount(actor);
+            spawn.respawn(actor);
         }
     }
 }
