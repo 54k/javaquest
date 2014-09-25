@@ -1,6 +1,5 @@
 package org.mozilla.browserquest.service;
 
-import com.google.inject.Inject;
 import org.mozilla.browserquest.inject.LazyInject;
 import org.mozilla.browserquest.model.Area;
 import org.mozilla.browserquest.model.BQSpawn;
@@ -8,6 +7,7 @@ import org.mozilla.browserquest.model.BQType;
 import org.mozilla.browserquest.template.CheckpointTemplate;
 import org.mozilla.browserquest.template.RoamingAreaTemplate;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -20,7 +20,7 @@ public class DefaultSpawnService implements SpawnService {
     private Map<Integer, Area> startingAreas = new ConcurrentHashMap<>();
     private Map<Integer, Area> spawnAreas = new ConcurrentHashMap<>();
 
-    private Map<Integer, BQSpawn> spawns = new ConcurrentHashMap<>();
+    private Map<Integer, BQSpawn> managedSpawns = new ConcurrentHashMap<>();
 
     public DefaultSpawnService() {
         loadCheckpoints(dataService.getWorldTemplate().getCheckpoints());
@@ -40,7 +40,7 @@ public class DefaultSpawnService implements SpawnService {
     private void loadCreatureSpawns(List<RoamingAreaTemplate> roamingAreaTemplates) {
         for (RoamingAreaTemplate template : roamingAreaTemplates) {
             BQSpawn spawn = createSpawn(template);
-            spawns.put(template.getId(), spawn);
+            managedSpawns.put(template.getId(), spawn);
             spawn.spawnAll();
         }
     }
@@ -53,5 +53,10 @@ public class DefaultSpawnService implements SpawnService {
         spawn.setMinRespawnDelay(10 * 1000);
         spawn.setType(BQType.fromString(template.getType()));
         return spawn;
+    }
+
+    @Override
+    public Map<Integer, BQSpawn> getManagedSpawns() {
+        return Collections.unmodifiableMap(managedSpawns);
     }
 }
