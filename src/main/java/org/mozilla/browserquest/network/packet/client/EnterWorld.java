@@ -3,7 +3,7 @@ package org.mozilla.browserquest.network.packet.client;
 import org.mozilla.browserquest.actor.ActorFactory;
 import org.mozilla.browserquest.inject.LazyInject;
 import org.mozilla.browserquest.model.BQWorld;
-import org.mozilla.browserquest.model.Heading;
+import org.mozilla.browserquest.model.Orientation;
 import org.mozilla.browserquest.model.Position;
 import org.mozilla.browserquest.model.actor.BQPlayer;
 import org.mozilla.browserquest.network.packet.Packet;
@@ -61,7 +61,7 @@ public class EnterWorld extends Packet {
 
         player.setX(startPosition.getX());
         player.setY(startPosition.getY());
-        player.setHeading(Heading.BOTTOM);
+        player.setOrientation(Orientation.BOTTOM);
 
         JsonArray welcomePacket = new JsonArray(new Object[]{Packet.WELCOME, player.getId(), player.getName(), player.getX(), player.getY(), player.getMaxHitPoints()});
 

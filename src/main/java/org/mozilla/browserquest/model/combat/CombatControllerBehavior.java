@@ -6,6 +6,7 @@ import org.mozilla.browserquest.model.Position;
 import org.mozilla.browserquest.model.actor.BQCharacter;
 import org.mozilla.browserquest.util.PositionUtil;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -16,7 +17,32 @@ public class CombatControllerBehavior extends Behavior<BQCharacter> implements C
     private Map<Integer, BQCharacter> attackers = new ConcurrentHashMap<>();
 
     @Override
-    public void attackTarget(BQCharacter target) {
+    public BQCharacter getTarget() {
+        return target;
+    }
+
+    @Override
+    public void setTarget(BQCharacter target) {
+        this.target = target;
+    }
+
+    @Override
+    public Map<Integer, BQCharacter> getAttackers() {
+        return Collections.unmodifiableMap(attackers);
+    }
+
+    @Override
+    public void addAttacker(BQCharacter attacker) {
+        attackers.put(attacker.getId(), attacker);
+    }
+
+    @Override
+    public void removeAttacker(BQCharacter attacker) {
+        attackers.remove(attacker.getId());
+    }
+
+    @Override
+    public void attack(BQCharacter target) {
         BQCharacter actor = getActor();
         Position position = PositionUtil.getRandomPositionNear(target);
         actor.getPositionController().updatePosition(position);

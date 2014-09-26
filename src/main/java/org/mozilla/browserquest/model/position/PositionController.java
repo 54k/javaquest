@@ -2,6 +2,7 @@ package org.mozilla.browserquest.model.position;
 
 import org.mozilla.browserquest.model.BQWorld;
 import org.mozilla.browserquest.model.BQWorldRegion;
+import org.mozilla.browserquest.model.Orientation;
 import org.mozilla.browserquest.model.Position;
 
 public interface PositionController {
@@ -11,6 +12,10 @@ public interface PositionController {
     void setPosition(Position position);
 
     void setPosition(int x, int y);
+
+    Orientation getOrientation();
+
+    void setOrientation(Orientation orientation);
 
     BQWorld getWorld();
 

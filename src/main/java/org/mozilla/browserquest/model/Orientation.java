@@ -1,6 +1,6 @@
 package org.mozilla.browserquest.model;
 
-public enum Heading {
+public enum Orientation {
 
     RIGHT(1),
     BOTTOM(2),
@@ -9,7 +9,7 @@ public enum Heading {
 
     private int value;
 
-    Heading(int value) {
+    Orientation(int value) {
         this.value = value;
     }
 

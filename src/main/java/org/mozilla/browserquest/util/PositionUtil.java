@@ -1,7 +1,7 @@
 package org.mozilla.browserquest.util;
 
 import org.mozilla.browserquest.model.Area;
-import org.mozilla.browserquest.model.Heading;
+import org.mozilla.browserquest.model.Orientation;
 import org.mozilla.browserquest.model.Position;
 import org.mozilla.browserquest.model.actor.BQObject;
 
@@ -31,9 +31,9 @@ public final class PositionUtil {
         return getRandomPositionInside(area.getX(), area.getY(), area.getWidth(), area.getHeight());
     }
 
-    public static Heading getRandomHeading() {
+    public static Orientation getRandomHeading() {
         Random random = new Random();
-        Heading[] values = Heading.values();
+        Orientation[] values = Orientation.values();
         return values[random.nextInt(values.length)];
     }
 

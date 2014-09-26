@@ -24,7 +24,7 @@ public class PlayerAttack extends Packet {
         BQPlayer player = getConnection().getPlayer();
         BQObject target = world.findObject(this.target);
         if (target instanceof BQCharacter) {
-            player.getCombatController().attackTarget((BQCharacter) target);
+            player.getCombatController().attack((BQCharacter) target);
         }
     }
 }

@@ -6,4 +6,8 @@ import org.mozilla.browserquest.util.Listener;
 public interface PositionEventListener {
 
     void onPositionChange();
+
+    void onSpawn();
+
+    void onDecay();
 }

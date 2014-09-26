@@ -5,6 +5,7 @@ import org.mozilla.browserquest.actor.Behavior;
 import org.mozilla.browserquest.actor.BehaviorPrototype;
 import org.mozilla.browserquest.model.BQWorld;
 import org.mozilla.browserquest.model.BQWorldRegion;
+import org.mozilla.browserquest.model.Orientation;
 import org.mozilla.browserquest.model.Position;
 import org.mozilla.browserquest.model.actor.BQObject;
 
@@ -12,6 +13,8 @@ import org.mozilla.browserquest.model.actor.BQObject;
 public class PositionControllerBehavior extends Behavior<BQObject> implements PositionController {
 
     private Position position = new Position();
+    private Orientation orientation;
+
     private BQWorld world;
     private BQWorldRegion region;
 
@@ -28,6 +31,16 @@ public class PositionControllerBehavior extends Behavior<BQObject> implements Po
     @Override
     public void setPosition(int x, int y) {
         position.setXY(x, y);
+    }
+
+    @Override
+    public Orientation getOrientation() {
+        return orientation;
+    }
+
+    @Override
+    public void setOrientation(Orientation orientation) {
+        this.orientation = orientation;
     }
 
     @Override
@@ -67,7 +80,7 @@ public class PositionControllerBehavior extends Behavior<BQObject> implements Po
         BQObject actor = getActor();
 
         BQWorldRegion oldRegion = region;
-        BQWorldRegion newRegion = world.findRegion(actor.getPosition());
+        BQWorldRegion newRegion = world.findRegion(position);
 
         if (oldRegion != newRegion) {
             oldRegion.removeObject(actor);
@@ -82,11 +95,11 @@ public class PositionControllerBehavior extends Behavior<BQObject> implements Po
     public void spawn() {
         Preconditions.checkState(!isSpawned());
         BQObject actor = getActor();
-        BQWorldRegion region = world.findRegion(actor.getPosition());
-        region.addObject(actor);
-        actor.setRegion(region);
+        BQWorldRegion newRegion = world.findRegion(position);
+        newRegion.addObject(actor);
+        region = newRegion;
         actor.getKnownListController().updateKnownList();
-        actor.post(SpawnEventListener.class).onSpawn();
+        actor.post(PositionEventListener.class).onSpawn();
     }
 
     @Override
@@ -95,7 +108,7 @@ public class PositionControllerBehavior extends Behavior<BQObject> implements Po
         BQObject actor = getActor();
         region.removeObject(actor);
         actor.getKnownListController().clearKnownList();
-        actor.setRegion(null);
-        actor.post(SpawnEventListener.class).onDecay();
+        region = null;
+        actor.post(PositionEventListener.class).onDecay();
     }
 }

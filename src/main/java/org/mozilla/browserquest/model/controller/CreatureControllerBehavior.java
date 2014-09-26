@@ -6,12 +6,13 @@ import org.mozilla.browserquest.model.BQSpawn;
 import org.mozilla.browserquest.model.actor.BQCharacter;
 import org.mozilla.browserquest.model.actor.BQCreature;
 import org.mozilla.browserquest.model.combat.CombatEventListener;
+import org.mozilla.browserquest.model.status.StatusEventListener;
 import org.mozilla.browserquest.network.packet.Packet;
 import org.mozilla.browserquest.util.BroadcastUtil;
 import org.vertx.java.core.json.JsonArray;
 
 @BehaviorPrototype(CreatureController.class)
-public class CreatureControllerBehavior extends Behavior<BQCreature> implements CreatureController, CombatEventListener, StatusListener {
+public class CreatureControllerBehavior extends Behavior<BQCreature> implements CreatureController, CombatEventListener, StatusEventListener {
 
     @Override
     public void onAttack(BQCharacter attacker, int damage) {
@@ -20,15 +21,23 @@ public class CreatureControllerBehavior extends Behavior<BQCreature> implements 
         JsonArray damagePacket = new JsonArray(new Object[]{Packet.DAMAGE, attacker.getId(), damage});
         BroadcastUtil.toKnownPlayers(actor, damagePacket.encode());
 
-        getActor().getStatusController().reduceHitPoints(attacker, damage);
+        getActor().getStatusController().damage(attacker, damage);
 
-        if (actor.isDead()) {
+        if (actor.getStatusController().isDead()) {
             return;
         }
 
         JsonArray attackPacket = new JsonArray(new Object[]{Packet.ATTACK, actor.getId(), attacker.getId()});
         BroadcastUtil.toKnownPlayers(actor, attackPacket.encode());
-        actor.getCombatController().attackTarget(attacker);
+        actor.getCombatController().attack(attacker);
+    }
+
+    @Override
+    public void onHeal(BQCharacter healer, int amount) {
+    }
+
+    @Override
+    public void onDamage(BQCharacter attacker, int amount) {
     }
 
     @Override

@@ -115,7 +115,7 @@ public class BQSpawn {
 
     private BQCreature doSpawn(BQCreature creature) {
         creature.setPosition(PositionUtil.getRandomPositionInside(area));
-        creature.setHeading(PositionUtil.getRandomHeading());
+        creature.setOrientation(PositionUtil.getRandomHeading());
         creature.setDead(false);
 
         creature.setHitPoints(creature.getMaxHitPoints());

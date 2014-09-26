@@ -16,14 +16,4 @@ public abstract class BQCreature extends BQCharacter {
     public void setSpawn(BQSpawn spawn) {
         this.spawn = spawn;
     }
-
-    @Override
-    public int getDistanceToForgetObject(BQObject object) {
-        return 7;
-    }
-
-    @Override
-    public int getDistanceToFindObject(BQObject object) {
-        return 5;
-    }
 }

@@ -2,7 +2,10 @@ package org.mozilla.browserquest.model.actor;
 
 import org.mozilla.browserquest.actor.ActorPrototype;
 import org.mozilla.browserquest.model.BQType;
+import org.mozilla.browserquest.model.Orientation;
+import org.mozilla.browserquest.model.Position;
 import org.mozilla.browserquest.model.controller.PlayerControllerBehavior;
+import org.mozilla.browserquest.model.position.PositionController;
 import org.mozilla.browserquest.network.NetworkConnection;
 import org.vertx.java.core.json.JsonArray;
 
@@ -13,8 +16,6 @@ public abstract class BQPlayer extends BQCharacter {
 
     public BQPlayer() {
         setType(BQType.WARRIOR);
-        setWeapon(1);
-        setArmor(1);
     }
 
     public NetworkConnection getConnection() {
@@ -27,16 +28,9 @@ public abstract class BQPlayer extends BQCharacter {
 
     @Override
     public JsonArray getInfo() {
-        return new JsonArray(new Object[]{getId(), getType().getId(), getX(), getY(), getName(), getHeading().getValue(), 21, 60});
-    }
-
-    @Override
-    public int getDistanceToForgetObject(BQObject object) {
-        return 25;
-    }
-
-    @Override
-    public int getDistanceToFindObject(BQObject object) {
-        return 20;
+        PositionController positionController = getPositionController();
+        Position position = positionController.getPosition();
+        Orientation orientation = positionController.getOrientation();
+        return new JsonArray(new Object[]{getId(), getType().getId(), position.getX(), position.getY(), getName(), orientation.getValue(), 21, 60});
     }
 }
