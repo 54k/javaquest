@@ -5,14 +5,14 @@ import org.mozilla.browserquest.actor.BehaviorPrototype;
 import org.mozilla.browserquest.model.actor.BQCharacter;
 import org.mozilla.browserquest.model.actor.BQObject;
 import org.mozilla.browserquest.model.actor.BQPlayer;
-import org.mozilla.browserquest.model.event.CombatListener;
-import org.mozilla.browserquest.model.event.KnownListListener;
+import org.mozilla.browserquest.model.combat.CombatEventListener;
+import org.mozilla.browserquest.model.knownlist.KnownListEventListener;
 import org.mozilla.browserquest.network.packet.Packet;
 import org.mozilla.browserquest.util.BroadcastUtil;
 import org.vertx.java.core.json.JsonArray;
 
 @BehaviorPrototype(PlayerController.class)
-public class PlayerControllerBehavior extends Behavior<BQPlayer> implements PlayerController, KnownListListener, CombatListener {
+public class PlayerControllerBehavior extends Behavior<BQPlayer> implements PlayerController, KnownListEventListener, CombatEventListener {
 
     @Override
     public void onObjectAddedToKnownList(BQObject object) {

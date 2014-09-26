@@ -1,6 +1,5 @@
-package org.mozilla.browserquest.model.controller;
+package org.mozilla.browserquest.model.position;
 
-import com.google.common.base.Preconditions;
 import org.mozilla.browserquest.actor.Behavior;
 import org.mozilla.browserquest.actor.BehaviorPrototype;
 import org.mozilla.browserquest.model.Heading;
@@ -18,7 +17,7 @@ public class MovementControllerBehavior extends Behavior<BQCharacter> implements
     @Override
     public void moveTo(int x, int y) {
         BQCharacter actor = getActor();
-        actor.getPositionController().setXY(x, y);
+        actor.getPositionController().updatePosition(x, y);
         actor.setHeading(Heading.BOTTOM);
 
         JsonArray movePacket = new JsonArray(new Object[]{Packet.MOVE, actor.getId(), actor.getX(), actor.getY()});
@@ -32,7 +31,6 @@ public class MovementControllerBehavior extends Behavior<BQCharacter> implements
 
     @Override
     public void moveTo(BQObject object) {
-        Preconditions.checkState(object.isSpawned());
         moveTo(PositionUtil.getRandomPositionNear(object));
     }
 }

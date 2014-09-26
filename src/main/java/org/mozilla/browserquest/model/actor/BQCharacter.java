@@ -1,8 +1,8 @@
 package org.mozilla.browserquest.model.actor;
 
 import org.mozilla.browserquest.actor.ActorPrototype;
-import org.mozilla.browserquest.model.controller.CombatControllerBehavior;
-import org.mozilla.browserquest.model.controller.MovementControllerBehavior;
+import org.mozilla.browserquest.model.combat.CombatControllerBehavior;
+import org.mozilla.browserquest.model.position.MovementControllerBehavior;
 import org.mozilla.browserquest.model.controller.StatusControllerBehavior;
 import org.mozilla.browserquest.model.projection.CharacterProjection;
 

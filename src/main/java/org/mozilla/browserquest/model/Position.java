@@ -34,6 +34,11 @@ public class Position {
         this.y = y;
     }
 
+    public void setPosition(Position position) {
+        x = position.getX();
+        y = position.getY();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

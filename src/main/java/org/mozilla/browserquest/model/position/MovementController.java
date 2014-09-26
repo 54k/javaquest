@@ -1,4 +1,4 @@
-package org.mozilla.browserquest.model.controller;
+package org.mozilla.browserquest.model.position;
 
 import org.mozilla.browserquest.model.Position;
 import org.mozilla.browserquest.model.actor.BQObject;

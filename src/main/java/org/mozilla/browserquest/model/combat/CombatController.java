@@ -1,4 +1,4 @@
-package org.mozilla.browserquest.model.controller;
+package org.mozilla.browserquest.model.combat;
 
 import org.mozilla.browserquest.model.actor.BQCharacter;
 

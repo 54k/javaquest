@@ -5,14 +5,13 @@ import org.mozilla.browserquest.actor.BehaviorPrototype;
 import org.mozilla.browserquest.model.BQSpawn;
 import org.mozilla.browserquest.model.actor.BQCharacter;
 import org.mozilla.browserquest.model.actor.BQCreature;
-import org.mozilla.browserquest.model.event.CombatListener;
-import org.mozilla.browserquest.model.event.StatusListener;
+import org.mozilla.browserquest.model.combat.CombatEventListener;
 import org.mozilla.browserquest.network.packet.Packet;
 import org.mozilla.browserquest.util.BroadcastUtil;
 import org.vertx.java.core.json.JsonArray;
 
 @BehaviorPrototype(CreatureController.class)
-public class CreatureControllerBehavior extends Behavior<BQCreature> implements CreatureController, CombatListener, StatusListener {
+public class CreatureControllerBehavior extends Behavior<BQCreature> implements CreatureController, CombatEventListener, StatusListener {
 
     @Override
     public void onAttack(BQCharacter attacker, int damage) {

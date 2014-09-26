@@ -1,9 +1,9 @@
-package org.mozilla.browserquest.model.event;
+package org.mozilla.browserquest.model.position;
 
 import org.mozilla.browserquest.util.Listener;
 
 @Listener
-public interface PositionListener {
+public interface SpawnEventListener {
 
     void onSpawn();
 

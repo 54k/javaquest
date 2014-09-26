@@ -28,7 +28,7 @@ public class StartAttack extends Packet {
         BQObject target = world.findObject(this.target);
 
         if (target instanceof BQCharacter) {
-            player.getPositionController().setPosition(PositionUtil.getRandomPositionNear(target));
+            player.getPositionController().updatePosition(PositionUtil.getRandomPositionNear(target));
 
             JsonArray attackPacket = new JsonArray(new Object[]{Packet.ATTACK, player.getId(), target.getId()});
             BroadcastUtil.toKnownPlayers(player, attackPacket.encode());

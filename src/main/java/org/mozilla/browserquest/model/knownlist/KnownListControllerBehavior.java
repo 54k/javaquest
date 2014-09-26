@@ -1,82 +1,70 @@
-package org.mozilla.browserquest.model.controller;
+package org.mozilla.browserquest.model.knownlist;
 
 import org.mozilla.browserquest.actor.Behavior;
 import org.mozilla.browserquest.actor.BehaviorPrototype;
 import org.mozilla.browserquest.model.BQWorldRegion;
 import org.mozilla.browserquest.model.actor.BQObject;
 import org.mozilla.browserquest.model.actor.BQPlayer;
-import org.mozilla.browserquest.model.event.KnownListListener;
 import org.mozilla.browserquest.util.PositionUtil;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @BehaviorPrototype(KnownListController.class)
 public class KnownListControllerBehavior extends Behavior<BQObject> implements KnownListController {
 
+    private Map<Integer, BQObject> knownObjects = new ConcurrentHashMap<>();
+    private Map<Integer, BQPlayer> knownPlayers = new ConcurrentHashMap<>();
+
     @Override
     public Map<Integer, BQObject> getKnownObjects() {
-        return getActor().getKnownObjects();
+        return Collections.unmodifiableMap(knownObjects);
     }
 
     @Override
     public Map<Integer, BQPlayer> getKnownPlayers() {
-        return getActor().getKnownPlayers();
+        return Collections.unmodifiableMap(knownPlayers);
     }
 
     @Override
     public boolean addObject(BQObject object) {
-        if (object == null) {
-            return false;
+        if (!knowsObject(object) && inRange(object)) {
+            addToKnownList(object);
+            return true;
         }
-
-        if (knowsObject(object)) {
-            return false;
-        }
-
-        if (!inRange(object)) {
-            return false;
-        }
-
-        addToKnownList(object);
-        return true;
+        return false;
     }
 
     private boolean inRange(BQObject object) {
         BQObject actor = getActor();
-        return PositionUtil.isInRange(object, actor, actor.getDistanceToFindObject(object));
+        int distanceToFindObject = actor.getKnownListRangeController().getDistanceToFindObject(object);
+        return PositionUtil.isInRange(object, actor, distanceToFindObject);
     }
 
     @Override
     public void addToKnownList(BQObject object) {
-        BQObject actor = getActor();
-        actor.getKnownObjects().put(object.getId(), object);
+        knownObjects.put(object.getId(), object);
         if (object instanceof BQPlayer) {
-            actor.getKnownPlayers().put(object.getId(), (BQPlayer) object);
+            knownPlayers.put(object.getId(), (BQPlayer) object);
         }
-        actor.post(KnownListListener.class).onObjectAddedToKnownList(object);
+        getActor().post(KnownListEventListener.class).onObjectAddedToKnownList(object);
     }
 
     @Override
     public boolean removeObject(BQObject object) {
-        if (object == null) {
-            return false;
+        if (knowsObject(object) && outOfRange(object)) {
+            removeFromKnownList(object);
+            return true;
         }
-
-        if (!knowsObject(object)) {
-            return false;
-        }
-
-        if (!outOfRange(object)) {
-            return false;
-        }
-
-        removeFromKnownList(object);
-        return true;
+        return false;
     }
 
     private boolean outOfRange(BQObject object) {
-        return PositionUtil.isOutOfRange(object, getActor(), getActor().getDistanceToForgetObject(object));
+        BQObject actor = getActor();
+        int distanceToForgetObject = actor.getKnownListRangeController().getDistanceToForgetObject(object);
+        return PositionUtil.isOutOfRange(object, actor, distanceToForgetObject);
     }
 
     public void removeFromKnownList(BQObject object) {
@@ -85,7 +73,7 @@ public class KnownListControllerBehavior extends Behavior<BQObject> implements K
         if (object instanceof BQPlayer) {
             actor.getKnownPlayers().remove(object.getId());
         }
-        actor.post(KnownListListener.class).onObjectRemovedFromKnownList(object);
+        actor.post(KnownListEventListener.class).onObjectRemovedFromKnownList(object);
     }
 
     @Override

@@ -7,8 +7,8 @@ import org.mozilla.browserquest.model.BQWorld;
 import org.mozilla.browserquest.model.BQWorldRegion;
 import org.mozilla.browserquest.model.Heading;
 import org.mozilla.browserquest.model.Position;
-import org.mozilla.browserquest.model.controller.KnownListControllerBehavior;
-import org.mozilla.browserquest.model.controller.PositionControllerBehavior;
+import org.mozilla.browserquest.model.knownlist.KnownListControllerBehavior;
+import org.mozilla.browserquest.model.position.PositionControllerBehavior;
 import org.mozilla.browserquest.model.projection.ObjectProjection;
 import org.vertx.java.core.json.JsonArray;
 
