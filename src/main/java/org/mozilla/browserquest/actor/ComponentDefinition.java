@@ -2,12 +2,12 @@ package org.mozilla.browserquest.actor;
 
 import com.google.common.base.Preconditions;
 
-public class BehaviorDefinition {
+public class ComponentDefinition {
 
     private Class<?> interfaceType;
-    private Class<? extends Behavior> behavior;
+    private Class<? extends Component> behavior;
 
-    public BehaviorDefinition(Class<?> interfaceType, Class<? extends Behavior> behavior) {
+    public ComponentDefinition(Class<?> interfaceType, Class<? extends Component> behavior) {
         Preconditions.checkNotNull(interfaceType);
         Preconditions.checkNotNull(behavior);
         validate(interfaceType, behavior);
@@ -15,7 +15,7 @@ public class BehaviorDefinition {
         this.behavior = behavior;
     }
 
-    static void validate(Class<?> behaviorType, Class<? extends Behavior> behavior) {
+    static void validate(Class<?> behaviorType, Class<? extends Component> behavior) {
         Preconditions.checkArgument(behaviorType.isInterface());
         Preconditions.checkArgument(behaviorType.isAssignableFrom(behavior));
     }
@@ -24,7 +24,7 @@ public class BehaviorDefinition {
         return interfaceType;
     }
 
-    public Class<? extends Behavior> getBehavior() {
+    public Class<? extends Component> getBehavior() {
         return behavior;
     }
 }

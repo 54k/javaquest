@@ -1,6 +1,6 @@
 package org.mozilla.browserquest.actor;
 
-public abstract class Behavior<T extends Actor> {
+public abstract class Component<T extends Actor> {
 
     private volatile T actor;
 

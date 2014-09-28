@@ -13,7 +13,7 @@ public final class BroadcastUtil {
     }
 
     public static void toKnownPlayers(BQObject object, String packet) {
-        object.getKnownListController().getKnownPlayers().values().forEach(p -> p.getConnection().write(packet));
+        object.getKnownList().getKnownPlayers().values().forEach(p -> p.getConnection().write(packet));
     }
 
     public static void toSelfAndKnownPlayers(BQPlayer object, String packet) {
@@ -22,7 +22,7 @@ public final class BroadcastUtil {
     }
 
     public static void toPlayersInRegion(BQObject object, String packet) {
-        object.getRegion().getPlayers().values().stream().filter(p -> p != object).forEach(p -> p.getConnection().write(packet));
+        object.getPositionController().getRegion().getPlayers().values().stream().filter(p -> p != object).forEach(p -> p.getConnection().write(packet));
     }
 
     public static void toSelfAndPlayersInRegion(BQPlayer object, String packet) {

@@ -8,5 +8,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface ActorPrototype {
-    Class<? extends Behavior>[] value() default {};
+    Class<? extends Component>[] value() default {};
 }

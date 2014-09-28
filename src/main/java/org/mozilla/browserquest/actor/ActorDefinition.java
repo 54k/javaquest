@@ -10,16 +10,16 @@ public class ActorDefinition {
     private Class<? extends Actor> type;
     private Class<? extends Actor> implementation;
 
-    private Collection<BehaviorDefinition> behaviorDefinitions;
-    private Collection<ProjectionDefinition> projectionDefinitions;
+    private Collection<ComponentDefinition> componentDefinitions;
+    private Collection<ViewDefinition> viewDefinitions;
 
-    public ActorDefinition(Class<? extends Actor> type, Collection<BehaviorDefinition> behaviorDefinitions, Collection<ProjectionDefinition> projectionDefinitions) {
+    public ActorDefinition(Class<? extends Actor> type, Collection<ComponentDefinition> componentDefinitions, Collection<ViewDefinition> viewDefinitions) {
         Preconditions.checkNotNull(type);
-        Preconditions.checkNotNull(behaviorDefinitions);
-        Preconditions.checkNotNull(projectionDefinitions);
+        Preconditions.checkNotNull(componentDefinitions);
+        Preconditions.checkNotNull(viewDefinitions);
         this.type = type;
-        this.behaviorDefinitions = behaviorDefinitions;
-        this.projectionDefinitions = projectionDefinitions;
+        this.componentDefinitions = componentDefinitions;
+        this.viewDefinitions = viewDefinitions;
     }
 
     public Class<? extends Actor> getType() {
@@ -35,11 +35,11 @@ public class ActorDefinition {
         this.implementation = implementation;
     }
 
-    public Collection<BehaviorDefinition> getBehaviorDefinitions() {
-        return Collections.unmodifiableCollection(behaviorDefinitions);
+    public Collection<ComponentDefinition> getComponentDefinitions() {
+        return Collections.unmodifiableCollection(componentDefinitions);
     }
 
-    public Collection<ProjectionDefinition> getProjectionDefinitions() {
-        return Collections.unmodifiableCollection(projectionDefinitions);
+    public Collection<ViewDefinition> getViewDefinitions() {
+        return Collections.unmodifiableCollection(viewDefinitions);
     }
 }

@@ -11,41 +11,41 @@ import java.util.concurrent.ConcurrentHashMap;
 public abstract class Actor {
 
     private ListenersContainer listenersContainer = new ListenersContainer();
-    private final Map<Class<?>, Behavior> behaviors = new ConcurrentHashMap<>();
+    private final Map<Class<?>, Component> components = new ConcurrentHashMap<>();
 
     @SuppressWarnings("unchecked")
-    public <T> T getBehavior(Class<T> type) {
+    public <T> T getComponent(Class<T> type) {
         Preconditions.checkNotNull(type);
-        return (T) behaviors.get(type);
+        return (T) components.get(type);
     }
 
     @SuppressWarnings("unchecked")
-    public <T, B extends Behavior> void addBehavior(Class<T> type, B behavior) {
+    public <T, C extends Component> void addComponent(Class<T> type, C component) {
         Preconditions.checkArgument(type.isInterface());
-        BehaviorDefinition.validate(type, behavior.getClass());
-        removeBehavior(type);
-        behavior.setActor(this);
-        behaviors.put(type, behavior);
+        ComponentDefinition.validate(type, component.getClass());
+        removeComponent(type);
+        component.setActor(this);
+        components.put(type, component);
     }
 
     @SuppressWarnings("unchecked")
-    public <T> T removeBehavior(Class<T> type) {
+    public <T> T removeComponent(Class<T> type) {
         Preconditions.checkNotNull(type);
-        Behavior behavior;
-        if ((behavior = behaviors.remove(type)) != null) {
-            behavior.setActor(null);
-            unregister(behavior);
+        Component component;
+        if ((component = components.remove(type)) != null) {
+            component.setActor(null);
+            unregister(component);
         }
-        return (T) behavior;
+        return (T) component;
     }
 
-    public Map<Class<?>, Behavior> getBehaviors() {
-        return Collections.unmodifiableMap(behaviors);
+    public Map<Class<?>, Component> getComponents() {
+        return Collections.unmodifiableMap(components);
     }
 
-    public boolean hasBehavior(Class<?> type) {
+    public boolean hasComponent(Class<?> type) {
         Preconditions.checkNotNull(type);
-        return behaviors.containsKey(type);
+        return components.containsKey(type);
     }
 
     public <T> T post(Class<T> type) {

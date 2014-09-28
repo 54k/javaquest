@@ -2,7 +2,7 @@ package org.mozilla.browserquest.model.knownlist;
 
 import org.mozilla.browserquest.model.actor.BQObject;
 
-public interface KnownListRangeController {
+public interface KnownListRange {
 
     int getDistanceToForgetObject(BQObject object);
 

@@ -5,14 +5,13 @@ import org.mozilla.browserquest.actor.ActorPrototype;
 import org.mozilla.browserquest.model.BQType;
 import org.mozilla.browserquest.model.Orientation;
 import org.mozilla.browserquest.model.Position;
-import org.mozilla.browserquest.model.knownlist.KnownListControllerBehavior;
+import org.mozilla.browserquest.model.knownlist.KnownListComponent;
 import org.mozilla.browserquest.model.position.PositionController;
-import org.mozilla.browserquest.model.position.PositionControllerBehavior;
-import org.mozilla.browserquest.model.projection.ObjectProjection;
+import org.mozilla.browserquest.model.position.PositionControllerComponent;
 import org.vertx.java.core.json.JsonArray;
 
-@ActorPrototype({PositionControllerBehavior.class, KnownListControllerBehavior.class})
-public abstract class BQObject extends Actor implements ObjectProjection {
+@ActorPrototype({PositionControllerComponent.class, KnownListComponent.class})
+public abstract class BQObject extends Actor implements ObjectView {
 
     private int id;
     private String name;

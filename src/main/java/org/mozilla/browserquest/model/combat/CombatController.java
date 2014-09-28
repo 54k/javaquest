@@ -16,5 +16,7 @@ public interface CombatController {
 
     void removeAttacker(BQCharacter attacker);
 
+    void clearAttackers();
+
     void attack(BQCharacter target);
 }

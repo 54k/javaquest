@@ -13,8 +13,10 @@ public final class PositionUtil {
     }
 
     public static boolean isInRange(BQObject o1, BQObject o2, int range) {
-        int dy = Math.abs(o1.getY() - o2.getY());
-        int dx = Math.abs(o1.getX() - o2.getX());
+        Position pos1 = o1.getPositionController().getPosition();
+        Position pos2 = o2.getPositionController().getPosition();
+        int dx = Math.abs(pos1.getX() - pos2.getX());
+        int dy = Math.abs(pos1.getY() - pos2.getY());
         return dx <= range && dy <= range;
     }
 
@@ -40,7 +42,7 @@ public final class PositionUtil {
     public static Position getRandomPositionNear(BQObject object) {
         Random random = new Random();
         Position position = new Position();
-        Position objectPosition = object.getPosition();
+        Position objectPosition = object.getPositionController().getPosition();
         position.setXY(objectPosition.getX() + (random.nextInt(2) - 1), objectPosition.getY() + (random.nextInt(2) - 1));
         return position;
     }

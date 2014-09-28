@@ -3,12 +3,12 @@ package org.mozilla.browserquest.actor;
 import java.lang.reflect.Method;
 import java.util.Objects;
 
-public class ProjectionDefinition {
+public class ViewDefinition {
 
     private Method method;
     private Class<?> projection;
 
-    public ProjectionDefinition(Method method, Class<?> projection) {
+    public ViewDefinition(Method method, Class<?> projection) {
         Objects.requireNonNull(method);
         Objects.requireNonNull(projection);
         this.method = method;

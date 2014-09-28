@@ -1,10 +1,12 @@
 package org.mozilla.browserquest.model;
 
-import com.google.common.base.Preconditions;
 import org.mozilla.browserquest.actor.ActorFactory;
 import org.mozilla.browserquest.inject.LazyInject;
 import org.mozilla.browserquest.model.actor.BQCreature;
 import org.mozilla.browserquest.model.actor.BQObject;
+import org.mozilla.browserquest.model.inventory.InventoryController;
+import org.mozilla.browserquest.model.position.PositionController;
+import org.mozilla.browserquest.model.status.StatusController;
 import org.mozilla.browserquest.service.IdFactory;
 import org.mozilla.browserquest.template.CreatureTemplate;
 import org.mozilla.browserquest.util.PositionUtil;
@@ -94,50 +96,52 @@ public class BQSpawn {
 
     public void spawnAll() {
         for (int i = 0; i < maxSpawns; i++) {
-            spawnOne();
+            spawn();
         }
     }
 
-    public BQCreature spawnOne() {
+    public BQCreature spawn() {
         BQCreature creature = actorFactory.newActor(BQCreature.class);
         creature.setId(idFactory.getNextId());
         creature.setType(type);
         creature.setName(type.name());
-        creature.setWeapon(template.getWeapon());
-        creature.setArmor(template.getArmor());
-        creature.setMaxHitPoints(template.getHitPoints());
+        InventoryController inventoryController = creature.getInventoryController();
+        inventoryController.setWeapon(template.getWeapon());
+        inventoryController.setArmor(template.getArmor());
+        creature.setTemplate(template);
 
-        creature.setWorld(world);
+        creature.getPositionController().setWorld(world);
         creature.setSpawn(this);
         world.addObject(creature);
         return doSpawn(creature);
     }
 
     private BQCreature doSpawn(BQCreature creature) {
-        creature.setPosition(PositionUtil.getRandomPositionInside(area));
-        creature.setOrientation(PositionUtil.getRandomHeading());
-        creature.setDead(false);
+        PositionController positionController = creature.getPositionController();
+        positionController.setPosition(PositionUtil.getRandomPositionInside(area));
+        positionController.setOrientation(PositionUtil.getRandomHeading());
+        StatusController statusController = creature.getStatusController();
 
-        creature.setHitPoints(creature.getMaxHitPoints());
+        statusController.setHitPoints(creature.getStatsController().getMaxHitPoints());
+        statusController.setDead(false);
 
-        creature.getPositionController().spawn();
+        positionController.spawn();
         spawnedCreatures.add(creature);
         return creature;
     }
 
     public void respawn(BQCreature creature) {
-        Preconditions.checkState(!creature.isSpawned());
         if (!spawnedCreatures.remove(creature)) {
             return;
         }
 
         if ((pendingSpawns + spawnedCreatures.size()) < maxSpawns) {
             pendingSpawns++;
-            vertx.setTimer(RandomUtils.getRandomBetween(minRespawnDelay, maxRespawnDelay), l -> respawnCreature(creature));
+            vertx.setTimer(RandomUtils.getRandomBetween(minRespawnDelay, maxRespawnDelay), l -> doRespawn(creature));
         }
     }
 
-    private void respawnCreature(BQCreature creature) {
+    private void doRespawn(BQCreature creature) {
         if (respawnEnabled) {
             doSpawn(creature);
         }

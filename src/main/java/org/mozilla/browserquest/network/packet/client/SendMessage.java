@@ -1,8 +1,8 @@
 package org.mozilla.browserquest.network.packet.client;
 
-import org.mozilla.browserquest.service.ChatHandler;
 import org.mozilla.browserquest.inject.LazyInject;
 import org.mozilla.browserquest.network.packet.Packet;
+import org.mozilla.browserquest.service.ChatHandler;
 
 public class SendMessage extends Packet {
 

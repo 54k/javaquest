@@ -6,10 +6,11 @@ import org.mozilla.browserquest.model.BQWorld;
 import org.mozilla.browserquest.model.Orientation;
 import org.mozilla.browserquest.model.Position;
 import org.mozilla.browserquest.model.actor.BQPlayer;
+import org.mozilla.browserquest.model.position.PositionController;
 import org.mozilla.browserquest.network.packet.Packet;
 import org.mozilla.browserquest.service.IdFactory;
-import org.mozilla.browserquest.template.WorldTemplate;
 import org.mozilla.browserquest.template.CheckpointTemplate;
+import org.mozilla.browserquest.template.WorldTemplate;
 import org.vertx.java.core.json.JsonArray;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -59,17 +60,17 @@ public class EnterWorld extends Packet {
             }
         }
 
-        player.setX(startPosition.getX());
-        player.setY(startPosition.getY());
-        player.setOrientation(Orientation.BOTTOM);
+        PositionController positionController = player.getPositionController();
+        positionController.setPosition(startPosition.getX(), startPosition.getY());
+        positionController.setOrientation(Orientation.BOTTOM);
 
-        JsonArray welcomePacket = new JsonArray(new Object[]{Packet.WELCOME, player.getId(), player.getName(), player.getX(), player.getY(), player.getMaxHitPoints()});
+        JsonArray welcomePacket = new JsonArray(new Object[]{Packet.WELCOME, player.getId(), player.getName(), startPosition.getX(), startPosition.getY(), player.getStatsController().getMaxHitPoints()});
 
         getConnection().write(welcomePacket.encode());
 
         world.addObject(player);
-        player.setWorld(world);
+        positionController.setWorld(world);
 
-        player.getPositionController().spawn();
+        positionController.spawn();
     }
 }

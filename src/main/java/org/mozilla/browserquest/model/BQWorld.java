@@ -74,6 +74,12 @@ public class BQWorld {
         return regions.get(getRegionId(x, y));
     }
 
+    public Position findPositionFromTileIndex(int tileIndex) {
+        int x = Math.max((tileIndex % width == 0) ? width - 1 : (tileIndex % width) - 1, 0);
+        int y = (int) Math.floor((tileIndex - 1) / width);
+        return new Position(x, y);
+    }
+
     public Map<Integer, BQWorldRegion> getRegions() {
         return Collections.unmodifiableMap(regions);
     }

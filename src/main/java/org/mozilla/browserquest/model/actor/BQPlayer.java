@@ -4,12 +4,13 @@ import org.mozilla.browserquest.actor.ActorPrototype;
 import org.mozilla.browserquest.model.BQType;
 import org.mozilla.browserquest.model.Orientation;
 import org.mozilla.browserquest.model.Position;
-import org.mozilla.browserquest.model.controller.PlayerControllerBehavior;
+import org.mozilla.browserquest.model.player.PlayerControllerComponent;
+import org.mozilla.browserquest.model.player.PlayerStatsCalculatorComponent;
 import org.mozilla.browserquest.model.position.PositionController;
 import org.mozilla.browserquest.network.NetworkConnection;
 import org.vertx.java.core.json.JsonArray;
 
-@ActorPrototype(PlayerControllerBehavior.class)
+@ActorPrototype({PlayerControllerComponent.class, PlayerStatsCalculatorComponent.class})
 public abstract class BQPlayer extends BQCharacter {
 
     private NetworkConnection connection;

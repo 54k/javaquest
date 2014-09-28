@@ -7,5 +7,6 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface ActorProjection {
+public @interface ComponentPrototype {
+    Class<?> value() default Void.class;
 }
