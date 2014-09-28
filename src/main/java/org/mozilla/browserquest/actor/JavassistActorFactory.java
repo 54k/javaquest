@@ -104,7 +104,7 @@ public class JavassistActorFactory implements ActorFactory {
 
         if (!actorPrototype.isInterface()) {
             viewDefinitions.addAll(getProjectionDefinitions(actorPrototype.getSuperclass()));
-        } else if (actorPrototype.getAnnotation(ComponentView.class) != null) {
+        } else if (actorPrototype.getAnnotation(ActorView.class) != null) {
             for (Method method : actorPrototype.getDeclaredMethods()) {
                 viewDefinitions.add(new ViewDefinition(method, method.getReturnType()));
             }
