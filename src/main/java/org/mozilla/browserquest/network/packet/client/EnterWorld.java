@@ -1,6 +1,6 @@
 package org.mozilla.browserquest.network.packet.client;
 
-import org.mozilla.browserquest.actor.ActorFactory;
+import org.mozilla.browserquest.service.ObjectFactory;
 import org.mozilla.browserquest.inject.LazyInject;
 import org.mozilla.browserquest.model.BQWorld;
 import org.mozilla.browserquest.model.Orientation;
@@ -22,7 +22,7 @@ public class EnterWorld extends Packet {
     @LazyInject
     private BQWorld world;
     @LazyInject
-    private ActorFactory actorFactory;
+    private ObjectFactory objectFactory;
     @LazyInject
     private WorldTemplate template;
     @LazyInject
@@ -42,7 +42,7 @@ public class EnterWorld extends Packet {
     @Override
     public void run() {
         if (getConnection().getPlayer() == null) {
-            getConnection().setPlayer(actorFactory.newActor(BQPlayer.class));
+            getConnection().setPlayer(objectFactory.createObject(BQPlayer.class));
         }
 
         BQPlayer player = getConnection().getPlayer();

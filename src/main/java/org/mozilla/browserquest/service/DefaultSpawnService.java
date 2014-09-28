@@ -5,7 +5,10 @@ import org.mozilla.browserquest.model.Area;
 import org.mozilla.browserquest.model.BQSpawn;
 import org.mozilla.browserquest.model.BQType;
 import org.mozilla.browserquest.model.BQWorld;
+import org.mozilla.browserquest.model.Orientation;
 import org.mozilla.browserquest.model.Position;
+import org.mozilla.browserquest.model.actor.BQObject;
+import org.mozilla.browserquest.model.position.PositionController;
 import org.mozilla.browserquest.template.CheckpointTemplate;
 import org.mozilla.browserquest.template.CreatureTemplate;
 import org.mozilla.browserquest.template.RoamingAreaTemplate;
@@ -20,6 +23,10 @@ public class DefaultSpawnService implements SpawnService {
     private DataService dataService;
     @LazyInject
     private BQWorld world;
+    @LazyInject
+    private IdFactory idFactory;
+    @LazyInject
+    private ObjectFactory objectFactory;
 
     private Map<Integer, Area> startingAreas = new ConcurrentHashMap<>();
     private Map<Integer, Area> spawnAreas = new ConcurrentHashMap<>();
@@ -73,6 +80,19 @@ public class DefaultSpawnService implements SpawnService {
                 spawn.setMinRespawnDelay(10 * 1000);
                 spawn.setType(BQType.fromString(entry.getValue()));
                 spawn.spawnAll();
+            } else {
+                Position position = world.findPositionFromTileIndex(entry.getKey());
+                BQType type = BQType.fromString(entry.getValue());
+
+                BQObject staticObject = objectFactory.createObject(type.getPrototype());
+                staticObject.setId(idFactory.getNextId());
+                staticObject.setType(type);
+                PositionController positionController = staticObject.getPositionController();
+                positionController.setOrientation(Orientation.BOTTOM);
+                positionController.setPosition(position);
+                positionController.setWorld(world);
+                world.addObject(staticObject);
+                positionController.spawn();
             }
         }
     }

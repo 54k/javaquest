@@ -11,11 +11,11 @@ public class PlayerKnownListRangeComponent extends Component<BQPlayer> implement
 
     @Override
     public int getDistanceToForgetObject(BQObject object) {
-        return 7;
+        return 20;
     }
 
     @Override
     public int getDistanceToFindObject(BQObject object) {
-        return 5;
+        return 15;
     }
 }

@@ -1,6 +1,6 @@
 package org.mozilla.browserquest.model;
 
-import org.mozilla.browserquest.actor.ActorFactory;
+import org.mozilla.browserquest.service.ObjectFactory;
 import org.mozilla.browserquest.inject.LazyInject;
 import org.mozilla.browserquest.model.actor.BQCreature;
 import org.mozilla.browserquest.model.actor.BQObject;
@@ -22,7 +22,7 @@ public class BQSpawn {
     @LazyInject
     private Vertx vertx;
     @LazyInject
-    private ActorFactory actorFactory;
+    private ObjectFactory objectFactory;
     @LazyInject
     private IdFactory idFactory;
     @LazyInject
@@ -101,7 +101,7 @@ public class BQSpawn {
     }
 
     public BQCreature spawn() {
-        BQCreature creature = actorFactory.newActor(BQCreature.class);
+        BQCreature creature = objectFactory.createObject(BQCreature.class);
         creature.setId(idFactory.getNextId());
         creature.setType(type);
         creature.setName(type.name());

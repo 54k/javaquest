@@ -1,8 +1,10 @@
 package org.mozilla.browserquest.model;
 
 import org.mozilla.browserquest.model.actor.BQCreature;
+import org.mozilla.browserquest.model.actor.BQItem;
 import org.mozilla.browserquest.model.actor.BQObject;
 import org.mozilla.browserquest.model.actor.BQPlayer;
+import org.mozilla.browserquest.model.actor.BQStaticObject;
 
 public enum BQType {
 
@@ -33,38 +35,38 @@ public enum BQType {
     GOLDENARMOR(26, BQObject.class),
 
     // Objects
-    FLASK(35, BQObject.class),
-    BURGER(36, BQObject.class),
+    FLASK(35, BQItem.class),
+    BURGER(36, BQItem.class),
     CHEST(37, BQObject.class),
-    FIREPOTION(38, BQObject.class),
-    CAKE(39, BQObject.class),
+    FIREPOTION(38, BQItem.class),
+    CAKE(39, BQItem.class),
 
     // NPCs
-    GUARD(40, BQObject.class),
-    KING(41, BQObject.class),
-    OCTOCAT(42, BQObject.class),
-    VILLAGEGIRL(43, BQObject.class),
-    VILLAGER(44, BQObject.class),
-    PRIEST(45, BQObject.class),
-    SCIENTIST(46, BQObject.class),
-    AGENT(47, BQObject.class),
-    RICK(48, BQObject.class),
-    NYAN(49, BQObject.class),
-    SORCERER(50, BQObject.class),
-    BEACHNPC(51, BQObject.class),
-    FORESTNPC(52, BQObject.class),
-    DESERTNPC(53, BQObject.class),
-    LAVANPC(54, BQObject.class),
-    CODER(55, BQObject.class),
+    GUARD(40, BQStaticObject.class),
+    KING(41, BQStaticObject.class),
+    OCTOCAT(42, BQStaticObject.class),
+    VILLAGEGIRL(43, BQStaticObject.class),
+    VILLAGER(44, BQStaticObject.class),
+    PRIEST(45, BQStaticObject.class),
+    SCIENTIST(46, BQStaticObject.class),
+    AGENT(47, BQStaticObject.class),
+    RICK(48, BQStaticObject.class),
+    NYAN(49, BQStaticObject.class),
+    SORCERER(50, BQStaticObject.class),
+    BEACHNPC(51, BQStaticObject.class),
+    FORESTNPC(52, BQStaticObject.class),
+    DESERTNPC(53, BQStaticObject.class),
+    LAVANPC(54, BQStaticObject.class),
+    CODER(55, BQStaticObject.class),
 
     // Weapons
-    SWORD1(60, BQObject.class),
-    SWORD2(61, BQObject.class),
-    REDSWORD(62, BQObject.class),
-    GOLDENSWORD(63, BQObject.class),
-    MORNINGSTAR(64, BQObject.class),
-    AXE(65, BQObject.class),
-    BLUESWORD(66, BQObject.class);
+    SWORD1(60, BQItem.class),
+    SWORD2(61, BQItem.class),
+    REDSWORD(62, BQItem.class),
+    GOLDENSWORD(63, BQItem.class),
+    MORNINGSTAR(64, BQItem.class),
+    AXE(65, BQItem.class),
+    BLUESWORD(66, BQItem.class);
 
     private final int id;
     private final Class<? extends BQObject> prototype;

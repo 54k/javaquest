@@ -14,14 +14,13 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class JavassistActorFactory implements ActorFactory {
+public class JavassistActorFactory {
 
     private static Map<Class<? extends Actor>, ActorDefinition> cache = new ConcurrentHashMap<>();
 
     private ClassPool classPool = ClassPool.getDefault();
 
     @SuppressWarnings("unchecked")
-    @Override
     public <T extends Actor> T newActor(Class<T> actorPrototype) {
         try {
             Preconditions.checkNotNull(actorPrototype);

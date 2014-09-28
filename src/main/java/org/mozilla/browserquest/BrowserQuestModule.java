@@ -3,8 +3,6 @@ package org.mozilla.browserquest;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Scopes;
-import org.mozilla.browserquest.actor.ActorFactory;
-import org.mozilla.browserquest.actor.JavassistActorFactory;
 import org.mozilla.browserquest.inject.LazyInjectAspect;
 import org.mozilla.browserquest.model.BQWorld;
 import org.mozilla.browserquest.service.ChatHandler;
@@ -12,9 +10,11 @@ import org.mozilla.browserquest.service.DataService;
 import org.mozilla.browserquest.service.DefaultChatHandler;
 import org.mozilla.browserquest.service.DefaultDataService;
 import org.mozilla.browserquest.service.DefaultIdFactory;
+import org.mozilla.browserquest.service.DefaultObjectFactory;
 import org.mozilla.browserquest.service.DefaultScriptService;
 import org.mozilla.browserquest.service.DefaultSpawnService;
 import org.mozilla.browserquest.service.IdFactory;
+import org.mozilla.browserquest.service.ObjectFactory;
 import org.mozilla.browserquest.service.ScriptService;
 import org.mozilla.browserquest.service.SpawnService;
 import org.mozilla.browserquest.template.RoamingAreaTemplate;
@@ -47,7 +47,7 @@ public class BrowserQuestModule extends AbstractModule {
         bind(ChatHandler.class).to(DefaultChatHandler.class).asEagerSingleton();
 
         bind(IdFactory.class).to(DefaultIdFactory.class).in(Scopes.SINGLETON);
-        bind(ActorFactory.class).to(JavassistActorFactory.class).in(Scopes.SINGLETON);
+        bind(ObjectFactory.class).to(DefaultObjectFactory.class).in(Scopes.SINGLETON);
 
         bind(BQWorld.class).in(Scopes.SINGLETON);
         bind(SpawnService.class).to(DefaultSpawnService.class).in(Scopes.SINGLETON);
