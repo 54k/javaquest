@@ -11,7 +11,7 @@ import org.vertx.java.core.http.RouteMatcher;
 import java.util.HashSet;
 import java.util.Set;
 
-public class DefaultNetworkServer implements NetworkServer {
+public class NetworkServerImpl implements NetworkServer {
 
     @LazyInject
     private Vertx vertx;
@@ -21,10 +21,10 @@ public class DefaultNetworkServer implements NetworkServer {
 
     private Set<NetworkConnection> connections = new HashSet<>();
 
-    public DefaultNetworkServer() {
+    public NetworkServerImpl() {
         server = vertx.createHttpServer();
         routeMatcher = new RouteMatcher();
-        server.websocketHandler(ws -> connections.add(new DefaultNetworkConnection(ws)));
+        server.websocketHandler(ws -> connections.add(new NetworkConnectionImpl(ws)));
 
         setupServer();
     }

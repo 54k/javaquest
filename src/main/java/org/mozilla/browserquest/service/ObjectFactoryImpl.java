@@ -4,7 +4,7 @@ import com.google.inject.Inject;
 import org.mozilla.browserquest.actor.JavassistActorFactory;
 import org.mozilla.browserquest.gameserver.model.actor.BaseObject;
 
-public class DefaultObjectFactory implements ObjectFactory {
+public class ObjectFactoryImpl implements ObjectFactory {
 
     private JavassistActorFactory delegate = new JavassistActorFactory();
 

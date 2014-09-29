@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class DefaultSpawnService implements SpawnService {
+public class SpawnServiceImpl implements SpawnService {
 
     @LazyInject
     private DataService dataService;
@@ -29,7 +29,7 @@ public class DefaultSpawnService implements SpawnService {
 
     private Map<Integer, Spawn> spawns = new ConcurrentHashMap<>();
 
-    public DefaultSpawnService() {
+    public SpawnServiceImpl() {
         loadCreatureSpawns(dataService.getWorldTemplate().getRoamingAreas());
         loadStaticObjects(dataService.getWorldTemplate().getStaticEntities());
     }

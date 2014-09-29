@@ -10,7 +10,7 @@ import org.vertx.java.core.http.ServerWebSocket;
 import org.vertx.java.core.http.WebSocketFrame;
 import org.vertx.java.core.json.impl.Json;
 
-public class DefaultNetworkConnection implements NetworkConnection {
+public class NetworkConnectionImpl implements NetworkConnection {
 
     private static final long DISCONNECT_TIMEOUT = 1000 * 60 * 15;
 
@@ -27,7 +27,7 @@ public class DefaultNetworkConnection implements NetworkConnection {
 
     private long disconnectTaskId;
 
-    public DefaultNetworkConnection(ServerWebSocket channel) {
+    public NetworkConnectionImpl(ServerWebSocket channel) {
         packetHandler = new PacketHandler();
         this.channel = channel;
         this.channel.frameHandler(this::onFrame);

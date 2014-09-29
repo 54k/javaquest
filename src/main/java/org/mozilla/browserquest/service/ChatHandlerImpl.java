@@ -5,7 +5,7 @@ import org.mozilla.browserquest.gameserver.model.actor.PlayerObject;
 
 import java.io.File;
 
-public class DefaultChatHandler implements ChatHandler {
+public class ChatHandlerImpl implements ChatHandler {
 
     @Inject
     private ScriptService scriptService;

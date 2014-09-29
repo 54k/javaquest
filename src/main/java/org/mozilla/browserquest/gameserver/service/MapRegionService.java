@@ -7,4 +7,6 @@ import java.util.Map;
 public interface MapRegionService {
 
     Map<Integer, Area> getStartingAreas();
+
+    Map<Integer, Area> getSpawnAreas();
 }

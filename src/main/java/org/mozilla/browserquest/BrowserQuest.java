@@ -5,7 +5,7 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import org.mozilla.browserquest.gameserver.model.World;
 import org.mozilla.browserquest.gameserver.service.SpawnService;
-import org.mozilla.browserquest.network.DefaultNetworkServer;
+import org.mozilla.browserquest.network.NetworkServerImpl;
 import org.mozilla.browserquest.network.NetworkServer;
 import org.vertx.java.core.file.FileSystem;
 import org.vertx.java.core.http.HttpServerRequest;
@@ -40,7 +40,7 @@ public class BrowserQuest extends Verticle {
         JsonObject config = getContainer().config();
         int port = Optional.ofNullable(config.getInteger("serverPort")).orElse(8000);
 
-        networkServer = new DefaultNetworkServer();
+        networkServer = new NetworkServerImpl();
         networkServer.noMatch(this::onNotFoundRequest).getWithRegEx("^/client/.+", this::onContentRequest).get("/status", this::onStatusRequest).listen(port);
 
         logger.info("BrowserQuest started at port " + port);

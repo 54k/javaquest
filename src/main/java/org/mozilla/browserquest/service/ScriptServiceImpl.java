@@ -20,12 +20,12 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class DefaultScriptService implements ScriptService {
+public class ScriptServiceImpl implements ScriptService {
 
     private Map<String, ScriptEngine> scriptEngineByName = new ConcurrentHashMap<>();
     private Map<String, ScriptEngine> scriptEngineByExtension = new ConcurrentHashMap<>();
 
-    public DefaultScriptService() {
+    public ScriptServiceImpl() {
         load();
     }
 

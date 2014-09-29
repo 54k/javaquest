@@ -1,6 +1,6 @@
 package org.mozilla.browserquest.network.packet;
 
-import org.mozilla.browserquest.network.DefaultNetworkConnection;
+import org.mozilla.browserquest.network.NetworkConnectionImpl;
 import org.mozilla.browserquest.network.packet.client.EnterWorld;
 import org.mozilla.browserquest.network.packet.client.EnterZone;
 import org.mozilla.browserquest.network.packet.client.MobAttack;
@@ -29,7 +29,7 @@ public class PacketHandler {
         prototypes.put(opcode, prototype);
     }
 
-    public void handle(DefaultNetworkConnection connection, Object[] packetData) {
+    public void handle(NetworkConnectionImpl connection, Object[] packetData) {
         int opcode = (int) packetData[0];
         Class<? extends Packet> prototype = prototypes.get(opcode);
 

@@ -9,14 +9,14 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DefaultDataService implements DataService {
+public class DataServiceImpl implements DataService {
 
     public static final File DATA_FOLDER = new File("data/static");
 
     private WorldTemplate worldTemplate;
     private Map<String, CreatureTemplate> creatureTemplates;
 
-    public DefaultDataService() {
+    public DataServiceImpl() {
         load();
     }
 

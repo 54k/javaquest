@@ -5,11 +5,12 @@ import org.mozilla.browserquest.inject.LazyInject;
 import org.mozilla.browserquest.service.DataService;
 import org.mozilla.browserquest.template.CheckpointTemplate;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class DefaultMapRegionService implements MapRegionService {
+public class MapRegionServiceImpl implements MapRegionService {
 
     @LazyInject
     private DataService dataService;
@@ -17,7 +18,7 @@ public class DefaultMapRegionService implements MapRegionService {
     private Map<Integer, Area> startingAreas = new ConcurrentHashMap<>();
     private Map<Integer, Area> spawnAreas = new ConcurrentHashMap<>();
 
-    public DefaultMapRegionService() {
+    public MapRegionServiceImpl() {
         loadCheckpoints(dataService.getWorldTemplate().getCheckpoints());
     }
 
@@ -34,6 +35,11 @@ public class DefaultMapRegionService implements MapRegionService {
 
     @Override
     public Map<Integer, Area> getStartingAreas() {
-        return startingAreas;
+        return Collections.unmodifiableMap(startingAreas);
+    }
+
+    @Override
+    public Map<Integer, Area> getSpawnAreas() {
+        return Collections.unmodifiableMap(spawnAreas);
     }
 }
