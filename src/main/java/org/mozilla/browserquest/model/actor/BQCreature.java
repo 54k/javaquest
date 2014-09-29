@@ -4,10 +4,11 @@ import org.mozilla.browserquest.actor.ActorPrototype;
 import org.mozilla.browserquest.model.BQSpawn;
 import org.mozilla.browserquest.model.creature.CreatureControllerComponent;
 import org.mozilla.browserquest.model.creature.CreatureStatsCalculatorComponent;
+import org.mozilla.browserquest.model.creature.DropControllerComponent;
 import org.mozilla.browserquest.template.CreatureTemplate;
 
-@ActorPrototype({CreatureControllerComponent.class, CreatureStatsCalculatorComponent.class})
-public abstract class BQCreature extends BQCharacter {
+@ActorPrototype({CreatureControllerComponent.class, CreatureStatsCalculatorComponent.class, DropControllerComponent.class})
+public abstract class BQCreature extends BQCharacter implements CreatureView {
 
     private CreatureTemplate template;
     private BQSpawn spawn;
@@ -21,7 +22,6 @@ public abstract class BQCreature extends BQCharacter {
         getInventoryController().setWeapon(template.getWeapon());
         getInventoryController().setArmor(template.getArmor());
     }
-
 
     public BQSpawn getSpawn() {
         return spawn;

@@ -24,8 +24,6 @@ public class BQSpawn {
     @LazyInject
     private ObjectFactory objectFactory;
     @LazyInject
-    private IdFactory idFactory;
-    @LazyInject
     private BQWorld world;
 
     private BQType type;
@@ -102,7 +100,6 @@ public class BQSpawn {
 
     public BQCreature spawn() {
         BQCreature creature = objectFactory.createObject(BQCreature.class);
-        creature.setId(idFactory.getNextId());
         creature.setType(type);
         creature.setName(type.name());
         InventoryController inventoryController = creature.getInventoryController();

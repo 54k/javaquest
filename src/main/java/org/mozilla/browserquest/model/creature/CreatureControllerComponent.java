@@ -48,6 +48,7 @@ public class CreatureControllerComponent extends Component<BQCreature> implement
     public void onDie(BQCharacter killer) {
         BQCreature actor = getActor();
         actor.getPositionController().decay();
+        actor.getDropController().drop();
 
         BQSpawn spawn = actor.getSpawn();
         if (spawn != null) {

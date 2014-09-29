@@ -29,7 +29,10 @@ public class MobAttack extends Packet {
         if (attacker instanceof BQCharacter) {
             JsonArray attackPacket = new JsonArray(new Object[]{Packet.ATTACK, attacker.getId(), player.getId()});
             BroadcastUtil.toKnownPlayers(attacker, attackPacket.encode());
-            ((BQCharacter) attacker).getCombatController().attack(player);
+            BQCharacter attacker1 = (BQCharacter) attacker;
+            if (!attacker1.getStatusController().isDead()) {
+                attacker1.getCombatController().attack(player);
+            }
         }
     }
 }
