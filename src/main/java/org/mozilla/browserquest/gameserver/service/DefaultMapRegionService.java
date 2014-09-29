@@ -23,10 +23,11 @@ public class DefaultMapRegionService implements MapRegionService {
 
     private void loadCheckpoints(List<CheckpointTemplate> checkpoints) {
         for (CheckpointTemplate checkpoint : checkpoints) {
+            Area area = new Area(checkpoint.getX(), checkpoint.getY(), checkpoint.getW(), checkpoint.getH());
             if (checkpoint.getS() == 1) {
-                startingAreas.put(checkpoint.getId(), new Area(checkpoint.getX(), checkpoint.getY(), checkpoint.getW(), checkpoint.getH()));
+                startingAreas.put(checkpoint.getId(), area);
             } else {
-                spawnAreas.put(checkpoint.getId(), new Area(checkpoint.getX(), checkpoint.getY(), checkpoint.getW(), checkpoint.getH()));
+                spawnAreas.put(checkpoint.getId(), area);
             }
         }
     }
