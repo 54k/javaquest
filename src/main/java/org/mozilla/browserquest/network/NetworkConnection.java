@@ -1,6 +1,7 @@
 package org.mozilla.browserquest.network;
 
 import org.mozilla.browserquest.gameserver.model.actor.PlayerObject;
+import org.mozilla.browserquest.network.packet.ServerPacket;
 
 public interface NetworkConnection {
 
@@ -11,4 +12,6 @@ public interface NetworkConnection {
     void close();
 
     void write(String text);
+
+    void write(ServerPacket packet);
 }

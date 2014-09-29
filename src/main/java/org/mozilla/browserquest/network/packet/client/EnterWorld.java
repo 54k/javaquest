@@ -8,7 +8,7 @@ import org.mozilla.browserquest.gameserver.model.actor.PlayerObject;
 import org.mozilla.browserquest.gameserver.model.position.PositionController;
 import org.mozilla.browserquest.gameserver.service.MapRegionService;
 import org.mozilla.browserquest.inject.LazyInject;
-import org.mozilla.browserquest.network.packet.Packet;
+import org.mozilla.browserquest.network.packet.ClientPacket;
 import org.mozilla.browserquest.service.ObjectFactory;
 import org.mozilla.browserquest.util.PositionUtil;
 import org.mozilla.browserquest.util.RandomUtils;
@@ -16,7 +16,7 @@ import org.vertx.java.core.json.JsonArray;
 
 import java.util.Collection;
 
-public class EnterWorld extends Packet {
+public class EnterWorld extends ClientPacket {
 
     @LazyInject
     private World world;
@@ -55,11 +55,12 @@ public class EnterWorld extends Packet {
         positionController.setPosition(startPos.getX(), startPos.getY());
         positionController.setOrientation(Orientation.BOTTOM);
 
-        JsonArray welcomePacket =
-                new JsonArray(new Object[]{Packet.WELCOME, player.getId(), player.getName(), startPos.getX(), startPos.getY(), player.getStatsController().getMaxHitPoints()});
+        JsonArray welcomePacket = new JsonArray(
+                new Object[]{ClientPacket.WELCOME, player.getId(), player.getName(), startPos.getX(), startPos.getY(), player.getStatsController().getMaxHitPoints()});
+
+        player.getStatusController().setHitPoints(player.getStatsController().getMaxHitPoints());
 
         getConnection().write(welcomePacket.encode());
-
         world.addObject(player);
         positionController.setWorld(world);
 

@@ -7,7 +7,9 @@ import org.mozilla.browserquest.gameserver.model.actor.CharacterObject;
 import org.mozilla.browserquest.gameserver.model.actor.CreatureObject;
 import org.mozilla.browserquest.gameserver.model.combat.CombatEventListener;
 import org.mozilla.browserquest.gameserver.model.status.StatusEventListener;
-import org.mozilla.browserquest.network.packet.Packet;
+import org.mozilla.browserquest.network.packet.ClientPacket;
+import org.mozilla.browserquest.network.packet.server.DamagePacket;
+import org.mozilla.browserquest.network.packet.server.HealthPacket;
 import org.mozilla.browserquest.util.BroadcastUtil;
 import org.vertx.java.core.json.JsonArray;
 
@@ -18,16 +20,12 @@ public class CreatureControllerComponent extends Component<CreatureObject> imple
     public void onAttack(CharacterObject attacker, int damage) {
         CreatureObject actor = getActor();
 
-        JsonArray damagePacket = new JsonArray(new Object[]{Packet.DAMAGE, attacker.getId(), damage});
-        BroadcastUtil.toKnownPlayers(actor, damagePacket.encode());
-
         getActor().getStatusController().damage(attacker, damage);
-
         if (actor.getStatusController().isDead()) {
             return;
         }
 
-        JsonArray attackPacket = new JsonArray(new Object[]{Packet.ATTACK, actor.getId(), attacker.getId()});
+        JsonArray attackPacket = new JsonArray(new Object[]{ClientPacket.ATTACK, actor.getId(), attacker.getId()});
         BroadcastUtil.toKnownPlayers(actor, attackPacket.encode());
         actor.getCombatController().attack(attacker);
     }
@@ -38,6 +36,8 @@ public class CreatureControllerComponent extends Component<CreatureObject> imple
 
     @Override
     public void onDamage(CharacterObject attacker, int amount) {
+        BroadcastUtil.toKnownPlayers(getActor(), new DamagePacket(attacker.getId(), amount));
+        BroadcastUtil.toKnownPlayers(getActor(), new HealthPacket(getActor()));
     }
 
     @Override

@@ -5,9 +5,9 @@ import org.mozilla.browserquest.gameserver.model.actor.BaseObject;
 import org.mozilla.browserquest.gameserver.model.actor.CharacterObject;
 import org.mozilla.browserquest.gameserver.model.actor.PlayerObject;
 import org.mozilla.browserquest.inject.LazyInject;
-import org.mozilla.browserquest.network.packet.Packet;
+import org.mozilla.browserquest.network.packet.ClientPacket;
 
-public class PlayerAttack extends Packet {
+public class PlayerAttack extends ClientPacket {
 
     @LazyInject
     private World world;

@@ -10,25 +10,23 @@ import org.mozilla.browserquest.gameserver.model.knownlist.KnownListEventListene
 import org.mozilla.browserquest.gameserver.model.position.PositionController;
 import org.mozilla.browserquest.gameserver.model.status.StatusController;
 import org.mozilla.browserquest.gameserver.model.status.StatusEventListener;
-import org.mozilla.browserquest.network.packet.Packet;
-import org.mozilla.browserquest.util.BroadcastUtil;
-import org.vertx.java.core.json.JsonArray;
+import org.mozilla.browserquest.network.NetworkConnection;
+import org.mozilla.browserquest.network.packet.server.DamagePacket;
+import org.mozilla.browserquest.network.packet.server.DespawnPacket;
+import org.mozilla.browserquest.network.packet.server.HealthPacket;
+import org.mozilla.browserquest.network.packet.server.SpawnPacket;
 
 @ComponentPrototype(PlayerController.class)
 public class PlayerControllerComponent extends Component<PlayerObject> implements PlayerController, KnownListEventListener, CombatEventListener, StatusEventListener {
 
     @Override
     public void onObjectAddedToKnownList(BaseObject object) {
-        JsonArray spawnPacket = new JsonArray();
-        spawnPacket.addNumber(Packet.SPAWN);
-        object.getInfo().forEach(spawnPacket::add);
-        BroadcastUtil.toSelf(getActor(), spawnPacket.encode());
+        getActor().getConnection().write(new SpawnPacket(object));
     }
 
     @Override
     public void onObjectRemovedFromKnownList(BaseObject object) {
-        JsonArray spawnPacket = new JsonArray(new Object[]{Packet.DESPAWN, object.getId()});
-        BroadcastUtil.toSelf(getActor(), spawnPacket.encode());
+        getActor().getConnection().write(new DespawnPacket(object.getId()));
     }
 
     @Override
@@ -39,30 +37,27 @@ public class PlayerControllerComponent extends Component<PlayerObject> implement
         }
 
         statusController.damage(attacker, damage);
-        JsonArray damagePacket = new JsonArray(new Object[]{Packet.DAMAGE, attacker.getId(), damage});
-        BroadcastUtil.toSelf(getActor(), damagePacket.encode());
     }
 
     @Override
     public void onHeal(CharacterObject healer, int amount) {
-
     }
 
     @Override
     public void onDamage(CharacterObject attacker, int amount) {
-
+        NetworkConnection connection = getActor().getConnection();
+        connection.write(new DamagePacket(attacker.getId(), amount));
+        connection.write(new HealthPacket(getActor()));
     }
 
     @Override
     public void onRevive() {
-
     }
 
     @Override
     public void onDie(CharacterObject killer) {
         PositionController positionController = getActor().getPositionController();
         positionController.decay();
-        JsonArray spawnPacket = new JsonArray(new Object[]{Packet.DESPAWN, getActor().getId()});
-        BroadcastUtil.toSelf(getActor(), spawnPacket.encode());
+        getActor().getConnection().write(new DespawnPacket(getActor().getId()));
     }
 }

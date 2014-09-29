@@ -13,25 +13,25 @@ import java.util.HashMap;
 
 public class PacketHandler {
 
-    private HashMap<Integer, Class<? extends Packet>> prototypes = new HashMap<>();
+    private HashMap<Integer, Class<? extends ClientPacket>> prototypes = new HashMap<>();
 
     public PacketHandler() {
-        addPacketPrototype(Packet.HELLO, EnterWorld.class);
-        addPacketPrototype(Packet.MOVE, StartMove.class);
-        addPacketPrototype(Packet.ZONE, EnterZone.class);
-        addPacketPrototype(Packet.CHAT, SendMessage.class);
-        addPacketPrototype(Packet.ATTACK, StartAttack.class);
-        addPacketPrototype(Packet.HIT, PlayerAttack.class);
-        addPacketPrototype(Packet.HURT, MobAttack.class);
+        addPacketPrototype(ClientPacket.HELLO, EnterWorld.class);
+        addPacketPrototype(ClientPacket.MOVE, StartMove.class);
+        addPacketPrototype(ClientPacket.ZONE, EnterZone.class);
+        addPacketPrototype(ClientPacket.CHAT, SendMessage.class);
+        addPacketPrototype(ClientPacket.ATTACK, StartAttack.class);
+        addPacketPrototype(ClientPacket.HIT, PlayerAttack.class);
+        addPacketPrototype(ClientPacket.HURT, MobAttack.class);
     }
 
-    public void addPacketPrototype(int opcode, Class<? extends Packet> prototype) {
+    public void addPacketPrototype(int opcode, Class<? extends ClientPacket> prototype) {
         prototypes.put(opcode, prototype);
     }
 
     public void handle(NetworkConnectionImpl connection, Object[] packetData) {
         int opcode = (int) packetData[0];
-        Class<? extends Packet> prototype = prototypes.get(opcode);
+        Class<? extends ClientPacket> prototype = prototypes.get(opcode);
 
         if (prototype == null) {
             // unknown packet
@@ -40,7 +40,7 @@ public class PacketHandler {
         }
 
         try {
-            Packet p = prototype.newInstance();
+            ClientPacket p = prototype.newInstance();
             p.setConnection(connection);
             Object[] data = new Object[packetData.length - 1];
             System.arraycopy(packetData, 1, data, 0, data.length);

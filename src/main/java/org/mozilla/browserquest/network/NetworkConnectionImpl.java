@@ -4,6 +4,7 @@ import org.mozilla.browserquest.gameserver.model.World;
 import org.mozilla.browserquest.gameserver.model.actor.PlayerObject;
 import org.mozilla.browserquest.inject.LazyInject;
 import org.mozilla.browserquest.network.packet.PacketHandler;
+import org.mozilla.browserquest.network.packet.ServerPacket;
 import org.mozilla.browserquest.service.IdFactory;
 import org.vertx.java.core.Vertx;
 import org.vertx.java.core.http.ServerWebSocket;
@@ -69,6 +70,11 @@ public class NetworkConnectionImpl implements NetworkConnection {
     @Override
     public void write(String text) {
         channel.writeTextFrame(text);
+    }
+
+    @Override
+    public void write(ServerPacket packet) {
+        channel.writeTextFrame(packet.write());
     }
 
     @Override

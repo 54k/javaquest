@@ -1,6 +1,7 @@
 package org.mozilla.browserquest.gameserver.model.stats;
 
 import org.mozilla.browserquest.gameserver.model.actor.CreatureObject;
+import org.mozilla.browserquest.gameserver.model.actor.PlayerObject;
 
 public final class Calculators {
 
@@ -11,7 +12,11 @@ public final class Calculators {
         Calculator[] calculators = new Calculator[Stat.values().length];
 
         Calculator maxHpCalculator = new Calculator();
-        maxHpCalculator.addFunction(CalculatorContext::getResult);
+        maxHpCalculator.addFunction(ctx -> {
+            PlayerObject player = (PlayerObject) ctx.getCharacter();
+            int armor = player.getInventoryController().getArmor();
+            ctx.setResult(80 + (armor * 30));
+        });
         calculators[Stat.MAX_HP.ordinal()] = maxHpCalculator;
 
         return calculators;

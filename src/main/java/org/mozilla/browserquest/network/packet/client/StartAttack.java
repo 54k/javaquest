@@ -5,12 +5,12 @@ import org.mozilla.browserquest.gameserver.model.actor.BaseObject;
 import org.mozilla.browserquest.gameserver.model.actor.CharacterObject;
 import org.mozilla.browserquest.gameserver.model.actor.PlayerObject;
 import org.mozilla.browserquest.inject.LazyInject;
-import org.mozilla.browserquest.network.packet.Packet;
+import org.mozilla.browserquest.network.packet.ClientPacket;
 import org.mozilla.browserquest.util.BroadcastUtil;
 import org.mozilla.browserquest.util.PositionUtil;
 import org.vertx.java.core.json.JsonArray;
 
-public class StartAttack extends Packet {
+public class StartAttack extends ClientPacket {
 
     @LazyInject
     private World world;
@@ -30,7 +30,7 @@ public class StartAttack extends Packet {
         if (target instanceof CharacterObject) {
             player.getPositionController().updatePosition(PositionUtil.getRandomPositionNear(target));
 
-            JsonArray attackPacket = new JsonArray(new Object[]{Packet.ATTACK, player.getId(), target.getId()});
+            JsonArray attackPacket = new JsonArray(new Object[]{ClientPacket.ATTACK, player.getId(), target.getId()});
             BroadcastUtil.toKnownPlayers(player, attackPacket.encode());
         }
     }

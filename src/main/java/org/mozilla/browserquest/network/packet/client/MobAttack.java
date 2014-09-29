@@ -5,11 +5,11 @@ import org.mozilla.browserquest.gameserver.model.actor.BaseObject;
 import org.mozilla.browserquest.gameserver.model.actor.CharacterObject;
 import org.mozilla.browserquest.gameserver.model.actor.PlayerObject;
 import org.mozilla.browserquest.inject.LazyInject;
-import org.mozilla.browserquest.network.packet.Packet;
+import org.mozilla.browserquest.network.packet.ClientPacket;
 import org.mozilla.browserquest.util.BroadcastUtil;
 import org.vertx.java.core.json.JsonArray;
 
-public class MobAttack extends Packet {
+public class MobAttack extends ClientPacket {
 
     @LazyInject
     private World world;
@@ -27,7 +27,7 @@ public class MobAttack extends Packet {
         BaseObject attacker = world.findObject(this.target);
 
         if (attacker instanceof CharacterObject) {
-            JsonArray attackPacket = new JsonArray(new Object[]{Packet.ATTACK, attacker.getId(), player.getId()});
+            JsonArray attackPacket = new JsonArray(new Object[]{ClientPacket.ATTACK, attacker.getId(), player.getId()});
             BroadcastUtil.toKnownPlayers(attacker, attackPacket.encode());
             CharacterObject attacker1 = (CharacterObject) attacker;
             if (!attacker1.getStatusController().isDead()) {

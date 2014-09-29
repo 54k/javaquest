@@ -2,6 +2,7 @@ package org.mozilla.browserquest.util;
 
 import org.mozilla.browserquest.gameserver.model.actor.BaseObject;
 import org.mozilla.browserquest.gameserver.model.actor.PlayerObject;
+import org.mozilla.browserquest.network.packet.ServerPacket;
 
 public final class BroadcastUtil {
 
@@ -13,6 +14,10 @@ public final class BroadcastUtil {
     }
 
     public static void toKnownPlayers(BaseObject object, String packet) {
+        object.getKnownListController().getKnownPlayers().values().forEach(p -> p.getConnection().write(packet));
+    }
+
+    public static void toKnownPlayers(BaseObject object, ServerPacket packet) {
         object.getKnownListController().getKnownPlayers().values().forEach(p -> p.getConnection().write(packet));
     }
 

@@ -2,7 +2,7 @@ package org.mozilla.browserquest.network.packet;
 
 import org.mozilla.browserquest.network.NetworkConnection;
 
-public abstract class Packet implements Runnable {
+public abstract class ClientPacket implements Runnable {
 
     public static final int HELLO = 0;
     public static final int WELCOME = 1;

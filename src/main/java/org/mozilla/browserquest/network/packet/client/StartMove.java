@@ -1,9 +1,9 @@
 package org.mozilla.browserquest.network.packet.client;
 
 import org.mozilla.browserquest.gameserver.model.actor.PlayerObject;
-import org.mozilla.browserquest.network.packet.Packet;
+import org.mozilla.browserquest.network.packet.ClientPacket;
 
-public class StartMove extends Packet {
+public class StartMove extends ClientPacket {
 
     private int x;
     private int y;

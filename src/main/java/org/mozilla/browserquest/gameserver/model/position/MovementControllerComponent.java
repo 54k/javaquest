@@ -6,10 +6,9 @@ import org.mozilla.browserquest.gameserver.model.Orientation;
 import org.mozilla.browserquest.gameserver.model.Position;
 import org.mozilla.browserquest.gameserver.model.actor.BaseObject;
 import org.mozilla.browserquest.gameserver.model.actor.CharacterObject;
-import org.mozilla.browserquest.network.packet.Packet;
+import org.mozilla.browserquest.network.packet.server.MovePacket;
 import org.mozilla.browserquest.util.BroadcastUtil;
 import org.mozilla.browserquest.util.PositionUtil;
-import org.vertx.java.core.json.JsonArray;
 
 @ComponentPrototype(MovementController.class)
 public class MovementControllerComponent extends Component<CharacterObject> implements MovementController {
@@ -21,9 +20,7 @@ public class MovementControllerComponent extends Component<CharacterObject> impl
         positionController.updatePosition(x, y);
         positionController.setOrientation(Orientation.BOTTOM);
         Position position = positionController.getPosition();
-
-        JsonArray movePacket = new JsonArray(new Object[]{Packet.MOVE, actor.getId(), position.getX(), position.getY()});
-        BroadcastUtil.toKnownPlayers(actor, movePacket.encode());
+        BroadcastUtil.toKnownPlayers(actor, new MovePacket(actor.getId(), position.getX(), position.getY()));
     }
 
     @Override
