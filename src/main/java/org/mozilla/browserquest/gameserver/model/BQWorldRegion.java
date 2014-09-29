@@ -1,0 +1,70 @@
+package org.mozilla.browserquest.gameserver.model;
+
+import com.google.common.base.Preconditions;
+import org.mozilla.browserquest.gameserver.model.actor.BQObject;
+import org.mozilla.browserquest.gameserver.model.actor.BQPlayer;
+
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
+public class BQWorldRegion {
+
+    private Map<Integer, BQObject> objects = new ConcurrentHashMap<>();
+    private Map<Integer, BQPlayer> players = new ConcurrentHashMap<>();
+
+    private Set<BQWorldRegion> surroundingRegions = new HashSet<>();
+
+    private boolean active;
+
+    void addSurroundingRegion(BQWorldRegion region) {
+        Preconditions.checkNotNull(region);
+        surroundingRegions.add(region);
+    }
+
+    public Set<BQWorldRegion> getSurroundingRegions() {
+        return Collections.unmodifiableSet(surroundingRegions);
+    }
+
+    public void addObject(BQObject object) {
+        objects.put(object.getId(), object);
+        if (object instanceof BQPlayer) {
+            players.put(object.getId(), (BQPlayer) object);
+            if (players.size() == 1) {
+                activateRegion();
+            }
+        }
+    }
+
+    private void activateRegion() {
+        active = true;
+    }
+
+    public void removeObject(BQObject object) {
+        objects.remove(object.getId());
+        if (object instanceof BQPlayer) {
+            players.remove(object.getId());
+            if (players.isEmpty()) {
+                deactivateRegion();
+            }
+        }
+    }
+
+    private void deactivateRegion() {
+        active = false;
+    }
+
+    public Map<Integer, BQObject> getObjects() {
+        return Collections.unmodifiableMap(objects);
+    }
+
+    public Map<Integer, BQPlayer> getPlayers() {
+        return Collections.unmodifiableMap(players);
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+}

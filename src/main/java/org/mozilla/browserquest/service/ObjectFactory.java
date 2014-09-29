@@ -1,6 +1,6 @@
 package org.mozilla.browserquest.service;
 
-import org.mozilla.browserquest.model.actor.BQObject;
+import org.mozilla.browserquest.gameserver.model.actor.BQObject;
 
 public interface ObjectFactory {
 

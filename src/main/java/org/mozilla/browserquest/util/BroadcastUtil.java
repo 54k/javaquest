@@ -1,7 +1,7 @@
 package org.mozilla.browserquest.util;
 
-import org.mozilla.browserquest.model.actor.BQObject;
-import org.mozilla.browserquest.model.actor.BQPlayer;
+import org.mozilla.browserquest.gameserver.model.actor.BQObject;
+import org.mozilla.browserquest.gameserver.model.actor.BQPlayer;
 
 public final class BroadcastUtil {
 

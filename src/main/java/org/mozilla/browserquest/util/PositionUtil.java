@@ -1,9 +1,9 @@
 package org.mozilla.browserquest.util;
 
-import org.mozilla.browserquest.model.Area;
-import org.mozilla.browserquest.model.Orientation;
-import org.mozilla.browserquest.model.Position;
-import org.mozilla.browserquest.model.actor.BQObject;
+import org.mozilla.browserquest.gameserver.model.Area;
+import org.mozilla.browserquest.gameserver.model.Orientation;
+import org.mozilla.browserquest.gameserver.model.Position;
+import org.mozilla.browserquest.gameserver.model.actor.BQObject;
 
 import java.util.Random;
 

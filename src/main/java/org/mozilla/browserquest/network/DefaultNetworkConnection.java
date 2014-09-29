@@ -1,8 +1,8 @@
 package org.mozilla.browserquest.network;
 
 import org.mozilla.browserquest.inject.LazyInject;
-import org.mozilla.browserquest.model.BQWorld;
-import org.mozilla.browserquest.model.actor.BQPlayer;
+import org.mozilla.browserquest.gameserver.model.BQWorld;
+import org.mozilla.browserquest.gameserver.model.actor.BQPlayer;
 import org.mozilla.browserquest.network.packet.PacketHandler;
 import org.mozilla.browserquest.service.IdFactory;
 import org.vertx.java.core.Vertx;

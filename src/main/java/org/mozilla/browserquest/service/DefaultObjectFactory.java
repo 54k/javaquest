@@ -2,7 +2,7 @@ package org.mozilla.browserquest.service;
 
 import com.google.inject.Inject;
 import org.mozilla.browserquest.actor.JavassistActorFactory;
-import org.mozilla.browserquest.model.actor.BQObject;
+import org.mozilla.browserquest.gameserver.model.actor.BQObject;
 
 public class DefaultObjectFactory implements ObjectFactory {
 

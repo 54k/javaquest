@@ -1,7 +1,7 @@
 package org.mozilla.browserquest.service;
 
 import com.google.inject.Inject;
-import org.mozilla.browserquest.model.actor.BQPlayer;
+import org.mozilla.browserquest.gameserver.model.actor.BQPlayer;
 
 import java.io.File;
 

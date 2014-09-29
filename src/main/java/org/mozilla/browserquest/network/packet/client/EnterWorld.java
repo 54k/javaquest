@@ -2,11 +2,11 @@ package org.mozilla.browserquest.network.packet.client;
 
 import org.mozilla.browserquest.service.ObjectFactory;
 import org.mozilla.browserquest.inject.LazyInject;
-import org.mozilla.browserquest.model.BQWorld;
-import org.mozilla.browserquest.model.Orientation;
-import org.mozilla.browserquest.model.Position;
-import org.mozilla.browserquest.model.actor.BQPlayer;
-import org.mozilla.browserquest.model.position.PositionController;
+import org.mozilla.browserquest.gameserver.model.BQWorld;
+import org.mozilla.browserquest.gameserver.model.Orientation;
+import org.mozilla.browserquest.gameserver.model.Position;
+import org.mozilla.browserquest.gameserver.model.actor.BQPlayer;
+import org.mozilla.browserquest.gameserver.model.position.PositionController;
 import org.mozilla.browserquest.network.packet.Packet;
 import org.mozilla.browserquest.service.IdFactory;
 import org.mozilla.browserquest.template.CheckpointTemplate;

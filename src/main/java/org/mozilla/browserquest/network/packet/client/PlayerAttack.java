@@ -1,10 +1,10 @@
 package org.mozilla.browserquest.network.packet.client;
 
 import org.mozilla.browserquest.inject.LazyInject;
-import org.mozilla.browserquest.model.BQWorld;
-import org.mozilla.browserquest.model.actor.BQCharacter;
-import org.mozilla.browserquest.model.actor.BQObject;
-import org.mozilla.browserquest.model.actor.BQPlayer;
+import org.mozilla.browserquest.gameserver.model.BQWorld;
+import org.mozilla.browserquest.gameserver.model.actor.BQCharacter;
+import org.mozilla.browserquest.gameserver.model.actor.BQObject;
+import org.mozilla.browserquest.gameserver.model.actor.BQPlayer;
 import org.mozilla.browserquest.network.packet.Packet;
 
 public class PlayerAttack extends Packet {
