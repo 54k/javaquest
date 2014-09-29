@@ -30,4 +30,9 @@ public class DefaultMapRegionService implements MapRegionService {
             }
         }
     }
+
+    @Override
+    public Map<Integer, Area> getStartingAreas() {
+        return startingAreas;
+    }
 }

@@ -1,6 +1,6 @@
 package org.mozilla.browserquest.gameserver.model.stats;
 
-import org.mozilla.browserquest.gameserver.model.actor.BQCreature;
+import org.mozilla.browserquest.gameserver.model.actor.CreatureObject;
 
 public final class Calculators {
 
@@ -22,7 +22,7 @@ public final class Calculators {
 
         Calculator maxHpCalculator = new Calculator();
         maxHpCalculator.addFunction(ctx -> {
-            int hitPoints = ((BQCreature) ctx.getCharacter()).getTemplate().getHitPoints();
+            int hitPoints = ((CreatureObject) ctx.getCharacter()).getTemplate().getHitPoints();
             ctx.setResult(hitPoints);
         });
 

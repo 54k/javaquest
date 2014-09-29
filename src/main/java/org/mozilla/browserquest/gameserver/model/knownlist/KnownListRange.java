@@ -1,10 +1,10 @@
 package org.mozilla.browserquest.gameserver.model.knownlist;
 
-import org.mozilla.browserquest.gameserver.model.actor.BQObject;
+import org.mozilla.browserquest.gameserver.model.actor.BaseObject;
 
 public interface KnownListRange {
 
-    int getDistanceToForgetObject(BQObject object);
+    int getDistanceToForgetObject(BaseObject object);
 
-    int getDistanceToFindObject(BQObject object);
+    int getDistanceToFindObject(BaseObject object);
 }

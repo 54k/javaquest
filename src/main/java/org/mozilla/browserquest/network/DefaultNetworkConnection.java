@@ -1,8 +1,8 @@
 package org.mozilla.browserquest.network;
 
+import org.mozilla.browserquest.gameserver.model.World;
+import org.mozilla.browserquest.gameserver.model.actor.PlayerObject;
 import org.mozilla.browserquest.inject.LazyInject;
-import org.mozilla.browserquest.gameserver.model.BQWorld;
-import org.mozilla.browserquest.gameserver.model.actor.BQPlayer;
 import org.mozilla.browserquest.network.packet.PacketHandler;
 import org.mozilla.browserquest.service.IdFactory;
 import org.vertx.java.core.Vertx;
@@ -17,13 +17,13 @@ public class DefaultNetworkConnection implements NetworkConnection {
     @LazyInject
     private Vertx vertx;
     @LazyInject
-    private BQWorld world;
+    private World world;
     @LazyInject
     private IdFactory idFactory;
 
     private PacketHandler packetHandler;
     private ServerWebSocket channel;
-    private BQPlayer player;
+    private PlayerObject player;
 
     private long disconnectTaskId;
 
@@ -36,12 +36,12 @@ public class DefaultNetworkConnection implements NetworkConnection {
     }
 
     @Override
-    public BQPlayer getPlayer() {
+    public PlayerObject getPlayer() {
         return player;
     }
 
     @Override
-    public void setPlayer(BQPlayer player) {
+    public void setPlayer(PlayerObject player) {
         this.player = player;
     }
 

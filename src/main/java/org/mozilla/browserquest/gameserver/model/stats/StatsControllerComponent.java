@@ -2,10 +2,10 @@ package org.mozilla.browserquest.gameserver.model.stats;
 
 import org.mozilla.browserquest.actor.Component;
 import org.mozilla.browserquest.actor.ComponentPrototype;
-import org.mozilla.browserquest.gameserver.model.actor.BQCharacter;
+import org.mozilla.browserquest.gameserver.model.actor.CharacterObject;
 
 @ComponentPrototype(StatsController.class)
-public class StatsControllerComponent extends Component<BQCharacter> implements StatsController {
+public class StatsControllerComponent extends Component<CharacterObject> implements StatsController {
 
     @Override
     public int getMaxHitPoints() {

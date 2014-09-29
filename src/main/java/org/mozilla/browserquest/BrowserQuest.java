@@ -3,10 +3,10 @@ package org.mozilla.browserquest;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import org.mozilla.browserquest.gameserver.model.BQWorld;
+import org.mozilla.browserquest.gameserver.model.World;
+import org.mozilla.browserquest.gameserver.service.SpawnService;
 import org.mozilla.browserquest.network.DefaultNetworkServer;
 import org.mozilla.browserquest.network.NetworkServer;
-import org.mozilla.browserquest.gameserver.service.SpawnService;
 import org.vertx.java.core.file.FileSystem;
 import org.vertx.java.core.http.HttpServerRequest;
 import org.vertx.java.core.json.JsonArray;
@@ -23,7 +23,7 @@ public class BrowserQuest extends Verticle {
     @Inject
     private FileSystem fileSystem;
     @Inject
-    private BQWorld world;
+    private World world;
 
     private NetworkServer networkServer;
 
@@ -32,7 +32,7 @@ public class BrowserQuest extends Verticle {
         Injector injector = Guice.createInjector(new BrowserQuestModule(getVertx(), getContainer()));
         injector.injectMembers(this);
 
-        injector.getInstance(BQWorld.class);
+        injector.getInstance(World.class);
         injector.getInstance(SpawnService.class);
 
         logger.info("Starting BrowserQuest server");

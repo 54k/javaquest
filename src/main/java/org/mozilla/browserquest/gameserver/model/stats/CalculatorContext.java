@@ -1,11 +1,11 @@
 package org.mozilla.browserquest.gameserver.model.stats;
 
-import org.mozilla.browserquest.gameserver.model.actor.BQCharacter;
+import org.mozilla.browserquest.gameserver.model.actor.CharacterObject;
 
 public class CalculatorContext {
 
     private int result;
-    private BQCharacter character;
+    private CharacterObject character;
 
     public int getResult() {
         return result;
@@ -15,11 +15,11 @@ public class CalculatorContext {
         this.result = result;
     }
 
-    public BQCharacter getCharacter() {
+    public CharacterObject getCharacter() {
         return character;
     }
 
-    public void setCharacter(BQCharacter character) {
+    public void setCharacter(CharacterObject character) {
         this.character = character;
     }
 }

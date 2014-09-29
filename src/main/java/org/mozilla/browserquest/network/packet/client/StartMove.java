@@ -1,6 +1,6 @@
 package org.mozilla.browserquest.network.packet.client;
 
-import org.mozilla.browserquest.gameserver.model.actor.BQPlayer;
+import org.mozilla.browserquest.gameserver.model.actor.PlayerObject;
 import org.mozilla.browserquest.network.packet.Packet;
 
 public class StartMove extends Packet {
@@ -16,7 +16,7 @@ public class StartMove extends Packet {
 
     @Override
     public void run() {
-        BQPlayer player = getConnection().getPlayer();
+        PlayerObject player = getConnection().getPlayer();
         player.getMovementController().moveTo(x, y);
     }
 }

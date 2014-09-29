@@ -4,5 +4,5 @@ import org.mozilla.browserquest.actor.ActorPrototype;
 import org.mozilla.browserquest.gameserver.model.player.PlayerKnownListRangeComponent;
 
 @ActorPrototype({PlayerKnownListRangeComponent.class})
-public abstract class BQStaticObject extends BQObject {
+public abstract class ItemObject extends BaseObject {
 }

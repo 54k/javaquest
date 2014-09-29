@@ -1,10 +1,10 @@
 package org.mozilla.browserquest.service;
 
-import org.mozilla.browserquest.gameserver.model.actor.BQObject;
+import org.mozilla.browserquest.gameserver.model.actor.BaseObject;
 
 public interface ObjectFactory {
 
-    <T extends BQObject> T createObject(Class<T> objectPrototype);
+    <T extends BaseObject> T createObject(Class<T> objectPrototype);
 
-    <T extends BQObject> void destroyObject(T object);
+    <T extends BaseObject> void destroyObject(T object);
 }

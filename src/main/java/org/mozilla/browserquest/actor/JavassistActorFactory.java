@@ -11,6 +11,7 @@ import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -31,7 +32,7 @@ public class JavassistActorFactory {
                 CtClass ctClass = classPool.makeClass(actorDefinition.getType().getCanonicalName() + "Instance");
                 ctClass.setSuperclass(asCtClass(actorPrototype));
                 for (ViewDefinition viewDefinition : actorDefinition.getViewDefinitions()) {
-                    ctClass.addMethod(makeProjectionMethod(viewDefinition, ctClass));
+                    ctClass.addMethod(makeViewMethod(viewDefinition, ctClass));
                 }
                 actorDefinition.setImplementation(ctClass.toClass());
                 cache.put(actorPrototype, actorDefinition);
@@ -60,18 +61,18 @@ public class JavassistActorFactory {
         }
     }
 
-    private CtMethod makeProjectionMethod(ViewDefinition viewDefinition, CtClass prototype) throws Exception {
+    private CtMethod makeViewMethod(ViewDefinition viewDefinition, CtClass prototype) throws Exception {
         return CtNewMethod.make(asCtClass(viewDefinition.getProjection()), viewDefinition.getMethod().getName(), new CtClass[0], new CtClass[0],
                 "return getComponent(" + viewDefinition.getProjection().getCanonicalName() + ".class);", prototype);
     }
 
     private static ActorDefinition getActorDefinition(Class<? extends Actor> actorPrototype) throws Exception {
-        Collection<ComponentDefinition> componentDefinitions = getBehaviorDefinitions(actorPrototype);
+        Collection<ComponentDefinition> componentDefinitions = getComponentDefinitions(actorPrototype);
         Collection<ViewDefinition> viewDefinitions = getProjectionDefinitions(actorPrototype);
         return new ActorDefinition(actorPrototype, componentDefinitions, viewDefinitions);
     }
 
-    private static Collection<ComponentDefinition> getBehaviorDefinitions(Class<?> actorPrototype) throws Exception {
+    private static Collection<ComponentDefinition> getComponentDefinitions(Class<?> actorPrototype) throws Exception {
         if (!Actor.class.isAssignableFrom(actorPrototype)) {
             return Collections.emptyList();
         }
@@ -79,15 +80,15 @@ public class JavassistActorFactory {
         Collection<ComponentDefinition> componentDefinitions = new HashSet<>();
 
         for (Class<? extends Component> impl : actorPrototype.getAnnotation(ActorPrototype.class).value()) {
-            Class<?> type = getBehaviorType(impl);
+            Class<?> type = getComponentType(impl);
             componentDefinitions.add(new ComponentDefinition(type, impl));
         }
-        componentDefinitions.addAll(getBehaviorDefinitions(actorPrototype.getSuperclass()));
+        componentDefinitions.addAll(getComponentDefinitions(actorPrototype.getSuperclass()));
         return componentDefinitions;
     }
 
-    private static Class<?> getBehaviorType(Class<? extends Component> behavior) {
-        return behavior.getAnnotation(ComponentPrototype.class).value();
+    private static Class<?> getComponentType(Class<? extends Component> component) {
+        return component.getAnnotation(ComponentPrototype.class).value();
     }
 
     private static Collection<ViewDefinition> getProjectionDefinitions(Class<?> actorPrototype) throws Exception {
@@ -110,6 +111,20 @@ public class JavassistActorFactory {
         }
 
         return viewDefinitions;
+    }
+
+    private static Iterable<Class<?>> getActorSuperclasses(Class<? extends Actor> actorPrototype) {
+        LinkedList<Class<?>> superClasses = new LinkedList<>();
+
+        superClasses.addFirst(actorPrototype);
+
+        Class<?> superClass = actorPrototype.getSuperclass();
+        while (superClass.getAnnotation(ActorPrototype.class) != null) {
+            superClasses.addFirst(superClass);
+            superClass = superClass.getSuperclass();
+        }
+
+        return superClasses;
     }
 
     private CtClass asCtClass(Class<?> clazz) throws Exception {

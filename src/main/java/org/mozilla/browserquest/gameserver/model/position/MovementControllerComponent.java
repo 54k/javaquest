@@ -4,19 +4,19 @@ import org.mozilla.browserquest.actor.Component;
 import org.mozilla.browserquest.actor.ComponentPrototype;
 import org.mozilla.browserquest.gameserver.model.Orientation;
 import org.mozilla.browserquest.gameserver.model.Position;
-import org.mozilla.browserquest.gameserver.model.actor.BQCharacter;
-import org.mozilla.browserquest.gameserver.model.actor.BQObject;
+import org.mozilla.browserquest.gameserver.model.actor.BaseObject;
+import org.mozilla.browserquest.gameserver.model.actor.CharacterObject;
 import org.mozilla.browserquest.network.packet.Packet;
 import org.mozilla.browserquest.util.BroadcastUtil;
 import org.mozilla.browserquest.util.PositionUtil;
 import org.vertx.java.core.json.JsonArray;
 
 @ComponentPrototype(MovementController.class)
-public class MovementControllerComponent extends Component<BQCharacter> implements MovementController {
+public class MovementControllerComponent extends Component<CharacterObject> implements MovementController {
 
     @Override
     public void moveTo(int x, int y) {
-        BQCharacter actor = getActor();
+        CharacterObject actor = getActor();
         PositionController positionController = actor.getPositionController();
         positionController.updatePosition(x, y);
         positionController.setOrientation(Orientation.BOTTOM);
@@ -32,7 +32,7 @@ public class MovementControllerComponent extends Component<BQCharacter> implemen
     }
 
     @Override
-    public void moveTo(BQObject object) {
+    public void moveTo(BaseObject object) {
         moveTo(PositionUtil.getRandomPositionNear(object));
     }
 
@@ -47,7 +47,7 @@ public class MovementControllerComponent extends Component<BQCharacter> implemen
     }
 
     @Override
-    public void teleportTo(BQObject object) {
+    public void teleportTo(BaseObject object) {
         moveTo(object);
     }
 }

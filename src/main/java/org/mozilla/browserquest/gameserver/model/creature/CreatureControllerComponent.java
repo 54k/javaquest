@@ -2,9 +2,9 @@ package org.mozilla.browserquest.gameserver.model.creature;
 
 import org.mozilla.browserquest.actor.Component;
 import org.mozilla.browserquest.actor.ComponentPrototype;
-import org.mozilla.browserquest.gameserver.model.BQSpawn;
-import org.mozilla.browserquest.gameserver.model.actor.BQCharacter;
-import org.mozilla.browserquest.gameserver.model.actor.BQCreature;
+import org.mozilla.browserquest.gameserver.model.Spawn;
+import org.mozilla.browserquest.gameserver.model.actor.CharacterObject;
+import org.mozilla.browserquest.gameserver.model.actor.CreatureObject;
 import org.mozilla.browserquest.gameserver.model.combat.CombatEventListener;
 import org.mozilla.browserquest.gameserver.model.status.StatusEventListener;
 import org.mozilla.browserquest.network.packet.Packet;
@@ -12,11 +12,11 @@ import org.mozilla.browserquest.util.BroadcastUtil;
 import org.vertx.java.core.json.JsonArray;
 
 @ComponentPrototype(CreatureController.class)
-public class CreatureControllerComponent extends Component<BQCreature> implements CreatureController, CombatEventListener, StatusEventListener {
+public class CreatureControllerComponent extends Component<CreatureObject> implements CreatureController, CombatEventListener, StatusEventListener {
 
     @Override
-    public void onAttack(BQCharacter attacker, int damage) {
-        BQCreature actor = getActor();
+    public void onAttack(CharacterObject attacker, int damage) {
+        CreatureObject actor = getActor();
 
         JsonArray damagePacket = new JsonArray(new Object[]{Packet.DAMAGE, attacker.getId(), damage});
         BroadcastUtil.toKnownPlayers(actor, damagePacket.encode());
@@ -33,11 +33,11 @@ public class CreatureControllerComponent extends Component<BQCreature> implement
     }
 
     @Override
-    public void onHeal(BQCharacter healer, int amount) {
+    public void onHeal(CharacterObject healer, int amount) {
     }
 
     @Override
-    public void onDamage(BQCharacter attacker, int amount) {
+    public void onDamage(CharacterObject attacker, int amount) {
     }
 
     @Override
@@ -45,12 +45,12 @@ public class CreatureControllerComponent extends Component<BQCreature> implement
     }
 
     @Override
-    public void onDie(BQCharacter killer) {
-        BQCreature actor = getActor();
+    public void onDie(CharacterObject killer) {
+        CreatureObject actor = getActor();
         actor.getPositionController().decay();
         actor.getDropController().drop();
 
-        BQSpawn spawn = actor.getSpawn();
+        Spawn spawn = actor.getSpawn();
         if (spawn != null) {
             spawn.respawn(actor);
         }

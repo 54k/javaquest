@@ -1,15 +1,15 @@
 package org.mozilla.browserquest.gameserver.model;
 
 import com.google.inject.Inject;
-import org.mozilla.browserquest.gameserver.model.actor.BQObject;
-import org.mozilla.browserquest.gameserver.model.actor.BQPlayer;
+import org.mozilla.browserquest.gameserver.model.actor.BaseObject;
+import org.mozilla.browserquest.gameserver.model.actor.PlayerObject;
 import org.mozilla.browserquest.template.WorldTemplate;
 
 import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class BQWorld {
+public class World {
 
     private static final int REGION_WIDTH = 28;
     private static final int REGION_HEIGHT = 12;
@@ -18,13 +18,13 @@ public class BQWorld {
     private final int height;
     private final int regionOffset;
 
-    private Map<Integer, BQObject> objects = new ConcurrentHashMap<>();
-    private Map<Integer, BQPlayer> players = new ConcurrentHashMap<>();
+    private Map<Integer, BaseObject> objects = new ConcurrentHashMap<>();
+    private Map<Integer, PlayerObject> players = new ConcurrentHashMap<>();
 
-    private Map<Integer, BQWorldRegion> regions = new ConcurrentHashMap<>();
+    private Map<Integer, WorldRegion> regions = new ConcurrentHashMap<>();
 
     @Inject
-    public BQWorld(WorldTemplate worldTemplate) {
+    public World(WorldTemplate worldTemplate) {
         width = worldTemplate.getWidth();
         height = worldTemplate.getHeight();
         regionOffset = height / REGION_HEIGHT + 1;
@@ -35,7 +35,7 @@ public class BQWorld {
         for (int i = 0; i < width; i += REGION_WIDTH) {
             for (int j = 0; j < height; j += REGION_HEIGHT) {
                 int regionId = getRegionId(i, j);
-                regions.put(regionId, new BQWorldRegion());
+                regions.put(regionId, new WorldRegion());
             }
         }
 
@@ -51,11 +51,11 @@ public class BQWorld {
     }
 
     private void addSurroundingRegions(int x, int y) {
-        BQWorldRegion region = regions.get(getRegionId(x, y));
+        WorldRegion region = regions.get(getRegionId(x, y));
         for (int i = x - REGION_WIDTH; i <= x + REGION_WIDTH; i += REGION_WIDTH) {
             for (int j = y - REGION_HEIGHT; j <= y + REGION_HEIGHT; j += REGION_HEIGHT) {
                 if (isValidRegionPosition(i, j)) {
-                    BQWorldRegion sr = regions.get(getRegionId(i, j));
+                    WorldRegion sr = regions.get(getRegionId(i, j));
                     region.addSurroundingRegion(sr);
                 }
             }
@@ -66,11 +66,11 @@ public class BQWorld {
         return x >= 0 && y >= 0 && x <= width && y <= height;
     }
 
-    public BQWorldRegion findRegion(Position position) {
+    public WorldRegion findRegion(Position position) {
         return findRegion(position.getX(), position.getY());
     }
 
-    public BQWorldRegion findRegion(int x, int y) {
+    public WorldRegion findRegion(int x, int y) {
         return regions.get(getRegionId(x, y));
     }
 
@@ -80,41 +80,41 @@ public class BQWorld {
         return new Position(x, y);
     }
 
-    public Map<Integer, BQWorldRegion> getRegions() {
+    public Map<Integer, WorldRegion> getRegions() {
         return Collections.unmodifiableMap(regions);
     }
 
-    public void addObject(BQObject object) {
+    public void addObject(BaseObject object) {
         objects.put(object.getId(), object);
-        if (object instanceof BQPlayer) {
-            addPlayer((BQPlayer) object);
+        if (object instanceof PlayerObject) {
+            addPlayer((PlayerObject) object);
         }
     }
 
-    public void removeObject(BQObject object) {
+    public void removeObject(BaseObject object) {
         objects.remove(object.getId(), object);
-        if (object instanceof BQPlayer) {
-            removePlayer((BQPlayer) object);
+        if (object instanceof PlayerObject) {
+            removePlayer((PlayerObject) object);
         }
     }
 
-    public BQObject findObject(int id) {
+    public BaseObject findObject(int id) {
         return objects.get(id);
     }
 
-    public Map<Integer, BQObject> getObjects() {
+    public Map<Integer, BaseObject> getObjects() {
         return Collections.unmodifiableMap(players);
     }
 
-    private void addPlayer(BQPlayer player) {
+    private void addPlayer(PlayerObject player) {
         players.put(player.getId(), player);
     }
 
-    private void removePlayer(BQPlayer player) {
+    private void removePlayer(PlayerObject player) {
         players.remove(player.getId());
     }
 
-    public Map<Integer, BQPlayer> getPlayers() {
+    public Map<Integer, PlayerObject> getPlayers() {
         return Collections.unmodifiableMap(players);
     }
 }

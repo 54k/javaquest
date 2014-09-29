@@ -3,7 +3,7 @@ package org.mozilla.browserquest.gameserver.model.combat;
 import org.mozilla.browserquest.actor.Component;
 import org.mozilla.browserquest.actor.ComponentPrototype;
 import org.mozilla.browserquest.gameserver.model.Position;
-import org.mozilla.browserquest.gameserver.model.actor.BQCharacter;
+import org.mozilla.browserquest.gameserver.model.actor.CharacterObject;
 import org.mozilla.browserquest.util.PositionUtil;
 
 import java.util.Collections;
@@ -11,33 +11,33 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @ComponentPrototype(CombatController.class)
-public class CombatControllerComponent extends Component<BQCharacter> implements CombatController {
+public class CombatControllerComponent extends Component<CharacterObject> implements CombatController {
 
-    private BQCharacter target;
-    private Map<Integer, BQCharacter> attackers = new ConcurrentHashMap<>();
+    private CharacterObject target;
+    private Map<Integer, CharacterObject> attackers = new ConcurrentHashMap<>();
 
     @Override
-    public BQCharacter getTarget() {
+    public CharacterObject getTarget() {
         return target;
     }
 
     @Override
-    public void setTarget(BQCharacter target) {
+    public void setTarget(CharacterObject target) {
         this.target = target;
     }
 
     @Override
-    public Map<Integer, BQCharacter> getAttackers() {
+    public Map<Integer, CharacterObject> getAttackers() {
         return Collections.unmodifiableMap(attackers);
     }
 
     @Override
-    public void addAttacker(BQCharacter attacker) {
+    public void addAttacker(CharacterObject attacker) {
         attackers.put(attacker.getId(), attacker);
     }
 
     @Override
-    public void removeAttacker(BQCharacter attacker) {
+    public void removeAttacker(CharacterObject attacker) {
         attackers.remove(attacker.getId());
     }
 
@@ -47,8 +47,8 @@ public class CombatControllerComponent extends Component<BQCharacter> implements
     }
 
     @Override
-    public void attack(BQCharacter target) {
-        BQCharacter actor = getActor();
+    public void attack(CharacterObject target) {
+        CharacterObject actor = getActor();
         Position position = PositionUtil.getRandomPositionNear(target);
         actor.getPositionController().updatePosition(position);
 

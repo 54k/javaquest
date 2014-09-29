@@ -1,7 +1,7 @@
 package org.mozilla.browserquest.gameserver.model.position;
 
 import org.mozilla.browserquest.gameserver.model.Position;
-import org.mozilla.browserquest.gameserver.model.actor.BQObject;
+import org.mozilla.browserquest.gameserver.model.actor.BaseObject;
 
 public interface MovementController {
 
@@ -9,11 +9,11 @@ public interface MovementController {
 
     void moveTo(Position position);
 
-    void moveTo(BQObject object);
+    void moveTo(BaseObject object);
 
     void teleportTo(int x, int y);
 
     void teleportTo(Position position);
 
-    void teleportTo(BQObject object);
+    void teleportTo(BaseObject object);
 }

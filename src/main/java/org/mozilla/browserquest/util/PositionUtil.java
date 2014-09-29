@@ -3,7 +3,7 @@ package org.mozilla.browserquest.util;
 import org.mozilla.browserquest.gameserver.model.Area;
 import org.mozilla.browserquest.gameserver.model.Orientation;
 import org.mozilla.browserquest.gameserver.model.Position;
-import org.mozilla.browserquest.gameserver.model.actor.BQObject;
+import org.mozilla.browserquest.gameserver.model.actor.BaseObject;
 
 import java.util.Random;
 
@@ -12,7 +12,7 @@ public final class PositionUtil {
     private PositionUtil() {
     }
 
-    public static boolean isInRange(BQObject o1, BQObject o2, int range) {
+    public static boolean isInRange(BaseObject o1, BaseObject o2, int range) {
         Position pos1 = o1.getPositionController().getPosition();
         Position pos2 = o2.getPositionController().getPosition();
         int dx = Math.abs(pos1.getX() - pos2.getX());
@@ -20,7 +20,7 @@ public final class PositionUtil {
         return dx <= range && dy <= range;
     }
 
-    public static boolean isOutOfRange(BQObject o1, BQObject o2, int range) {
+    public static boolean isOutOfRange(BaseObject o1, BaseObject o2, int range) {
         return !isInRange(o1, o2, range);
     }
 
@@ -33,13 +33,13 @@ public final class PositionUtil {
         return getRandomPositionInside(area.getX(), area.getY(), area.getWidth(), area.getHeight());
     }
 
-    public static Orientation getRandomHeading() {
+    public static Orientation getRandomOrientation() {
         Random random = new Random();
         Orientation[] values = Orientation.values();
         return values[random.nextInt(values.length)];
     }
 
-    public static Position getRandomPositionNear(BQObject object) {
+    public static Position getRandomPositionNear(BaseObject object) {
         Random random = new Random();
         Position position = new Position();
         Position objectPosition = object.getPositionController().getPosition();

@@ -1,6 +1,6 @@
 package org.mozilla.browserquest.gameserver.model.status;
 
-import org.mozilla.browserquest.gameserver.model.actor.BQCharacter;
+import org.mozilla.browserquest.gameserver.model.actor.CharacterObject;
 
 public interface StatusController {
 
@@ -12,11 +12,11 @@ public interface StatusController {
 
     void setDead(boolean dead);
 
-    void heal(BQCharacter healer, int amount);
+    void heal(CharacterObject healer, int amount);
 
-    void damage(BQCharacter attacker, int amount);
+    void damage(CharacterObject attacker, int amount);
 
     void revive();
 
-    void die(BQCharacter killer);
+    void die(CharacterObject killer);
 }

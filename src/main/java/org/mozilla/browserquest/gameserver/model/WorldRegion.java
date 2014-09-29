@@ -1,8 +1,8 @@
 package org.mozilla.browserquest.gameserver.model;
 
 import com.google.common.base.Preconditions;
-import org.mozilla.browserquest.gameserver.model.actor.BQObject;
-import org.mozilla.browserquest.gameserver.model.actor.BQPlayer;
+import org.mozilla.browserquest.gameserver.model.actor.BaseObject;
+import org.mozilla.browserquest.gameserver.model.actor.PlayerObject;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -10,28 +10,28 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class BQWorldRegion {
+public class WorldRegion {
 
-    private Map<Integer, BQObject> objects = new ConcurrentHashMap<>();
-    private Map<Integer, BQPlayer> players = new ConcurrentHashMap<>();
+    private Map<Integer, BaseObject> objects = new ConcurrentHashMap<>();
+    private Map<Integer, PlayerObject> players = new ConcurrentHashMap<>();
 
-    private Set<BQWorldRegion> surroundingRegions = new HashSet<>();
+    private Set<WorldRegion> surroundingRegions = new HashSet<>();
 
     private boolean active;
 
-    void addSurroundingRegion(BQWorldRegion region) {
+    void addSurroundingRegion(WorldRegion region) {
         Preconditions.checkNotNull(region);
         surroundingRegions.add(region);
     }
 
-    public Set<BQWorldRegion> getSurroundingRegions() {
+    public Set<WorldRegion> getSurroundingRegions() {
         return Collections.unmodifiableSet(surroundingRegions);
     }
 
-    public void addObject(BQObject object) {
+    public void addObject(BaseObject object) {
         objects.put(object.getId(), object);
-        if (object instanceof BQPlayer) {
-            players.put(object.getId(), (BQPlayer) object);
+        if (object instanceof PlayerObject) {
+            players.put(object.getId(), (PlayerObject) object);
             if (players.size() == 1) {
                 activateRegion();
             }
@@ -42,9 +42,9 @@ public class BQWorldRegion {
         active = true;
     }
 
-    public void removeObject(BQObject object) {
+    public void removeObject(BaseObject object) {
         objects.remove(object.getId());
-        if (object instanceof BQPlayer) {
+        if (object instanceof PlayerObject) {
             players.remove(object.getId());
             if (players.isEmpty()) {
                 deactivateRegion();
@@ -56,11 +56,11 @@ public class BQWorldRegion {
         active = false;
     }
 
-    public Map<Integer, BQObject> getObjects() {
+    public Map<Integer, BaseObject> getObjects() {
         return Collections.unmodifiableMap(objects);
     }
 
-    public Map<Integer, BQPlayer> getPlayers() {
+    public Map<Integer, PlayerObject> getPlayers() {
         return Collections.unmodifiableMap(players);
     }
 

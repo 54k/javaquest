@@ -3,20 +3,20 @@ package org.mozilla.browserquest.gameserver.model.position;
 import com.google.common.base.Preconditions;
 import org.mozilla.browserquest.actor.Component;
 import org.mozilla.browserquest.actor.ComponentPrototype;
-import org.mozilla.browserquest.gameserver.model.BQWorld;
-import org.mozilla.browserquest.gameserver.model.BQWorldRegion;
 import org.mozilla.browserquest.gameserver.model.Orientation;
 import org.mozilla.browserquest.gameserver.model.Position;
-import org.mozilla.browserquest.gameserver.model.actor.BQObject;
+import org.mozilla.browserquest.gameserver.model.World;
+import org.mozilla.browserquest.gameserver.model.WorldRegion;
+import org.mozilla.browserquest.gameserver.model.actor.BaseObject;
 
 @ComponentPrototype(PositionController.class)
-public class PositionControllerComponent extends Component<BQObject> implements PositionController {
+public class PositionControllerComponent extends Component<BaseObject> implements PositionController {
 
     private Position position = new Position();
     private Orientation orientation;
 
-    private BQWorld world;
-    private BQWorldRegion region;
+    private World world;
+    private WorldRegion region;
 
     @Override
     public Position getPosition() {
@@ -44,17 +44,17 @@ public class PositionControllerComponent extends Component<BQObject> implements 
     }
 
     @Override
-    public BQWorld getWorld() {
+    public World getWorld() {
         return world;
     }
 
     @Override
-    public void setWorld(BQWorld world) {
+    public void setWorld(World world) {
         this.world = world;
     }
 
     @Override
-    public BQWorldRegion getRegion() {
+    public WorldRegion getRegion() {
         return region;
     }
 
@@ -77,37 +77,37 @@ public class PositionControllerComponent extends Component<BQObject> implements 
     }
 
     private void updateRegion() {
-        BQObject actor = getActor();
+        BaseObject actor = getActor();
 
-        BQWorldRegion oldRegion = region;
-        BQWorldRegion newRegion = world.findRegion(position);
+        WorldRegion oldRegion = region;
+        WorldRegion newRegion = world.findRegion(position);
 
         if (oldRegion != newRegion) {
             oldRegion.removeObject(actor);
             region = newRegion;
             newRegion.addObject(actor);
         }
-        actor.getKnownList().updateKnownList();
+        actor.getKnownListController().updateKnownList();
         actor.post(PositionEventListener.class).onPositionChange();
     }
 
     @Override
     public void spawn() {
         Preconditions.checkState(!isSpawned());
-        BQObject actor = getActor();
-        BQWorldRegion newRegion = world.findRegion(position);
+        BaseObject actor = getActor();
+        WorldRegion newRegion = world.findRegion(position);
         newRegion.addObject(actor);
         region = newRegion;
-        actor.getKnownList().updateKnownList();
+        actor.getKnownListController().updateKnownList();
         actor.post(PositionEventListener.class).onSpawn();
     }
 
     @Override
     public void decay() {
         Preconditions.checkState(isSpawned());
-        BQObject actor = getActor();
+        BaseObject actor = getActor();
         region.removeObject(actor);
-        actor.getKnownList().clearKnownList();
+        actor.getKnownListController().clearKnownList();
         region = null;
         actor.post(PositionEventListener.class).onDecay();
     }

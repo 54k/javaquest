@@ -1,12 +1,12 @@
 package org.mozilla.browserquest.network;
 
-import org.mozilla.browserquest.gameserver.model.actor.BQPlayer;
+import org.mozilla.browserquest.gameserver.model.actor.PlayerObject;
 
 public interface NetworkConnection {
 
-    BQPlayer getPlayer();
+    PlayerObject getPlayer();
 
-    void setPlayer(BQPlayer player);
+    void setPlayer(PlayerObject player);
 
     void close();
 

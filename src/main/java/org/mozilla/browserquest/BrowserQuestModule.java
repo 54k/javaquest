@@ -3,7 +3,7 @@ package org.mozilla.browserquest;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Scopes;
-import org.mozilla.browserquest.gameserver.model.BQWorld;
+import org.mozilla.browserquest.gameserver.model.World;
 import org.mozilla.browserquest.gameserver.service.DefaultMapRegionService;
 import org.mozilla.browserquest.gameserver.service.DefaultSpawnService;
 import org.mozilla.browserquest.gameserver.service.MapRegionService;
@@ -51,7 +51,7 @@ public class BrowserQuestModule extends AbstractModule {
         bind(IdFactory.class).to(DefaultIdFactory.class).in(Scopes.SINGLETON);
         bind(ObjectFactory.class).to(DefaultObjectFactory.class).in(Scopes.SINGLETON);
 
-        bind(BQWorld.class).in(Scopes.SINGLETON);
+        bind(World.class).in(Scopes.SINGLETON);
         bind(SpawnService.class).to(DefaultSpawnService.class).in(Scopes.SINGLETON);
         bind(MapRegionService.class).to(DefaultMapRegionService.class).in(Scopes.SINGLETON);
     }

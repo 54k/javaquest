@@ -2,10 +2,10 @@ package org.mozilla.browserquest.gameserver.model.status;
 
 import org.mozilla.browserquest.actor.Component;
 import org.mozilla.browserquest.actor.ComponentPrototype;
-import org.mozilla.browserquest.gameserver.model.actor.BQCharacter;
+import org.mozilla.browserquest.gameserver.model.actor.CharacterObject;
 
 @ComponentPrototype(StatusController.class)
-public class StatusControllerComponent extends Component<BQCharacter> implements StatusController {
+public class StatusControllerComponent extends Component<CharacterObject> implements StatusController {
 
     private int hitPoints;
     private boolean dead;
@@ -31,12 +31,12 @@ public class StatusControllerComponent extends Component<BQCharacter> implements
     }
 
     @Override
-    public void heal(BQCharacter healer, int amount) {
+    public void heal(CharacterObject healer, int amount) {
         getActor().post(StatusEventListener.class).onHeal(healer, amount);
     }
 
     @Override
-    public void damage(BQCharacter attacker, int amount) {
+    public void damage(CharacterObject attacker, int amount) {
         if (isDead()) {
             return;
         }
@@ -56,7 +56,7 @@ public class StatusControllerComponent extends Component<BQCharacter> implements
     }
 
     @Override
-    public void die(BQCharacter killer) {
+    public void die(CharacterObject killer) {
         setDead(true);
         hitPoints = 0;
         getActor().post(StatusEventListener.class).onDie(killer);

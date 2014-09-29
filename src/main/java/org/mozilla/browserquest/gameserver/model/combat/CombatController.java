@@ -1,22 +1,22 @@
 package org.mozilla.browserquest.gameserver.model.combat;
 
-import org.mozilla.browserquest.gameserver.model.actor.BQCharacter;
+import org.mozilla.browserquest.gameserver.model.actor.CharacterObject;
 
 import java.util.Map;
 
 public interface CombatController {
 
-    BQCharacter getTarget();
+    CharacterObject getTarget();
 
-    void setTarget(BQCharacter target);
+    void setTarget(CharacterObject target);
 
-    Map<Integer, BQCharacter> getAttackers();
+    Map<Integer, CharacterObject> getAttackers();
 
-    void addAttacker(BQCharacter attacker);
+    void addAttacker(CharacterObject attacker);
 
-    void removeAttacker(BQCharacter attacker);
+    void removeAttacker(CharacterObject attacker);
 
     void clearAttackers();
 
-    void attack(BQCharacter target);
+    void attack(CharacterObject target);
 }

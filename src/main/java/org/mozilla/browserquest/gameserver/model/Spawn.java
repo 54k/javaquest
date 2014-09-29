@@ -1,12 +1,13 @@
 package org.mozilla.browserquest.gameserver.model;
 
-import org.mozilla.browserquest.service.ObjectFactory;
-import org.mozilla.browserquest.inject.LazyInject;
-import org.mozilla.browserquest.gameserver.model.actor.BQCreature;
-import org.mozilla.browserquest.gameserver.model.actor.BQObject;
+import org.mozilla.browserquest.gameserver.model.actor.BaseObject;
+import org.mozilla.browserquest.gameserver.model.actor.CreatureObject;
+import org.mozilla.browserquest.gameserver.model.actor.InstanceType;
 import org.mozilla.browserquest.gameserver.model.inventory.InventoryController;
 import org.mozilla.browserquest.gameserver.model.position.PositionController;
 import org.mozilla.browserquest.gameserver.model.status.StatusController;
+import org.mozilla.browserquest.inject.LazyInject;
+import org.mozilla.browserquest.service.ObjectFactory;
 import org.mozilla.browserquest.template.CreatureTemplate;
 import org.mozilla.browserquest.util.PositionUtil;
 import org.mozilla.browserquest.util.RandomUtils;
@@ -16,16 +17,16 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class BQSpawn {
+public class Spawn {
 
     @LazyInject
     private Vertx vertx;
     @LazyInject
     private ObjectFactory objectFactory;
     @LazyInject
-    private BQWorld world;
+    private World world;
 
-    private BQType type;
+    private InstanceType type;
     private CreatureTemplate template;
 
     private Area area;
@@ -37,17 +38,17 @@ public class BQSpawn {
 
     private int maxSpawns;
     private int pendingSpawns;
-    private Set<BQObject> spawnedCreatures = Collections.newSetFromMap(new ConcurrentHashMap<>());
+    private Set<BaseObject> spawnedCreatures = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
-    public BQSpawn(CreatureTemplate template) {
+    public Spawn(CreatureTemplate template) {
         this.template = template;
     }
 
-    public BQType getType() {
+    public InstanceType getType() {
         return type;
     }
 
-    public void setType(BQType type) {
+    public void setType(InstanceType type) {
         this.type = type;
     }
 
@@ -97,9 +98,9 @@ public class BQSpawn {
         }
     }
 
-    public BQCreature spawn() {
-        BQCreature creature = objectFactory.createObject(BQCreature.class);
-        creature.setType(type);
+    public CreatureObject spawn() {
+        CreatureObject creature = objectFactory.createObject(CreatureObject.class);
+        creature.setInstanceType(type);
         creature.setName(type.name());
         InventoryController inventoryController = creature.getInventoryController();
         inventoryController.setWeapon(template.getWeapon());
@@ -112,10 +113,10 @@ public class BQSpawn {
         return doSpawn(creature);
     }
 
-    private BQCreature doSpawn(BQCreature creature) {
+    private CreatureObject doSpawn(CreatureObject creature) {
         PositionController positionController = creature.getPositionController();
         positionController.setPosition(PositionUtil.getRandomPositionInside(area));
-        positionController.setOrientation(PositionUtil.getRandomHeading());
+        positionController.setOrientation(PositionUtil.getRandomOrientation());
         StatusController statusController = creature.getStatusController();
 
         statusController.setHitPoints(creature.getStatsController().getMaxHitPoints());
@@ -126,7 +127,7 @@ public class BQSpawn {
         return creature;
     }
 
-    public void respawn(BQCreature creature) {
+    public void respawn(CreatureObject creature) {
         if (!spawnedCreatures.remove(creature)) {
             return;
         }
@@ -137,7 +138,7 @@ public class BQSpawn {
         }
     }
 
-    private void doRespawn(BQCreature creature) {
+    private void doRespawn(CreatureObject creature) {
         if (respawnEnabled) {
             doSpawn(creature);
         }

@@ -9,7 +9,7 @@ import org.mozilla.browserquest.gameserver.model.stats.StatsController;
 import org.mozilla.browserquest.gameserver.model.status.StatusController;
 
 @ActorView
-public interface CharacterView {
+public interface CharacterObjectView {
 
     MovementController getMovementController();
 
