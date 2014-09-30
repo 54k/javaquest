@@ -63,7 +63,7 @@ public class WorldMap {
 
     private Position getPositionFromTileIndex(int tileIndex) {
         int width = worldMapTemplate.getWidth();
-        int x = (tileIndex % width == 0) ? width - 1 : (tileIndex % width) - 1;
+        int x = (tileIndex % width == 0) ? width - 1 : (tileIndex % width);
         int y = (int) Math.floor(tileIndex / width);
         return new Position(x, y);
     }
@@ -73,7 +73,7 @@ public class WorldMap {
     }
 
     public boolean isOutOfBounds(int x, int y) {
-        return x <= 0 || x >= worldMapTemplate.getWidth() || y <= 0 || y >= worldMapTemplate.getHeight();
+        return x < 0 || x > worldMapTemplate.getWidth() || y < 0 || y > worldMapTemplate.getHeight();
     }
 
     public boolean isColliding(int x, int y) {

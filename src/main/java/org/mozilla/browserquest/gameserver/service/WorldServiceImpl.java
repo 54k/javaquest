@@ -5,6 +5,7 @@ import org.mozilla.browserquest.gameserver.model.WorldMap;
 import org.mozilla.browserquest.gameserver.model.WorldMapInstance;
 import org.mozilla.browserquest.gameserver.model.actor.BaseObject;
 import org.mozilla.browserquest.gameserver.model.actor.PlayerObject;
+import org.mozilla.browserquest.network.packet.server.PopulationPacket;
 import org.mozilla.browserquest.template.WorldMapTemplate;
 
 import java.util.Collections;
@@ -34,12 +35,29 @@ public class WorldServiceImpl implements WorldService {
         objects.put(object.getId(), object);
     }
 
+    private void addPlayer(PlayerObject player) {
+        players.put(player.getId(), player);
+    }
+
     @Override
     public void removeObject(BaseObject object) {
         if (object instanceof PlayerObject) {
             removePlayer((PlayerObject) object);
         }
         objects.remove(object.getId(), object);
+    }
+
+    private void removePlayer(PlayerObject player) {
+        players.remove(player.getId());
+    }
+
+    @Override
+    public void broadcastPopulation() {
+        for (PlayerObject playerObject : players.values()) {
+            int instanceCount = playerObject.getPositionController().getWorldMapInstance().getPlayers().size();
+            int totalCount = players.size();
+            playerObject.getConnection().write(new PopulationPacket(instanceCount, totalCount));
+        }
     }
 
     @Override
@@ -50,14 +68,6 @@ public class WorldServiceImpl implements WorldService {
     @Override
     public Map<Integer, BaseObject> getObjects() {
         return Collections.unmodifiableMap(players);
-    }
-
-    private void addPlayer(PlayerObject player) {
-        players.put(player.getId(), player);
-    }
-
-    private void removePlayer(PlayerObject player) {
-        players.remove(player.getId());
     }
 
     @Override

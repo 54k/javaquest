@@ -95,6 +95,7 @@ public class PositionControllerComponent extends Component<BaseObject> implement
     public void spawn() {
         Preconditions.checkState(!isSpawned());
         BaseObject actor = getActor();
+        world.addObject(actor);
         WorldMapRegion newRegion = world.findRegion(position);
         newRegion.addObject(actor);
         region = newRegion;
@@ -109,6 +110,7 @@ public class PositionControllerComponent extends Component<BaseObject> implement
         region.removeObject(actor);
         actor.getKnownListController().clearKnownList();
         region = null;
+        world.removeObject(actor);
         actor.post(PositionEventListener.class).onDecay();
     }
 }

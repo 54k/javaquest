@@ -12,6 +12,8 @@ public interface WorldService {
 
     void removeObject(BaseObject object);
 
+    void broadcastPopulation();
+
     BaseObject findObject(int id);
 
     Map<Integer, BaseObject> getObjects();

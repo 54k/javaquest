@@ -3,9 +3,7 @@ package org.mozilla.browserquest;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import org.mozilla.browserquest.gameserver.service.SpawnService;
 import org.mozilla.browserquest.gameserver.service.WorldService;
-import org.mozilla.browserquest.gameserver.service.WorldServiceImpl;
 import org.mozilla.browserquest.network.NetworkServer;
 import org.mozilla.browserquest.network.NetworkServerImpl;
 import org.vertx.java.core.file.FileSystem;
@@ -38,7 +36,7 @@ public class BrowserQuest extends Verticle {
         int port = Optional.ofNullable(config.getInteger("serverPort")).orElse(8000);
 
         worldService = injector.getInstance(WorldService.class);
-        worldService.createWorldMapInstance(1);
+        worldService.createWorldMapInstance(10);
 
         networkServer = new NetworkServerImpl();
         networkServer.noMatch(this::onNotFoundRequest).getWithRegEx("^/client/.+", this::onContentRequest).get("/status", this::onStatusRequest).listen(port);
@@ -71,7 +69,8 @@ public class BrowserQuest extends Verticle {
     }
 
     private String getWorldDistribution() {
-        JsonArray status = new JsonArray(new Object[]{worldService.getPlayers().size()});
+        JsonArray status = new JsonArray();
+        worldService.getWorldMapInstances().values().forEach(i -> status.addNumber(i.getPlayers().size()));
         return status.encode();
     }
 }

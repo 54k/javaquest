@@ -3,10 +3,8 @@ package org.mozilla.browserquest.gameserver.model;
 import org.mozilla.browserquest.gameserver.model.actor.BaseObject;
 import org.mozilla.browserquest.gameserver.model.actor.CreatureObject;
 import org.mozilla.browserquest.gameserver.model.actor.InstanceType;
-import org.mozilla.browserquest.gameserver.model.inventory.InventoryController;
 import org.mozilla.browserquest.gameserver.model.position.PositionController;
 import org.mozilla.browserquest.gameserver.model.status.StatusController;
-import org.mozilla.browserquest.gameserver.service.WorldService;
 import org.mozilla.browserquest.inject.LazyInject;
 import org.mozilla.browserquest.service.ObjectFactory;
 import org.mozilla.browserquest.template.CreatureTemplate;
@@ -111,9 +109,6 @@ public class Spawn {
         CreatureObject creature = objectFactory.createObject(CreatureObject.class);
         creature.setInstanceType(type);
         creature.setName(type.name());
-        InventoryController inventoryController = creature.getInventoryController();
-        inventoryController.setWeapon(template.getWeapon());
-        inventoryController.setArmor(template.getArmor());
         creature.setTemplate(template);
 
         creature.getPositionController().setWorldMapInstance(worldMapInstance);
@@ -124,7 +119,8 @@ public class Spawn {
 
     private CreatureObject doSpawn(CreatureObject creature) {
         PositionController positionController = creature.getPositionController();
-        positionController.setPosition(PositionUtil.getRandomPositionInside(area));
+
+        positionController.setPosition(getRandomSpawnPosition());
         positionController.setOrientation(PositionUtil.getRandomOrientation());
         StatusController statusController = creature.getStatusController();
 
@@ -134,6 +130,14 @@ public class Spawn {
         positionController.spawn();
         spawnedCreatures.add(creature);
         return creature;
+    }
+
+    private Position getRandomSpawnPosition() {
+        Position spawnPosition;
+        do {
+            spawnPosition = PositionUtil.getRandomPositionInside(area);
+        } while (worldMapInstance.getWorldMap().isColliding(spawnPosition.getX(), spawnPosition.getY()));
+        return spawnPosition;
     }
 
     public void respawn(CreatureObject creature) {

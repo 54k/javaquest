@@ -20,7 +20,7 @@ exports = {
         },
         "/who": function (p, m) {
 			var table = "";
-            for each (var wp in p.positionController.world.players.values()) {
+            for each (var wp in p.positionController.worldMapInstance.players.values()) {
 				table += "<p>" + wp.toString() + " - " + wp.positionController.position.toString() + "</p>";
             }
 			m.push(table);

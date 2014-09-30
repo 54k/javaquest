@@ -116,7 +116,7 @@ public class WorldMapInstance {
     }
 
     private void addPlayer(PlayerObject player) {
-        Preconditions.checkState(players.size() >= maxPlayers);
+        Preconditions.checkState(players.size() < maxPlayers);
         players.put(player.getId(), player);
     }
 

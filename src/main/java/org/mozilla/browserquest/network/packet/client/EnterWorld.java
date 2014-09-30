@@ -45,8 +45,10 @@ public class EnterWorld extends ClientPacket {
 
         player.setName(playerName);
 
-        WorldMapInstance availableWorldMapInstance = worldService.getAvailableWorldMapInstance();
-        Collection<Area> startingAreas = availableWorldMapInstance.getWorldMap().getPlayerStartingAreas().values();
+        WorldMapInstance instance = worldService.getAvailableWorldMapInstance();
+        instance.addObject(player);
+
+        Collection<Area> startingAreas = instance.getWorldMap().getPlayerStartingAreas().values();
         int r = RandomUtils.getRandomBetween(0, startingAreas.size() - 1);
         Area area = startingAreas.stream().skip(r).findFirst().get();
         Position startPos = PositionUtil.getRandomPositionInside(area);
@@ -60,9 +62,9 @@ public class EnterWorld extends ClientPacket {
         player.getStatusController().setHitPoints(player.getStatsController().getMaxHitPoints());
 
         getConnection().write(welcomePacket.encode());
-        worldService.addObject(player);
-        positionController.setWorldMapInstance(availableWorldMapInstance);
+        positionController.setWorldMapInstance(instance);
 
         positionController.spawn();
+        worldService.broadcastPopulation();
     }
 }

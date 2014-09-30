@@ -58,8 +58,8 @@ public class NetworkConnectionImpl implements NetworkConnection {
     private void onDisconnect(Void v) {
         vertx.cancelTimer(disconnectTaskId);
         player.getPositionController().decay();
-        worldService.removeObject(player);
         objectFactory.destroyObject(player);
+        worldService.broadcastPopulation();
     }
 
     private void resetDisconnectTimeout() {
