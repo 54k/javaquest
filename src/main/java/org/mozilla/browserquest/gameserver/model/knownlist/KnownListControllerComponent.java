@@ -2,7 +2,7 @@ package org.mozilla.browserquest.gameserver.model.knownlist;
 
 import org.mozilla.browserquest.actor.Component;
 import org.mozilla.browserquest.actor.ComponentPrototype;
-import org.mozilla.browserquest.gameserver.model.WorldRegion;
+import org.mozilla.browserquest.gameserver.model.WorldMapRegion;
 import org.mozilla.browserquest.gameserver.model.actor.BaseObject;
 import org.mozilla.browserquest.gameserver.model.actor.PlayerObject;
 import org.mozilla.browserquest.util.PositionUtil;
@@ -82,8 +82,8 @@ public class KnownListControllerComponent extends Component<BaseObject> implemen
         knownObjects.clear();
         knownPlayers.clear();
 
-        WorldRegion region = actor.getPositionController().getRegion();
-        for (WorldRegion sr : region.getSurroundingRegions()) {
+        WorldMapRegion region = actor.getPositionController().getRegion();
+        for (WorldMapRegion sr : region.getSurroundingRegions()) {
             Collection<BaseObject> objects = sr.getObjects().values();
             objects.stream().filter(object -> object != actor).forEach(object -> object.getKnownListController().removeFromKnownList(actor));
         }
@@ -103,8 +103,8 @@ public class KnownListControllerComponent extends Component<BaseObject> implemen
 
     private void forgetObjects() {
         BaseObject actor = getActor();
-        WorldRegion region = actor.getPositionController().getRegion();
-        for (WorldRegion sr : region.getSurroundingRegions()) {
+        WorldMapRegion region = actor.getPositionController().getRegion();
+        for (WorldMapRegion sr : region.getSurroundingRegions()) {
             Collection<BaseObject> objects = sr.getObjects().values();
             objects.stream().filter(object -> object != actor).forEach(object -> {
                 removeObject(object);
@@ -115,8 +115,8 @@ public class KnownListControllerComponent extends Component<BaseObject> implemen
 
     private void findObjects() {
         BaseObject actor = getActor();
-        WorldRegion region = actor.getPositionController().getRegion();
-        for (WorldRegion sr : region.getSurroundingRegions()) {
+        WorldMapRegion region = actor.getPositionController().getRegion();
+        for (WorldMapRegion sr : region.getSurroundingRegions()) {
             Collection<BaseObject> objects = sr.getObjects().values();
             objects.stream().filter(object -> object != actor).forEach(object -> {
                 addObject(object);

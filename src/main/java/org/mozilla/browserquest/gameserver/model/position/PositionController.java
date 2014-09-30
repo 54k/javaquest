@@ -2,8 +2,8 @@ package org.mozilla.browserquest.gameserver.model.position;
 
 import org.mozilla.browserquest.gameserver.model.Orientation;
 import org.mozilla.browserquest.gameserver.model.Position;
-import org.mozilla.browserquest.gameserver.model.World;
-import org.mozilla.browserquest.gameserver.model.WorldRegion;
+import org.mozilla.browserquest.gameserver.model.WorldMapInstance;
+import org.mozilla.browserquest.gameserver.model.WorldMapRegion;
 
 public interface PositionController {
 
@@ -17,11 +17,11 @@ public interface PositionController {
 
     void setOrientation(Orientation orientation);
 
-    World getWorld();
+    WorldMapInstance getWorldMapInstance();
 
-    void setWorld(World world);
+    void setWorldMapInstance(WorldMapInstance world);
 
-    WorldRegion getRegion();
+    WorldMapRegion getRegion();
 
     boolean isSpawned();
 

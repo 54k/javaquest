@@ -3,11 +3,10 @@ package org.mozilla.browserquest;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Scopes;
-import org.mozilla.browserquest.gameserver.model.World;
-import org.mozilla.browserquest.gameserver.service.MapRegionService;
-import org.mozilla.browserquest.gameserver.service.MapRegionServiceImpl;
 import org.mozilla.browserquest.gameserver.service.SpawnService;
 import org.mozilla.browserquest.gameserver.service.SpawnServiceImpl;
+import org.mozilla.browserquest.gameserver.service.WorldService;
+import org.mozilla.browserquest.gameserver.service.WorldServiceImpl;
 import org.mozilla.browserquest.inject.LazyInjectAspect;
 import org.mozilla.browserquest.service.ChatHandler;
 import org.mozilla.browserquest.service.ChatHandlerImpl;
@@ -20,7 +19,7 @@ import org.mozilla.browserquest.service.ObjectFactoryImpl;
 import org.mozilla.browserquest.service.ScriptService;
 import org.mozilla.browserquest.service.ScriptServiceImpl;
 import org.mozilla.browserquest.template.RoamingAreaTemplate;
-import org.mozilla.browserquest.template.WorldTemplate;
+import org.mozilla.browserquest.template.WorldMapTemplate;
 import org.vertx.java.core.Vertx;
 import org.vertx.java.core.file.FileSystem;
 import org.vertx.java.core.logging.Logger;
@@ -51,19 +50,18 @@ public class BrowserQuestModule extends AbstractModule {
         bind(IdFactory.class).to(IdFactoryImpl.class).in(Scopes.SINGLETON);
         bind(ObjectFactory.class).to(ObjectFactoryImpl.class).in(Scopes.SINGLETON);
 
-        bind(World.class).in(Scopes.SINGLETON);
+        bind(WorldService.class).to(WorldServiceImpl.class).in(Scopes.SINGLETON);
         bind(SpawnService.class).to(SpawnServiceImpl.class).in(Scopes.SINGLETON);
-        bind(MapRegionService.class).to(MapRegionServiceImpl.class).in(Scopes.SINGLETON);
     }
 
     @Provides
-    private WorldTemplate getWorldMapTemplate(DataService dataService) {
-        return dataService.getWorldTemplate();
+    private WorldMapTemplate getWorldMapTemplate(DataService dataService) {
+        return dataService.getWorldMapTemplate();
     }
 
     @Provides
     private List<RoamingAreaTemplate> getRoamingAreaTemplates(DataService dataService) {
-        return dataService.getWorldTemplate().getRoamingAreas();
+        return dataService.getWorldMapTemplate().getRoamingAreas();
     }
 
     @Provides

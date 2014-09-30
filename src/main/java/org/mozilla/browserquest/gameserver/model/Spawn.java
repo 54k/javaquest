@@ -6,6 +6,7 @@ import org.mozilla.browserquest.gameserver.model.actor.InstanceType;
 import org.mozilla.browserquest.gameserver.model.inventory.InventoryController;
 import org.mozilla.browserquest.gameserver.model.position.PositionController;
 import org.mozilla.browserquest.gameserver.model.status.StatusController;
+import org.mozilla.browserquest.gameserver.service.WorldService;
 import org.mozilla.browserquest.inject.LazyInject;
 import org.mozilla.browserquest.service.ObjectFactory;
 import org.mozilla.browserquest.template.CreatureTemplate;
@@ -23,8 +24,8 @@ public class Spawn {
     private Vertx vertx;
     @LazyInject
     private ObjectFactory objectFactory;
-    @LazyInject
-    private World world;
+
+    private WorldMapInstance worldMapInstance;
 
     private InstanceType type;
     private CreatureTemplate template;
@@ -42,6 +43,14 @@ public class Spawn {
 
     public Spawn(CreatureTemplate template) {
         this.template = template;
+    }
+
+    public WorldMapInstance getWorldMapInstance() {
+        return worldMapInstance;
+    }
+
+    public void setWorldMapInstance(WorldMapInstance worldMapInstance) {
+        this.worldMapInstance = worldMapInstance;
     }
 
     public InstanceType getType() {
@@ -107,9 +116,9 @@ public class Spawn {
         inventoryController.setArmor(template.getArmor());
         creature.setTemplate(template);
 
-        creature.getPositionController().setWorld(world);
+        creature.getPositionController().setWorldMapInstance(worldMapInstance);
         creature.setSpawn(this);
-        world.addObject(creature);
+        worldMapInstance.addObject(creature);
         return doSpawn(creature);
     }
 

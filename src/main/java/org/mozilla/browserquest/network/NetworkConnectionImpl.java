@@ -1,11 +1,11 @@
 package org.mozilla.browserquest.network;
 
-import org.mozilla.browserquest.gameserver.model.World;
 import org.mozilla.browserquest.gameserver.model.actor.PlayerObject;
+import org.mozilla.browserquest.gameserver.service.WorldService;
 import org.mozilla.browserquest.inject.LazyInject;
 import org.mozilla.browserquest.network.packet.PacketHandler;
 import org.mozilla.browserquest.network.packet.ServerPacket;
-import org.mozilla.browserquest.service.IdFactory;
+import org.mozilla.browserquest.service.ObjectFactory;
 import org.vertx.java.core.Vertx;
 import org.vertx.java.core.http.ServerWebSocket;
 import org.vertx.java.core.http.WebSocketFrame;
@@ -18,9 +18,9 @@ public class NetworkConnectionImpl implements NetworkConnection {
     @LazyInject
     private Vertx vertx;
     @LazyInject
-    private World world;
+    private WorldService worldService;
     @LazyInject
-    private IdFactory idFactory;
+    private ObjectFactory objectFactory;
 
     private PacketHandler packetHandler;
     private ServerWebSocket channel;
@@ -58,8 +58,8 @@ public class NetworkConnectionImpl implements NetworkConnection {
     private void onDisconnect(Void v) {
         vertx.cancelTimer(disconnectTaskId);
         player.getPositionController().decay();
-        world.removeObject(player);
-        idFactory.releaseId(player.getId());
+        worldService.removeObject(player);
+        objectFactory.destroyObject(player);
     }
 
     private void resetDisconnectTimeout() {

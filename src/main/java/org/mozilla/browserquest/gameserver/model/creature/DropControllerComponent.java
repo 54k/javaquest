@@ -28,7 +28,7 @@ public class DropControllerComponent extends Component<CreatureObject> implement
         for (Entry<String, Integer> dropEntry : drops.entrySet()) {
             BaseObject dropItem = createDropItem(dropEntry.getKey());
             PositionController positionController1 = dropItem.getPositionController();
-            positionController1.setWorld(positionController.getWorld());
+            positionController1.setWorldMapInstance(positionController.getWorldMapInstance());
             positionController1.setPosition(PositionUtil.getRandomPositionNear(actor));
             positionController1.setOrientation(Orientation.BOTTOM);
             positionController1.spawn();

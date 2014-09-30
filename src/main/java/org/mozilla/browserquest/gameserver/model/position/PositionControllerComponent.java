@@ -5,8 +5,8 @@ import org.mozilla.browserquest.actor.Component;
 import org.mozilla.browserquest.actor.ComponentPrototype;
 import org.mozilla.browserquest.gameserver.model.Orientation;
 import org.mozilla.browserquest.gameserver.model.Position;
-import org.mozilla.browserquest.gameserver.model.World;
-import org.mozilla.browserquest.gameserver.model.WorldRegion;
+import org.mozilla.browserquest.gameserver.model.WorldMapInstance;
+import org.mozilla.browserquest.gameserver.model.WorldMapRegion;
 import org.mozilla.browserquest.gameserver.model.actor.BaseObject;
 
 @ComponentPrototype(PositionController.class)
@@ -15,8 +15,8 @@ public class PositionControllerComponent extends Component<BaseObject> implement
     private Position position = new Position();
     private Orientation orientation;
 
-    private World world;
-    private WorldRegion region;
+    private WorldMapInstance world;
+    private WorldMapRegion region;
 
     @Override
     public Position getPosition() {
@@ -44,17 +44,17 @@ public class PositionControllerComponent extends Component<BaseObject> implement
     }
 
     @Override
-    public World getWorld() {
+    public WorldMapInstance getWorldMapInstance() {
         return world;
     }
 
     @Override
-    public void setWorld(World world) {
+    public void setWorldMapInstance(WorldMapInstance world) {
         this.world = world;
     }
 
     @Override
-    public WorldRegion getRegion() {
+    public WorldMapRegion getRegion() {
         return region;
     }
 
@@ -79,8 +79,8 @@ public class PositionControllerComponent extends Component<BaseObject> implement
     private void updateRegion() {
         BaseObject actor = getActor();
 
-        WorldRegion oldRegion = region;
-        WorldRegion newRegion = world.findRegion(position);
+        WorldMapRegion oldRegion = region;
+        WorldMapRegion newRegion = world.findRegion(position);
 
         if (oldRegion != newRegion) {
             oldRegion.removeObject(actor);
@@ -95,7 +95,7 @@ public class PositionControllerComponent extends Component<BaseObject> implement
     public void spawn() {
         Preconditions.checkState(!isSpawned());
         BaseObject actor = getActor();
-        WorldRegion newRegion = world.findRegion(position);
+        WorldMapRegion newRegion = world.findRegion(position);
         newRegion.addObject(actor);
         region = newRegion;
         actor.getKnownListController().updateKnownList();

@@ -3,8 +3,9 @@ package org.mozilla.browserquest;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import org.mozilla.browserquest.gameserver.model.World;
 import org.mozilla.browserquest.gameserver.service.SpawnService;
+import org.mozilla.browserquest.gameserver.service.WorldService;
+import org.mozilla.browserquest.gameserver.service.WorldServiceImpl;
 import org.mozilla.browserquest.network.NetworkServer;
 import org.mozilla.browserquest.network.NetworkServerImpl;
 import org.vertx.java.core.file.FileSystem;
@@ -22,9 +23,8 @@ public class BrowserQuest extends Verticle {
     private Logger logger;
     @Inject
     private FileSystem fileSystem;
-    @Inject
-    private World world;
 
+    private WorldService worldService;
     private NetworkServer networkServer;
 
     @Override
@@ -32,13 +32,13 @@ public class BrowserQuest extends Verticle {
         Injector injector = Guice.createInjector(new BrowserQuestModule(getVertx(), getContainer()));
         injector.injectMembers(this);
 
-        injector.getInstance(World.class);
-        injector.getInstance(SpawnService.class);
-
         logger.info("Starting BrowserQuest server");
 
         JsonObject config = getContainer().config();
         int port = Optional.ofNullable(config.getInteger("serverPort")).orElse(8000);
+
+        worldService = injector.getInstance(WorldService.class);
+        worldService.createWorldMapInstance(1);
 
         networkServer = new NetworkServerImpl();
         networkServer.noMatch(this::onNotFoundRequest).getWithRegEx("^/client/.+", this::onContentRequest).get("/status", this::onStatusRequest).listen(port);
@@ -71,7 +71,7 @@ public class BrowserQuest extends Verticle {
     }
 
     private String getWorldDistribution() {
-        JsonArray status = new JsonArray(new Object[]{world.getPlayers().size()});
+        JsonArray status = new JsonArray(new Object[]{worldService.getPlayers().size()});
         return status.encode();
     }
 }

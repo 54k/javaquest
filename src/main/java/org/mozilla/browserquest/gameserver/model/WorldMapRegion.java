@@ -10,21 +10,21 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class WorldRegion {
+public class WorldMapRegion {
 
     private Map<Integer, BaseObject> objects = new ConcurrentHashMap<>();
     private Map<Integer, PlayerObject> players = new ConcurrentHashMap<>();
 
-    private Set<WorldRegion> surroundingRegions = new HashSet<>();
+    private Set<WorldMapRegion> surroundingRegions = new HashSet<>();
 
     private boolean active;
 
-    void addSurroundingRegion(WorldRegion region) {
+    public void addSurroundingRegion(WorldMapRegion region) {
         Preconditions.checkNotNull(region);
         surroundingRegions.add(region);
     }
 
-    public Set<WorldRegion> getSurroundingRegions() {
+    public Set<WorldMapRegion> getSurroundingRegions() {
         return Collections.unmodifiableSet(surroundingRegions);
     }
 

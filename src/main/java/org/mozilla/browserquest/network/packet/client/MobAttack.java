@@ -1,6 +1,6 @@
 package org.mozilla.browserquest.network.packet.client;
 
-import org.mozilla.browserquest.gameserver.model.World;
+import org.mozilla.browserquest.gameserver.service.WorldService;
 import org.mozilla.browserquest.gameserver.model.actor.BaseObject;
 import org.mozilla.browserquest.gameserver.model.actor.CharacterObject;
 import org.mozilla.browserquest.gameserver.model.actor.PlayerObject;
@@ -12,7 +12,7 @@ import org.vertx.java.core.json.JsonArray;
 public class MobAttack extends ClientPacket {
 
     @LazyInject
-    private World world;
+    private WorldService worldService;
 
     private int target;
 
@@ -24,7 +24,7 @@ public class MobAttack extends ClientPacket {
     @Override
     public void run() {
         PlayerObject player = getConnection().getPlayer();
-        BaseObject attacker = world.findObject(this.target);
+        BaseObject attacker = worldService.findObject(this.target);
 
         if (attacker instanceof CharacterObject) {
             JsonArray attackPacket = new JsonArray(new Object[]{ClientPacket.ATTACK, attacker.getId(), player.getId()});
