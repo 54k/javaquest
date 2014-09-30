@@ -18,10 +18,10 @@ public class World {
     private final int height;
     private final int regionOffset;
 
+    private Map<Integer, WorldRegion> regions = new ConcurrentHashMap<>();
+
     private Map<Integer, BaseObject> objects = new ConcurrentHashMap<>();
     private Map<Integer, PlayerObject> players = new ConcurrentHashMap<>();
-
-    private Map<Integer, WorldRegion> regions = new ConcurrentHashMap<>();
 
     @Inject
     public World(WorldTemplate worldTemplate) {
@@ -74,14 +74,14 @@ public class World {
         return regions.get(getRegionId(x, y));
     }
 
+    public Map<Integer, WorldRegion> getRegions() {
+        return Collections.unmodifiableMap(regions);
+    }
+
     public Position findPositionFromTileIndex(int tileIndex) {
         int x = Math.max((tileIndex % width == 0) ? width - 1 : (tileIndex % width) - 1, 0);
         int y = (int) Math.floor((tileIndex - 1) / width);
         return new Position(x, y);
-    }
-
-    public Map<Integer, WorldRegion> getRegions() {
-        return Collections.unmodifiableMap(regions);
     }
 
     public void addObject(BaseObject object) {
