@@ -28,7 +28,7 @@ public class TypedEventBus {
         }
     }
 
-    private void register(Class<?> type, Object listener) {
+    public void register(Class<?> type, Object listener) {
         validateType(type);
         getDispatcherFor(type).listeners.add(listener);
     }
@@ -53,7 +53,7 @@ public class TypedEventBus {
         }
     }
 
-    private void unregister(Class<?> type, Object listener) {
+    public void unregister(Class<?> type, Object listener) {
         getDispatcherFor(type).listeners.remove(listener);
     }
 

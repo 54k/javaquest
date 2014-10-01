@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @ActorPrototype
-@SuppressWarnings("unchecked")
 public abstract class Actor {
 
     private TypedEventBus typedEventBus = new TypedEventBus();
@@ -53,7 +52,15 @@ public abstract class Actor {
         typedEventBus.register(listener);
     }
 
+    public void register(Class<?> type, Object listener) {
+        typedEventBus.register(type, listener);
+    }
+
     public void unregister(Object listener) {
         typedEventBus.unregister(listener);
+    }
+
+    public void unregister(Class<?> type, Object listener) {
+        typedEventBus.unregister(type, listener);
     }
 }
