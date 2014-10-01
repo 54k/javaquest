@@ -20,7 +20,7 @@ public class WorldMap {
 
     private int[][] collisionGrid;
 
-    private int instanceId;
+    private int instanceCount;
     private Map<Integer, WorldMapInstance> worldMapInstances = new HashMap<>();
 
     public WorldMap(WorldMapTemplate worldMapTemplate) {
@@ -101,14 +101,14 @@ public class WorldMap {
     }
 
     public WorldMapInstance createWorldMapInstance(int maxPlayers) {
-        WorldMapInstance worldMapInstance = new WorldMapInstance(instanceId, this, maxPlayers);
-        Preconditions.checkState(addWorldMapInstance(worldMapInstance));
+        WorldMapInstance worldMapInstance = new WorldMapInstance(instanceCount, this, maxPlayers);
+        addWorldMapInstance(worldMapInstance);
         return worldMapInstance;
     }
 
     private boolean addWorldMapInstance(WorldMapInstance worldMapInstance) {
         if (worldMapInstances.put(worldMapInstance.getId(), worldMapInstance) == null) {
-            instanceId++;
+            instanceCount++;
             return true;
         }
         return false;
@@ -120,7 +120,7 @@ public class WorldMap {
 
     private boolean removeInstance(WorldMapInstance worldMapInstance) {
         if (worldMapInstances.remove(worldMapInstance.getId()) != null) {
-            instanceId++;
+            instanceCount--;
             return true;
         }
         return false;
