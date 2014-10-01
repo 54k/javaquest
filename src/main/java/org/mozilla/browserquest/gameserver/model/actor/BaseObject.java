@@ -71,6 +71,6 @@ public abstract class BaseObject extends Actor implements BaseObjectView {
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "(id=" + id + ", name=" + name + ", instanceType=" + instanceType.name() + ')';
+        return getClass().getSimpleName() + "(id=" + id + ", name=" + name + ", instanceType=" + instanceType + ')';
     }
 }

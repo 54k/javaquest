@@ -51,7 +51,7 @@ public class JavassistActorFactory {
             @SuppressWarnings("unchecked") T prototype = (T) definition.getImplementation().newInstance();
 
             for (ComponentDefinition componentDefinition : definition.getComponentDefinitions()) {
-                Component component = componentDefinition.getBehavior().newInstance();
+                Component component = componentDefinition.getComponent().newInstance();
                 prototype.addComponent(componentDefinition.getInterfaceType(), component);
                 prototype.register(component);
             }

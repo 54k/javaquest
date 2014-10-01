@@ -1,5 +1,6 @@
 package org.mozilla.browserquest.util;
 
+import com.google.common.base.Preconditions;
 import com.google.common.reflect.Reflection;
 
 import java.lang.reflect.InvocationHandler;
@@ -9,13 +10,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class ListenersContainer {
+public class TypedEventBus {
 
-    private final Map<Class<?>, Proxy> proxyByType = new ConcurrentHashMap<>();
+    private final Map<Class<?>, Dispatcher> dispatcherByType = new ConcurrentHashMap<>();
 
     @SuppressWarnings("unchecked")
     public <T> T post(Class<T> type) {
-        return (T) getProxyFor(type).proxy;
+        return (T) getDispatcherFor(type).proxy;
     }
 
     public void register(Object listener) {
@@ -29,20 +30,18 @@ public class ListenersContainer {
 
     private void register(Class<?> type, Object listener) {
         validateType(type);
-        getProxyFor(type).listeners.add(listener);
+        getDispatcherFor(type).listeners.add(listener);
     }
 
     private static void validateType(Class<?> type) {
         for (Method method : type.getDeclaredMethods()) {
-            if (method.getReturnType() != void.class) {
-                throw new IllegalArgumentException();
-            }
+            Preconditions.checkArgument(method.getReturnType() == void.class);
         }
     }
 
-    private Proxy getProxyFor(Class<?> type) {
-        proxyByType.putIfAbsent(type, newProxy(type));
-        return proxyByType.get(type);
+    private Dispatcher getDispatcherFor(Class<?> type) {
+        dispatcherByType.putIfAbsent(type, new Dispatcher(type));
+        return dispatcherByType.get(type);
     }
 
     public void unregister(Object listener) {
@@ -55,20 +54,17 @@ public class ListenersContainer {
     }
 
     private void unregister(Class<?> type, Object listener) {
-        getProxyFor(type).listeners.remove(listener);
+        getDispatcherFor(type).listeners.remove(listener);
     }
 
-    private static Proxy newProxy(Class<?> type) {
-        Proxy proxy = new Proxy();
-        Reflection.newProxy(type, proxy);
-        proxy.proxy = Reflection.newProxy(type, proxy);
-        return proxy;
-    }
+    private static final class Dispatcher implements InvocationHandler {
 
-    private static final class Proxy implements InvocationHandler {
+        final Object proxy;
+        final Set<? super Object> listeners = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
-        private volatile Object proxy;
-        private final Set<? super Object> listeners = Collections.newSetFromMap(new ConcurrentHashMap<>());
+        Dispatcher(Class<?> type) {
+            proxy = Reflection.newProxy(type, this);
+        }
 
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
@@ -78,4 +74,5 @@ public class ListenersContainer {
             return null;
         }
     }
+
 }
