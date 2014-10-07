@@ -1,10 +1,10 @@
 package org.mozilla.browserquest.actor;
 
-import com.google.common.base.Preconditions;
 import org.mozilla.browserquest.util.TypedEventBus;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 @ActorPrototype
@@ -15,7 +15,7 @@ public abstract class Actor {
 
     @SuppressWarnings("unchecked")
     public <T> T getComponent(Class<T> type) {
-        Preconditions.checkNotNull(type);
+        Objects.requireNonNull(type);
         return (T) componentsByType.get(type);
     }
 
@@ -29,7 +29,7 @@ public abstract class Actor {
 
     @SuppressWarnings("unchecked")
     public <T> T removeComponent(Class<T> type) {
-        Preconditions.checkNotNull(type);
+        Objects.requireNonNull(type);
         Component component;
         if ((component = componentsByType.remove(type)) != null) {
             component.setActor(null);
@@ -43,7 +43,7 @@ public abstract class Actor {
     }
 
     public boolean hasComponent(Class<?> type) {
-        Preconditions.checkNotNull(type);
+        Objects.requireNonNull(type);
         return componentsByType.containsKey(type);
     }
 
@@ -55,7 +55,7 @@ public abstract class Actor {
         typedEventBus.register(listener);
     }
 
-    public void register(Class<?> type, Object listener) {
+    public <T> void register(Class<T> type, T listener) {
         typedEventBus.register(type, listener);
     }
 
@@ -63,7 +63,7 @@ public abstract class Actor {
         typedEventBus.unregister(listener);
     }
 
-    public void unregister(Class<?> type, Object listener) {
+    public <T> void unregister(Class<T> type, T listener) {
         typedEventBus.unregister(type, listener);
     }
 }

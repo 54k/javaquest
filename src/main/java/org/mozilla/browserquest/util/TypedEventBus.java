@@ -1,10 +1,8 @@
 package org.mozilla.browserquest.util;
 
-import com.google.common.base.Preconditions;
-import com.google.common.reflect.Reflection;
-
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
@@ -19,23 +17,26 @@ public class TypedEventBus {
         return (T) getDispatcherFor(type).proxy;
     }
 
+    @SuppressWarnings("unchecked")
     public void register(Object listener) {
         Class aClass = listener.getClass();
-        for (Class<?> iClass : aClass.getInterfaces()) {
+        for (Class iClass : aClass.getInterfaces()) {
             if (iClass.getAnnotation(Listener.class) != null) {
                 register(iClass, listener);
             }
         }
     }
 
-    public void register(Class<?> type, Object listener) {
+    public <T> void register(Class<T> type, T listener) {
         validateType(type);
         getDispatcherFor(type).listeners.add(listener);
     }
 
     private static void validateType(Class<?> type) {
         for (Method method : type.getDeclaredMethods()) {
-            Preconditions.checkArgument(method.getReturnType() == void.class);
+            if (method.getReturnType() != void.class) {
+                throw new IllegalArgumentException();
+            }
         }
     }
 
@@ -44,16 +45,17 @@ public class TypedEventBus {
         return dispatcherByType.get(type);
     }
 
+    @SuppressWarnings("unchecked")
     public void unregister(Object listener) {
         Class aClass = listener.getClass();
-        for (Class<?> iClass : aClass.getInterfaces()) {
+        for (Class iClass : aClass.getInterfaces()) {
             if (iClass.getAnnotation(Listener.class) != null) {
                 unregister(iClass, listener);
             }
         }
     }
 
-    public void unregister(Class<?> type, Object listener) {
+    public <T> void unregister(Class<T> type, T listener) {
         getDispatcherFor(type).listeners.remove(listener);
     }
 
@@ -63,7 +65,7 @@ public class TypedEventBus {
         final Set<? super Object> listeners = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
         Dispatcher(Class<?> type) {
-            proxy = Reflection.newProxy(type, this);
+            proxy = Proxy.newProxyInstance(type.getClassLoader(), new Class[]{type}, this);
         }
 
         @Override
