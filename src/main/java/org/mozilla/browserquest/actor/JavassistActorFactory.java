@@ -4,15 +4,22 @@ import com.google.common.base.Preconditions;
 import javassist.ClassClassPath;
 import javassist.ClassPool;
 import javassist.CtClass;
+import javassist.CtConstructor;
 import javassist.CtMethod;
+import javassist.CtNewConstructor;
 import javassist.CtNewMethod;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class JavassistActorFactory {
@@ -22,15 +29,17 @@ public class JavassistActorFactory {
     private ClassPool classPool = ClassPool.getDefault();
 
     @SuppressWarnings("unchecked")
-    public <T extends Actor> T newActor(Class<T> actorPrototype) {
+    public <T extends Actor> T newActor(Class<T> actorPrototype, Object... args) {
         try {
             Preconditions.checkNotNull(actorPrototype);
 
             ActorDefinition actorDefinition;
             if (!cache.containsKey(actorPrototype)) {
                 actorDefinition = getActorDefinition(actorPrototype);
-                CtClass ctClass = classPool.makeClass(actorDefinition.getType().getCanonicalName() + "Instance");
+                Class<? extends Actor> type = actorDefinition.getType();
+                CtClass ctClass = classPool.makeClass(type.getCanonicalName() + "Instance");
                 ctClass.setSuperclass(asCtClass(actorPrototype));
+                makeConstructors(ctClass, type);
                 for (ViewDefinition viewDefinition : actorDefinition.getViewDefinitions()) {
                     ctClass.addMethod(makeViewMethod(viewDefinition, ctClass));
                 }
@@ -40,15 +49,31 @@ public class JavassistActorFactory {
                 actorDefinition = cache.get(actorPrototype);
             }
 
-            return newActor(actorDefinition);
+            return newActor(actorDefinition, args);
         } catch (Throwable t) {
             throw new ActorInstantiationException(t);
         }
     }
 
-    private <T extends Actor> T newActor(ActorDefinition definition) {
+    private void makeConstructors(CtClass ctClass, Class<? extends Actor> type) throws Exception {
+        for (Constructor<?> constructor : type.getConstructors()) {
+            Parameter[] parameters = constructor.getParameters();
+            CtClass[] params = new CtClass[parameters.length];
+
+            for (int i = 0; i < parameters.length; i++) {
+                CtClass paramClass = asCtClass(parameters[i].getType());
+                params[i] = paramClass;
+            }
+            CtConstructor ctConstructor = CtNewConstructor.make(params, new CtClass[0], ctClass);
+            ctClass.addConstructor(ctConstructor);
+        }
+    }
+
+    private <T extends Actor> T newActor(ActorDefinition definition, Object[] args) {
         try {
-            @SuppressWarnings("unchecked") T prototype = (T) definition.getImplementation().newInstance();
+            Set<Class<?>> params = new LinkedHashSet<>();
+            Arrays.stream(args).map(Object::getClass).forEach(params::add);
+            @SuppressWarnings("unchecked") T prototype = (T) definition.getImplementation().getConstructor(params.toArray(new Class[params.size()])).newInstance(args);
 
             for (ComponentDefinition componentDefinition : definition.getComponentDefinitions()) {
                 Component component = componentDefinition.getComponent().newInstance();

@@ -13,11 +13,13 @@ public abstract class Actor {
     private TypedEventBus typedEventBus = new TypedEventBus();
     private final Map<Class<?>, Component> componentsByType = new ConcurrentHashMap<>();
 
+    @SuppressWarnings("unchecked")
     public <T> T getComponent(Class<T> type) {
         Preconditions.checkNotNull(type);
         return (T) componentsByType.get(type);
     }
 
+    @SuppressWarnings("unchecked")
     public <T, C extends Component> void addComponent(Class<T> type, C component) {
         ComponentDefinition.validate(type, component.getClass());
         removeComponent(type);
@@ -25,6 +27,7 @@ public abstract class Actor {
         componentsByType.put(type, component);
     }
 
+    @SuppressWarnings("unchecked")
     public <T> T removeComponent(Class<T> type) {
         Preconditions.checkNotNull(type);
         Component component;
