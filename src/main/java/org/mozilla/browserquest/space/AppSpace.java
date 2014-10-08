@@ -23,8 +23,7 @@ public class AppSpace<T extends Actor> {
     }
 
     private ListeningScheduledExecutorService newExecutor() {
-        ScheduledThreadPoolExecutor scheduledThreadPoolExecutor =
-                new ScheduledThreadPoolExecutor(1, (r) -> new Thread(r, AppSpace.this.getClass().getSimpleName() + "(" + rootObject + ")"));
+        ScheduledThreadPoolExecutor scheduledThreadPoolExecutor = new ScheduledThreadPoolExecutor(1, (r) -> new Thread(r, AppSpace.this.toString()));
         return MoreExecutors.listeningDecorator(scheduledThreadPoolExecutor);
     }
 
