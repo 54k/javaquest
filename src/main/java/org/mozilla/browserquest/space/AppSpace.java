@@ -36,8 +36,16 @@ public class AppSpace<T extends Actor> {
         rootObject.post(AppSpaceEventListener.class).onAppSpaceCreated(this);
     }
 
+    private void notifyAppSpaceDestroyed() {
+        rootObject.post(AppSpaceEventListener.class).onAppSpaceDestroyed(this);
+    }
+
     private void notifyAppSpaceTicked() {
         rootObject.post(AppSpaceEventListener.class).onAppSpaceTicked();
+    }
+
+    public void destroy() {
+        executor.submit(this::notifyAppSpaceDestroyed);
     }
 
     @Override

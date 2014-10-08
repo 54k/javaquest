@@ -7,5 +7,7 @@ public interface AppSpaceEventListener {
 
     void onAppSpaceCreated(AppSpace appSpace);
 
+    void onAppSpaceDestroyed(AppSpace appSpace);
+
     void onAppSpaceTicked();
 }
