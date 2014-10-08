@@ -5,8 +5,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mozilla.browserquest.actor.Actor;
 import org.mozilla.browserquest.actor.ActorPrototype;
+import org.mozilla.browserquest.actor.Component;
+import org.mozilla.browserquest.actor.ComponentPrototype;
 import org.mozilla.browserquest.actor.JavassistActorFactory;
 import org.mozilla.browserquest.space.AppSpace;
+import org.mozilla.browserquest.space.AppSpaceEventListener;
 
 public class ActorTest extends Assert {
 
@@ -24,17 +27,36 @@ public class ActorTest extends Assert {
     }
 
     @Test
-    public void testAppSpace() {
+    public void testAppSpace() throws Exception {
         AppSpace<TestActor> appSpace = new AppSpace<>(factory.newActor(TestActor.class, "test"));
+        Thread.sleep(10_000);
     }
 
-    @ActorPrototype
+    @ActorPrototype(AppSpaceComponent.class)
     public abstract static class TestActor extends Actor {
 
         private String value;
 
         public TestActor(String value) {
             this.value = value;
+        }
+    }
+
+    @ComponentPrototype(AppSpaceEventListener.class)
+    public static class AppSpaceComponent extends Component implements AppSpaceEventListener {
+
+        private int ticks;
+        private AppSpace appSpace;
+
+        @Override
+        public void onAppSpaceCreated(AppSpace appSpace) {
+            this.appSpace = appSpace;
+        }
+
+        @Override
+        public void onAppSpaceTicked() {
+            ticks++;
+            System.out.println("ticks: " + ticks + ", appSpace: " + appSpace);
         }
     }
 }

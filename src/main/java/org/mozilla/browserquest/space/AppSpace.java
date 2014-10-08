@@ -1,49 +1,48 @@
 package org.mozilla.browserquest.space;
 
+import com.google.common.base.Preconditions;
 import com.google.common.util.concurrent.ListeningScheduledExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
 import org.mozilla.browserquest.actor.Actor;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
 
 public class AppSpace<T extends Actor> {
 
-    // game logic
+    private static final int FPS = 10;
+
     private T rootObject;
-    private ListeningScheduledExecutorService executor = newExecutor();
-    // game controllers
-    private Set<SpaceClient> spaceClients = new HashSet<>();
+    private ListeningScheduledExecutorService executor;
 
     public AppSpace(T rootObject) {
+        Preconditions.checkNotNull(rootObject);
         this.rootObject = rootObject;
+        executor = newExecutor();
+        scheduleUpdateTask();
     }
 
     private ListeningScheduledExecutorService newExecutor() {
-        ScheduledThreadPoolExecutor scheduledThreadPoolExecutor = new ScheduledThreadPoolExecutor(1, (ThreadFactory) Thread::new);
+        ScheduledThreadPoolExecutor scheduledThreadPoolExecutor =
+                new ScheduledThreadPoolExecutor(1, (r) -> new Thread(r, AppSpace.this.getClass().getSimpleName() + "(" + rootObject + ")"));
         return MoreExecutors.listeningDecorator(scheduledThreadPoolExecutor);
     }
 
-    public ListeningScheduledExecutorService getExecutor() {
-        return executor;
+    private void scheduleUpdateTask() {
+        executor.execute(this::notifyAppSpaceCreated);
+        executor.scheduleAtFixedRate(this::notifyAppSpaceTicked, 0, 1000 / FPS, TimeUnit.MILLISECONDS);
     }
 
-    public T getRootObject() {
-        return rootObject;
+    private void notifyAppSpaceCreated() {
+        rootObject.post(AppSpaceEventListener.class).onAppSpaceCreated(this);
     }
 
-    public Set<SpaceClient> getSpaceClients() {
-        return Collections.unmodifiableSet(spaceClients);
+    private void notifyAppSpaceTicked() {
+        rootObject.post(AppSpaceEventListener.class).onAppSpaceTicked();
     }
 
-    public void attachSpaceClient(SpaceClient spaceClient) {
-        spaceClients.add(spaceClient);
-    }
-
-    public void detachSpaceClient(SpaceClient spaceClient) {
-        spaceClients.remove(spaceClient);
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "(rootObject=" + rootObject + ')';
     }
 }
