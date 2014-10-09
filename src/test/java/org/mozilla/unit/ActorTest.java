@@ -29,7 +29,13 @@ public class ActorTest extends Assert {
 
     @Test
     public void testAppSpace() throws Exception {
-        new NettyProvider().run();
+        NettyProvider nettyProvider = new NettyProvider();
+        nettyProvider.onNewConnection(c -> {
+            c.onMessage(System.out::println);
+            c.onClose(v -> System.out.println("Closed"));
+            c.write("go");
+        });
+        nettyProvider.run();
         //        AppSpace<TestActor> appSpace = new AppSpace<>(factory.newActor(TestActor.class, "test"));
         //        Thread.sleep(10_000);
     }
