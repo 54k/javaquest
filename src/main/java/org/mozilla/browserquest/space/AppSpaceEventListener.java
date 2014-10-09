@@ -5,9 +5,9 @@ import org.mozilla.browserquest.util.Listener;
 @Listener
 public interface AppSpaceEventListener {
 
-    void onAppSpaceCreated(AppSpace appSpace);
+    void onAppSpaceCreated(IAppSpace appSpace);
 
-    void onAppSpaceDestroyed(AppSpace appSpace);
+    void onAppSpaceDestroyed(IAppSpace appSpace);
 
-    void onAppSpaceTicked();
+    void onAppSpaceTick(long tickDeltaTime);
 }

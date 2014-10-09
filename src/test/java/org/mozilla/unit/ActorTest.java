@@ -10,6 +10,7 @@ import org.mozilla.browserquest.actor.ComponentPrototype;
 import org.mozilla.browserquest.actor.JavassistActorFactory;
 import org.mozilla.browserquest.space.AppSpace;
 import org.mozilla.browserquest.space.AppSpaceEventListener;
+import org.mozilla.browserquest.space.IAppSpace;
 
 public class ActorTest extends Assert {
 
@@ -46,16 +47,22 @@ public class ActorTest extends Assert {
     public static class AppSpaceComponent extends Component implements AppSpaceEventListener {
 
         private int ticks;
-        private AppSpace appSpace;
+        private IAppSpace appSpace;
 
         @Override
-        public void onAppSpaceCreated(AppSpace appSpace) {
+        public void onAppSpaceCreated(IAppSpace appSpace) {
             this.appSpace = appSpace;
         }
 
         @Override
-        public void onAppSpaceTicked() {
+        public void onAppSpaceDestroyed(IAppSpace appSpace) {
+            this.appSpace = null;
+        }
+
+        @Override
+        public void onAppSpaceTick(long tickDeltaTime) {
             ticks++;
+            System.out.println("tickDelta: " + tickDeltaTime);
             System.out.println("ticks: " + ticks + ", appSpace: " + appSpace);
         }
     }
