@@ -8,7 +8,7 @@ import org.mozilla.browserquest.actor.ActorPrototype;
 import org.mozilla.browserquest.actor.Component;
 import org.mozilla.browserquest.actor.ComponentPrototype;
 import org.mozilla.browserquest.actor.JavassistActorFactory;
-import org.mozilla.browserquest.space.AppSpace;
+import org.mozilla.browserquest.network.NettyProvider;
 import org.mozilla.browserquest.space.AppSpaceEventListener;
 import org.mozilla.browserquest.space.IAppSpace;
 
@@ -29,8 +29,9 @@ public class ActorTest extends Assert {
 
     @Test
     public void testAppSpace() throws Exception {
-        AppSpace<TestActor> appSpace = new AppSpace<>(factory.newActor(TestActor.class, "test"));
-        Thread.sleep(10_000);
+        new NettyProvider().run();
+        //        AppSpace<TestActor> appSpace = new AppSpace<>(factory.newActor(TestActor.class, "test"));
+        //        Thread.sleep(10_000);
     }
 
     @ActorPrototype(AppSpaceComponent.class)
