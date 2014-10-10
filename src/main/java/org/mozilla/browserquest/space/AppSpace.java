@@ -4,13 +4,13 @@ import com.google.common.base.Preconditions;
 import com.google.common.util.concurrent.ListenableScheduledFuture;
 import com.google.common.util.concurrent.ListeningScheduledExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
-import org.mozilla.browserquest.actor.Actor;
+import org.mozilla.browserquest.util.TypedEventBus;
 
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class AppSpace<T extends Actor> implements IAppSpace<T> {
+public class AppSpace<T extends TypedEventBus> implements IAppSpace<T> {
 
     private static final AtomicInteger sequence = new AtomicInteger();
     private static final int FPS = 10;
@@ -43,12 +43,12 @@ public class AppSpace<T extends Actor> implements IAppSpace<T> {
     }
 
     private void notifyAppSpaceCreated() {
-        rootObject.post(AppSpaceEventListener.class).onAppSpaceCreated(this);
+        getAppSpaceEventListener().onAppSpaceCreated(this);
     }
 
     private void notifyAppSpaceTicked() {
         long currentTickTime = System.currentTimeMillis();
-        rootObject.post(AppSpaceEventListener.class).onAppSpaceTick(currentTickTime - prevTickTime);
+        getAppSpaceEventListener().onAppSpaceTick(currentTickTime - prevTickTime);
         prevTickTime = currentTickTime;
     }
 
@@ -74,7 +74,43 @@ public class AppSpace<T extends Actor> implements IAppSpace<T> {
     }
 
     private void notifyAppSpaceDestroyed() {
-        rootObject.post(AppSpaceEventListener.class).onAppSpaceDestroyed(this);
+        getAppSpaceEventListener().onAppSpaceDestroyed(this);
+    }
+
+    @Override
+    public void register(IAppSpaceClient appSpaceClient) {
+        invokeLater(() -> register0(appSpaceClient));
+    }
+
+    private void register0(IAppSpaceClient appSpaceClient) {
+        appSpaceClient.register(this);
+        notifyAppSpaceClientRegistered(appSpaceClient);
+    }
+
+    private void notifyAppSpaceClientRegistered(IAppSpaceClient appSpaceClient) {
+        getAppSpaceEventListener().onAppSpaceClientRegistered(appSpaceClient);
+    }
+
+    @Override
+    public void unregister(IAppSpaceClient appSpaceClient) {
+        invokeLater(() -> unregister0(appSpaceClient));
+    }
+
+    private void unregister0(IAppSpaceClient appSpaceClient) {
+        appSpaceClient.unregister();
+        notifyAppSpaceClientUnregistered(appSpaceClient);
+    }
+
+    private void notifyAppSpaceClientUnregistered(IAppSpaceClient appSpaceClient) {
+        getAppSpaceEventListener().onAppSpaceClientUnregistered(appSpaceClient);
+    }
+
+    private AppSpaceEventListener getAppSpaceEventListener() {
+        return rootObject.post(AppSpaceEventListener.class);
+    }
+
+    private void invokeLater(Runnable runnable) {
+        executor.execute(runnable);
     }
 
     @Override

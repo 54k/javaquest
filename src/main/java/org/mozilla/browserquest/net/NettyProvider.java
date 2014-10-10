@@ -1,4 +1,4 @@
-package org.mozilla.browserquest.network;
+package org.mozilla.browserquest.net;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;

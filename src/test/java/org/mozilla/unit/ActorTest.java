@@ -8,7 +8,9 @@ import org.mozilla.browserquest.actor.ActorPrototype;
 import org.mozilla.browserquest.actor.Component;
 import org.mozilla.browserquest.actor.ComponentPrototype;
 import org.mozilla.browserquest.actor.JavassistActorFactory;
-import org.mozilla.browserquest.network.NettyProvider;
+import org.mozilla.browserquest.net.NettyProvider;
+import org.mozilla.browserquest.net.NetworkClient;
+import org.mozilla.browserquest.space.AppSpace;
 import org.mozilla.browserquest.space.AppSpaceEventListener;
 import org.mozilla.browserquest.space.IAppSpace;
 
@@ -29,14 +31,11 @@ public class ActorTest extends Assert {
 
     @Test
     public void testAppSpace() throws Exception {
+        IAppSpace<TestActor> appSpace = new AppSpace<>(factory.newActor(TestActor.class, "test"));
+
         NettyProvider nettyProvider = new NettyProvider();
-        nettyProvider.onNewConnection(c -> {
-            c.onMessage(System.out::println);
-            c.onClose(v -> System.out.println("Closed"));
-            c.write("go");
-        });
+        nettyProvider.onNewConnection(c -> new NetworkClient(appSpace, null, c));
         nettyProvider.bind(9001);
-        //        AppSpace<TestActor> appSpace = new AppSpace<>(factory.newActor(TestActor.class, "test"));
         //        Thread.sleep(10_000);
     }
 

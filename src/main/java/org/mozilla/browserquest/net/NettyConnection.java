@@ -1,4 +1,4 @@
-package org.mozilla.browserquest.network;
+package org.mozilla.browserquest.net;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;

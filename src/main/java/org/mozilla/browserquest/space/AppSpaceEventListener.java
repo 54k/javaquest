@@ -10,4 +10,8 @@ public interface AppSpaceEventListener {
     void onAppSpaceDestroyed(IAppSpace appSpace);
 
     void onAppSpaceTick(long tickDeltaTime);
+
+    void onAppSpaceClientRegistered(IAppSpaceClient appSpaceClient);
+
+    void onAppSpaceClientUnregistered(IAppSpaceClient appSpaceClient);
 }
