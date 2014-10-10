@@ -15,5 +15,7 @@ public interface IAppSpace<T extends Actor> {
 
     void unregister(IAppSpaceClient appSpaceClient);
 
+    void executeAppSpaceCommand(IAppSpaceCommand appSpaceCommand);
+
     void destroy();
 }

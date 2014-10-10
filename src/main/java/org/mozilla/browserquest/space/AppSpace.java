@@ -96,6 +96,21 @@ public class AppSpace<T extends Actor> implements IAppSpace<T> {
     }
 
     @Override
+    public void executeAppSpaceCommand(IAppSpaceCommand appSpaceCommand) {
+        if (appSpaceClients.contains(appSpaceCommand.getCommandSender())) {
+            executeAppSpaceCommand0(appSpaceCommand);
+        }
+    }
+
+    private void executeAppSpaceCommand0(IAppSpaceCommand appSpaceCommand) {
+        if (isInAppSpaceThread()) {
+            appSpaceCommand.execute();
+        } else {
+            invokeLater(appSpaceCommand::execute);
+        }
+    }
+
+    @Override
     public void destroy() {
         tickTask.cancel(false);
         invokeLater(this::unregisterAppSpaceClients);
