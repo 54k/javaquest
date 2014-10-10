@@ -10,7 +10,7 @@ import org.mozilla.browserquest.actor.ComponentPrototype;
 import org.mozilla.browserquest.actor.JavassistActorFactory;
 import org.mozilla.browserquest.space.AppSpace;
 import org.mozilla.browserquest.space.AppSpaceClient;
-import org.mozilla.browserquest.space.AppSpaceEventListener;
+import org.mozilla.browserquest.space.IAppSpaceEventListener;
 import org.mozilla.browserquest.space.IAppSpace;
 import org.mozilla.browserquest.space.IAppSpaceClient;
 
@@ -55,8 +55,8 @@ public class ActorTest extends Assert {
         }
     }
 
-    @ComponentPrototype(AppSpaceEventListener.class)
-    public static class AppSpaceComponent extends Component implements AppSpaceEventListener {
+    @ComponentPrototype(IAppSpaceEventListener.class)
+    public static class AppSpaceComponent extends Component implements IAppSpaceEventListener {
 
         private int ticks;
         private IAppSpace appSpace;

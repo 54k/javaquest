@@ -106,8 +106,8 @@ public class AppSpace<T extends Actor> implements IAppSpace<T> {
         appSpaceClients.forEach(IAppSpaceClient::unregister);
     }
 
-    private AppSpaceEventListener getAppSpaceEventListener() {
-        return rootObject.post(AppSpaceEventListener.class);
+    private IAppSpaceEventListener getAppSpaceEventListener() {
+        return rootObject.post(IAppSpaceEventListener.class);
     }
 
     private void invokeLater(Runnable runnable) {

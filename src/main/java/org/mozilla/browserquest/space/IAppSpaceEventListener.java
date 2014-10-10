@@ -3,7 +3,7 @@ package org.mozilla.browserquest.space;
 import org.mozilla.browserquest.util.Listener;
 
 @Listener
-public interface AppSpaceEventListener {
+public interface IAppSpaceEventListener {
 
     void onAppSpaceCreated(IAppSpace appSpace);
 

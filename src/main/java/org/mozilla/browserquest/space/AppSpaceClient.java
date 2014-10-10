@@ -42,7 +42,7 @@ public class AppSpaceClient<T extends Actor> implements IAppSpaceClient<T> {
         getAppSpaceEventListener().onAppSpaceClientUnregistered(this);
     }
 
-    private AppSpaceEventListener getAppSpaceEventListener() {
-        return appSpace.getRootObject().post(AppSpaceEventListener.class);
+    private IAppSpaceEventListener getAppSpaceEventListener() {
+        return appSpace.getRootObject().post(IAppSpaceEventListener.class);
     }
 }
