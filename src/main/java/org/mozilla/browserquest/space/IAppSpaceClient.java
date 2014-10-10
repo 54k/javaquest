@@ -1,13 +1,13 @@
 package org.mozilla.browserquest.space;
 
-import org.mozilla.browserquest.gameserver.model.actor.PlayerObject;
+import org.mozilla.browserquest.actor.Actor;
 import org.mozilla.browserquest.net.NetworkClient;
 
-public interface IAppSpaceClient {
+public interface IAppSpaceClient<T extends Actor> {
 
-    void setPawn(PlayerObject pawn);
+    void setPawn(T pawn);
 
-    PlayerObject getPawn();
+    T getPawn();
 
     NetworkClient getNetworkClient();
 

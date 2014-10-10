@@ -79,30 +79,12 @@ public class AppSpace<T extends TypedEventBus> implements IAppSpace<T> {
 
     @Override
     public void register(IAppSpaceClient appSpaceClient) {
-        invokeLater(() -> register0(appSpaceClient));
-    }
-
-    private void register0(IAppSpaceClient appSpaceClient) {
-        appSpaceClient.register(this);
-        notifyAppSpaceClientRegistered(appSpaceClient);
-    }
-
-    private void notifyAppSpaceClientRegistered(IAppSpaceClient appSpaceClient) {
-        getAppSpaceEventListener().onAppSpaceClientRegistered(appSpaceClient);
+        invokeLater(() -> appSpaceClient.register(this));
     }
 
     @Override
     public void unregister(IAppSpaceClient appSpaceClient) {
-        invokeLater(() -> unregister0(appSpaceClient));
-    }
-
-    private void unregister0(IAppSpaceClient appSpaceClient) {
-        appSpaceClient.unregister();
-        notifyAppSpaceClientUnregistered(appSpaceClient);
-    }
-
-    private void notifyAppSpaceClientUnregistered(IAppSpaceClient appSpaceClient) {
-        getAppSpaceEventListener().onAppSpaceClientUnregistered(appSpaceClient);
+        invokeLater(appSpaceClient::unregister);
     }
 
     private AppSpaceEventListener getAppSpaceEventListener() {
