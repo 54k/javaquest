@@ -1,7 +1,6 @@
 package org.mozilla.browserquest.space;
 
 import org.mozilla.browserquest.actor.Actor;
-import org.mozilla.browserquest.net.NetworkClient;
 
 public interface IAppSpaceClient<T extends Actor> {
 
@@ -9,9 +8,9 @@ public interface IAppSpaceClient<T extends Actor> {
 
     T getPawn();
 
-    NetworkClient getNetworkClient();
+    IAppSpace<? extends Actor> getAppSpace();
 
-    void register(IAppSpace appSpace);
+    void register(IAppSpace<? extends Actor> appSpace);
 
     void unregister();
 }

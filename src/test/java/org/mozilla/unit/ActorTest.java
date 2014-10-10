@@ -8,11 +8,14 @@ import org.mozilla.browserquest.actor.ActorPrototype;
 import org.mozilla.browserquest.actor.Component;
 import org.mozilla.browserquest.actor.ComponentPrototype;
 import org.mozilla.browserquest.actor.JavassistActorFactory;
-import org.mozilla.browserquest.net.NettyProvider;
-import org.mozilla.browserquest.net.NetworkClient;
 import org.mozilla.browserquest.space.AppSpace;
+import org.mozilla.browserquest.space.AppSpaceClient;
 import org.mozilla.browserquest.space.AppSpaceEventListener;
 import org.mozilla.browserquest.space.IAppSpace;
+import org.mozilla.browserquest.space.IAppSpaceClient;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class ActorTest extends Assert {
 
@@ -31,12 +34,15 @@ public class ActorTest extends Assert {
 
     @Test
     public void testAppSpace() throws Exception {
-        IAppSpace<TestActor> appSpace = new AppSpace<>(factory.newActor(TestActor.class, "test"));
-
-        NettyProvider nettyProvider = new NettyProvider();
-        nettyProvider.onNewConnection(c -> new NetworkClient(appSpace, null, c));
-        nettyProvider.bind(9001);
-        //        Thread.sleep(10_000);
+        TestActor spaceActor = factory.newActor(TestActor.class, "test");
+        IAppSpace<TestActor> appSpace = new AppSpace<>(spaceActor);
+        for (int i = 0; i < 5; i++) {
+            IAppSpaceClient appSpaceClient = new AppSpaceClient();
+            appSpace.register(appSpaceClient);
+        }
+        Thread.sleep(500);
+        appSpace.destroy();
+        Thread.sleep(500);
     }
 
     @ActorPrototype(AppSpaceComponent.class)
@@ -55,13 +61,17 @@ public class ActorTest extends Assert {
         private int ticks;
         private IAppSpace appSpace;
 
+        private Set<IAppSpaceClient> appSpaceClients = new HashSet<>();
+
         @Override
         public void onAppSpaceCreated(IAppSpace appSpace) {
+            System.out.println("Created: " + appSpace);
             this.appSpace = appSpace;
         }
 
         @Override
         public void onAppSpaceDestroyed(IAppSpace appSpace) {
+            System.out.println("Destroyed: " + appSpace);
             this.appSpace = null;
         }
 
@@ -70,6 +80,18 @@ public class ActorTest extends Assert {
             ticks++;
             System.out.println("tickDelta: " + tickDeltaTime);
             System.out.println("ticks: " + ticks + ", appSpace: " + appSpace);
+        }
+
+        @Override
+        public void onAppSpaceClientRegistered(IAppSpaceClient appSpaceClient) {
+            System.out.println("Hello: " + appSpaceClient);
+            appSpaceClients.add(appSpaceClient);
+        }
+
+        @Override
+        public void onAppSpaceClientUnregistered(IAppSpaceClient appSpaceClient) {
+            System.out.println("Bye: " + appSpaceClient);
+            appSpaceClients.remove(appSpaceClient);
         }
     }
 }

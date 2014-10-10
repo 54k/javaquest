@@ -1,18 +1,11 @@
 package org.mozilla.browserquest.space;
 
 import org.mozilla.browserquest.actor.Actor;
-import org.mozilla.browserquest.net.NetworkClient;
 
 public class AppSpaceClient<T extends Actor> implements IAppSpaceClient<T> {
 
-    private final NetworkClient networkClient;
-
-    private volatile IAppSpace appSpace;
-    private volatile T pawn;
-
-    public AppSpaceClient(NetworkClient networkClient) {
-        this.networkClient = networkClient;
-    }
+    private IAppSpace<? extends Actor> appSpace;
+    private T pawn;
 
     @Override
     public void setPawn(T pawn) {
@@ -25,12 +18,12 @@ public class AppSpaceClient<T extends Actor> implements IAppSpaceClient<T> {
     }
 
     @Override
-    public NetworkClient getNetworkClient() {
-        return networkClient;
+    public IAppSpace<? extends Actor> getAppSpace() {
+        return appSpace;
     }
 
     @Override
-    public void register(IAppSpace appSpace) {
+    public void register(IAppSpace<? extends Actor> appSpace) {
         this.appSpace = appSpace;
         notifyAppSpaceClientRegistered();
     }

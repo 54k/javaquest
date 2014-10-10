@@ -1,9 +1,9 @@
 package org.mozilla.browserquest.space;
 
 import com.google.common.util.concurrent.ListeningScheduledExecutorService;
-import org.mozilla.browserquest.util.TypedEventBus;
+import org.mozilla.browserquest.actor.Actor;
 
-public interface IAppSpace<T extends TypedEventBus> {
+public interface IAppSpace<T extends Actor> {
 
     T getRootObject();
 
@@ -11,9 +11,9 @@ public interface IAppSpace<T extends TypedEventBus> {
 
     boolean isInAppSpaceThread();
 
-    void destroy();
-
     void register(IAppSpaceClient appSpaceClient);
 
     void unregister(IAppSpaceClient appSpaceClient);
+
+    void destroy();
 }
