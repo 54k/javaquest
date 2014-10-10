@@ -35,7 +35,7 @@ public class ActorTest extends Assert {
             c.onClose(v -> System.out.println("Closed"));
             c.write("go");
         });
-        nettyProvider.run();
+        nettyProvider.bind(9001);
         //        AppSpace<TestActor> appSpace = new AppSpace<>(factory.newActor(TestActor.class, "test"));
         //        Thread.sleep(10_000);
     }

@@ -1,6 +1,7 @@
 package org.mozilla.browserquest.network;
 
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelInitializer;
@@ -13,17 +14,32 @@ import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import org.mozilla.browserquest.util.NamingThreadFactory;
 import org.vertx.java.core.Handler;
 
-public class NettyProvider implements Runnable {
+public class NettyProvider {
 
     private Handler<NettyConnection> connectionHandler;
+    private ServerBootstrap serverBootstrap;
+    private Channel serverChannel;
 
-    @Override
-    public void run() {
-        ServerBootstrap serverBootstrap = new ServerBootstrap();
+    public NettyProvider() {
+        serverBootstrap = new ServerBootstrap();
         serverBootstrap.channel(NioServerSocketChannel.class);
         serverBootstrap.group(new NioEventLoopGroup(2, new NamingThreadFactory("netty-provider")));
         serverBootstrap.childHandler(new TransportInitializer());
-        serverBootstrap.bind(9001).syncUninterruptibly().channel().closeFuture().syncUninterruptibly();
+    }
+
+    public void bind(int port) {
+        validate();
+        serverChannel = serverBootstrap.bind(port).syncUninterruptibly().channel();
+    }
+
+    private void validate() {
+        if (connectionHandler == null) {
+            throw new IllegalStateException();
+        }
+    }
+
+    public void close() {
+        serverChannel.close().syncUninterruptibly();
     }
 
     public void onNewConnection(Handler<NettyConnection> connectionHandler) {
